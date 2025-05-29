@@ -44,8 +44,8 @@ require_once "../../../koneksi.php";
                                         <tr>
                                             <th>No</th>
                                             <th>Nama</th>
-                                            <th>Harga Sewa</th>
-                                            <th>Jumlah Kursi</th>
+                                            <th>Telepon</th>
+                                            <th>Email</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -53,23 +53,23 @@ require_once "../../../koneksi.php";
                                         <tr>
                                             <th>No</th>
                                             <th>Nama</th>
-                                            <th>Harga Sewa</th>
-                                            <th>Jumlah Kursi</th>
+                                            <th>Telepon</th>
+                                            <th>Email</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        <?php foreach (mysqli_query($db, "SELECT * FROM unit_mobil ORDER BY id DESC")->fetch_all() as $index => $unit_mobil): ?>
+                                        <?php foreach (mysqli_query($db, "SELECT * FROM users WHERE role='marketing' ORDER BY id")->fetch_all() as $index => $user): ?>
                                             <tr>
-                                                <td><?php echo $index + 1; ?></td>
-                                                <td><?php echo $unit_mobil[1]; ?></td>
-                                                <td>Rp <?php echo number_format($unit_mobil[2]); ?></td>
-                                                <td><?php echo $unit_mobil[3]; ?></td>
+                                                <td><?= $index + 1; ?></td>
+                                                <td><?= $user[1]; ?></td>
+                                                <td><?= $user[2]; ?></td>
+                                                <td><?= $user[3]; ?></td>
                                                 <td>
                                                     <form action="./actions.php" method="post">
-                                                        <input type="hidden" name="id" value="<?php echo $unit_mobil[0]; ?>">
-                                                        <a href="edit.php?id=<?php echo $unit_mobil[0]; ?>" class="mr-2 btn btn-sm btn-secondary"><i class="fas fa-edit"></i></a>
-                                                        <button onclick="return confirm('Hapus unit mobil?');" type="submit" name="delete" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                                        <input type="hidden" name="id" value="<?php echo $user[0]; ?>">
+                                                        <a href="edit.php?id=<?php echo $user[0]; ?>" class="mr-2 btn btn-sm btn-secondary"><i class="fas fa-edit"></i></a>
+                                                        <button onclick="return confirm('Hapus marketing?');" type="submit" name="delete" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
                                                     </form>
                                                 </td>
                                             </tr>
