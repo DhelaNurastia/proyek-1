@@ -16,7 +16,7 @@ $isSewaSection     = $isSewaPermintaan || $isSewaAktif || $isRiwayat;
 
 $isCustomer        = strpos($current_uri, 'customer/index.php') !== false;
 $isMarketing       = strpos($current_uri, 'marketing/index.php') !== false;
-$isChecker         = strpos($current_uri, 'data_checker.php') !== false;
+$isChecker         = strpos($current_uri, 'checker/index.php') !== false;
 
 $isPages           = strpos($current_uri, 'login.php') !== false || strpos($current_uri, 'register.php') !== false || strpos($current_uri, 'forgot-password.php') !== false;
 ?>
@@ -86,7 +86,7 @@ $isPages           = strpos($current_uri, 'login.php') !== false || strpos($curr
             <i class="fas fa-fw fa-user-tie"></i>
             <span>Data Marketing</span>
         </a>
-        <a class="nav-link <?= $isChecker ? 'active' : '' ?>" href="<?= BASE_URL ?>/admin/data_checker.php">
+        <a class="nav-link <?= $isChecker ? 'active' : '' ?>" href="<?= BASE_URL ?>/admin/checker/index.php">
             <i class="fas fa-fw fa-user-check"></i>
             <span>Data Checker</span>
         </a>

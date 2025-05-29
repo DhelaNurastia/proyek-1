@@ -3,7 +3,7 @@
 const HOSTNAME = 'localhost';
 const USERNAME = 'root';
 const PASSWORD = '';
-const DATABASE = 'tes';
+const DATABASE = 'proyek-1';
 
 $db = mysqli_connect(HOSTNAME, USERNAME, PASSWORD, DATABASE);
 
