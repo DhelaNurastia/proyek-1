@@ -1,6 +1,17 @@
 <?php
 require_once "../../../config.php";
 require_once "../../../koneksi.php";
+
+// Ambil input dari parameter
+$id = $_GET["id"];
+
+// Query ke database
+$stmt = mysqli_prepare($db, "SELECT * FROM users WHERE id=?");
+mysqli_stmt_bind_param($stmt, "i", $id);
+mysqli_stmt_execute($stmt);
+$checker = mysqli_stmt_get_result($stmt)->fetch_assoc();
+mysqli_stmt_close($stmt);
+mysqli_close($db);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +22,7 @@ require_once "../../../koneksi.php";
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title><?php echo APP_NAME; ?></title>
+    <title><?= APP_NAME; ?></title>
     <!-- Styles -->
     <link href="../../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
@@ -31,28 +42,32 @@ require_once "../../../koneksi.php";
                 <?php include '../../../components/topbar.php'; ?>
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Buat jenis mobil baru</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Edit Checker</h1>
                     <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel ipsam aspernatur
                         voluptates consectetur labore doloribus placeat!</p>
                     <!-- Konten Utama -->
                     <div class="card shadow">
                         <div class="card-body">
                             <form action="./actions.php" method="post" class="d-flex flex-column">
+                                <input type="hidden" name="id" value="<?= $checker["id"]; ?>">
                                 <div class="mb-3">
-                                    <label for="nama" class="form-label">Nama Jenis</label>
-                                    <input type="text" name="nama" id="nama" class="form-control">
+                                    <label for="nama" class="form-label">Nama</label>
+                                    <input type="text" name="nama" id="nama" class="form-control"
+                                        value="<?= $checker["nama"]; ?>">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="harga_sewa" class="form-label">Harga Sewa</label>
-                                    <input type="number" name="harga_sewa" id="harga_sewa" class="form-control">
+                                    <label for="telepon" class="form-label">Telepon</label>
+                                    <input type="tel" name="telepon" id="telepon" class="form-control"
+                                        value="<?= $checker["telepon"]; ?>">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="jumlah_kursi" class="form-label">Jumlah Kursi</label>
-                                    <input type="number" name="jumlah_kursi" id="jumlah_kursi" class="form-control">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" name="email" id="email" class="form-control"
+                                        value="<?= $checker["email"]; ?>">
                                 </div>
                                 <div class="d-flex align-items-center justify-content-end">
-                                    <button type="submit" name="create" class="btn btn-primary mr-2"><i
-                                            class="fas fa-save"></i>Buat</button>
+                                    <button type="submit" name="update" class="btn btn-primary mr-2"><i
+                                            class="fas fa-save"></i>Simpan</button>
                                     <a href="./index.php" class="btn btn-secondary">Kembali</a>
                                 </div>
                             </form>
