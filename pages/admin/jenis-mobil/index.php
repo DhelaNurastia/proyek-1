@@ -10,12 +10,10 @@ require_once "../../../koneksi.php"; ?>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title><?= APP_NAME; ?></title>
+    <title><?php echo APP_NAME; ?></title>
     <!-- Styles -->
     <link href="../../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Njeniso:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Njeniso:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="../../../assets/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="../../../assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
@@ -30,15 +28,13 @@ require_once "../../../koneksi.php"; ?>
                 <?php include '../../../components/topbar.php'; ?>
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Marketing</h1>
-                    <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel ipsam aspernatur
-                        voluptates consectetur labore doloribus placeat!</p>
+                    <h1 class="h3 mb-2 text-gray-800">Jenis Mobil</h1>
+                    <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel ipsam aspernatur voluptates consectetur labore doloribus placeat!</p>
                     <!-- Konten Utama -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                            <h6 class="m-0 font-weight-bold text-primary">Tabel Checker</h6>
-                            <a href="./create.php" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Marketing
-                                Baru</a>
+                            <h6 class="m-0 font-weight-bold text-primary">Tabel Jenis Mobil</h6>
+                            <a href="./create.php" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Jenis Mobil Baru</a>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -47,8 +43,8 @@ require_once "../../../koneksi.php"; ?>
                                         <tr>
                                             <th>No</th>
                                             <th>Nama</th>
-                                            <th>Telepon</th>
-                                            <th>Email</th>
+                                            <th>Harga Sewa</th>
+                                            <th>Jumlah Kursi</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -56,27 +52,23 @@ require_once "../../../koneksi.php"; ?>
                                         <tr>
                                             <th>No</th>
                                             <th>Nama</th>
-                                            <th>Telepon</th>
-                                            <th>Email</th>
+                                            <th>Harga Sewa</th>
+                                            <th>Jumlah Kursi</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        <?php foreach (mysqli_query($db, "SELECT * FROM users WHERE role='marketing' ORDER BY id DESC")->fetch_all() as $index => $marketing): ?>
+                                        <?php foreach (mysqli_query($db, "SELECT * FROM jenis_mobil ORDER BY id DESC")->fetch_all() as $index => $jenis_mobil): ?>
                                             <tr>
-                                                <td><?= $index + 1 ?></td>
-                                                <td><?= $marketing[1] ?></td>
-                                                <td><?= $marketing[2] ?></td>
-                                                <td><?= $marketing[3] ?></td>
+                                                <td><?php echo $index + 1; ?></td>
+                                                <td><?php echo $jenis_mobil[1]; ?></td>
+                                                <td>Rp <?php echo number_format($jenis_mobil[2]); ?></td>
+                                                <td><?php echo $jenis_mobil[3]; ?></td>
                                                 <td>
                                                     <form action="./actions.php" method="post">
-                                                        <input type="hidden" name="id" value="<?= $marketing[0]; ?>">
-                                                        <a href="edit.php?id=<?= $marketing[0]; ?>"
-                                                            class="mr-2 btn btn-sm btn-secondary"><i
-                                                                class="fas fa-edit"></i></a>
-                                                        <button onclick="return confirm('Hapus marketing?');" type="submit"
-                                                            name="delete" class="btn btn-sm btn-danger"><i
-                                                                class="fas fa-trash"></i></button>
+                                                        <input type="hidden" name="id" value="<?php echo $jenis_mobil[0]; ?>">
+                                                        <a href="edit.php?id=<?php echo $jenis_mobil[0]; ?>" class="mr-2 btn btn-sm btn-secondary"><i class="fas fa-edit"></i></a>
+                                                        <button onclick="return confirm('Hapus jenis mobil?');" type="submit" name="delete" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
                                                     </form>
                                                 </td>
                                             </tr>

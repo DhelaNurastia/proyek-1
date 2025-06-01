@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["create"])) {
     }
 
     $passwordHashed = password_hash($password, PASSWORD_DEFAULT);
-    $role = "checker";
+    $role = "marketing";
 
     // Query ke database
     $stmt = mysqli_prepare($db, "INSERT INTO users (nama,telepon,email,password,role) VALUES (?,?,?,?,?)");
@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["create"])) {
     mysqli_close($db);
 
     // Alihkan ke halaman index
-    $success = "Berhasil menambah  checker baru";
+    $success = "Berhasil menambah marketing baru";
     header("location: index.php?success={$success}");
     exit;
 }
@@ -51,11 +51,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update"])) {
         exit;
     }
 
-    if (cek_email_terdaftar($email)) {
+    if (cek_email_terdaftar($email, $id)) {
         $error = "Email telah terdaftar";
-        header("location: create.php?error={$error}");
+        header("location: edit.php?id={$id}&error={$error}");
         exit;
     }
+
 
     // Query ke database
     $stmt = mysqli_prepare($db, "UPDATE users SET nama=?, telepon=?, email=? WHERE id=?");
@@ -65,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update"])) {
     mysqli_close($db);
 
     // Alihkan ke halaman index
-    $success = "Berhasil memperbarui checker";
+    $success = "Berhasil memperbarui marketing";
     header("location: index.php?success={$success}");
     exit;
 }
@@ -86,13 +87,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["delete"])) {
     exit;
 }
 
-function cek_email_terdaftar(string $email): bool
+function cek_email_terdaftar(string $email, int $exclude_id = 0): bool
 {
     global $db;
 
-    // Query ke database
-    $stmt = mysqli_prepare($db, "SELECT email FROM users WHERE email=?");
-    mysqli_stmt_bind_param($stmt, "s", $email);
+    if ($exclude_id > 0) {
+        $stmt = mysqli_prepare($db, "SELECT email FROM users WHERE email=? AND id != ?");
+        mysqli_stmt_bind_param($stmt, "si", $email, $exclude_id);
+    } else {
+        $stmt = mysqli_prepare($db, "SELECT email FROM users WHERE email=?");
+        mysqli_stmt_bind_param($stmt, "s", $email);
+    }
+
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     mysqli_stmt_close($stmt);

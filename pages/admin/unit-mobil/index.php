@@ -28,13 +28,13 @@ require_once "../../../koneksi.php"; ?>
                 <?php include '../../../components/topbar.php'; ?>
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Jenis Mobil</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Unit Mobil</h1>
                     <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel ipsam aspernatur voluptates consectetur labore doloribus placeat!</p>
                     <!-- Konten Utama -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                            <h6 class="m-0 font-weight-bold text-primary">Tabel Jenis Mobil</h6>
-                            <a href="./create.php" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Jenis Mobil Baru</a>
+                            <h6 class="m-0 font-weight-bold text-primary">Tabel Unit Mobil</h6>
+                            <a href="./create.php" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Unit Mobil Baru</a>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
