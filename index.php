@@ -50,8 +50,8 @@
           <li><a href="#faq">FAQ</a></li>
           <li class="dropdown"><a href="#"><span>Autentikasi</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
-              <li><a href="register.php">Daftar</a></li>
-              <li><a href="login.php">Masuk</a></li>
+              <li><a href="pages/Halaman_Register&Login/register.php">Daftar</a></li>
+              <li><a href="pages/Halaman_Register&Login/login.php">Masuk</a></li>
             </ul>
           </li>
           <li><a href="#contact">Kontak Kami</a></li>
@@ -333,7 +333,7 @@
         <div class="row">
 
           <div class="col-lg-5" data-aos="fade-up">
-            <h2 class="faq-title">Have a question? Check out the FAQ</h2>
+            <h2 class="faq-title">Butuh jawaban cepat? Kunjungi FAQ</h2>
             <p class="faq-description">Maecenas tempus tellus eget condimentum rhoncus sem quam semper libero sit amet adipiscing sem neque sed ipsum.</p>
             <div class="faq-arrow d-none d-lg-block" data-aos="fade-up" data-aos-delay="200">
               <svg class="faq-arrow" width="200" height="211" viewBox="0 0 200 211" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -346,7 +346,7 @@
             <div class="faq-container">
 
               <div class="faq-item faq-active">
-                <h3>Non consectetur a erat nam at lectus urna duis?</h3>
+                <h3>Apa saja persyaratan untuk menyewa mobil?</h3>
                 <div class="faq-content">
                   <p>Feugiat pretium nibh ipsum consequat. Tempus iaculis urna id volutpat lacus laoreet non curabitur gravida. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non.</p>
                 </div>
@@ -431,9 +431,8 @@
                 <i class="bi bi-envelope"></i>
               </div>
               <div class="info-content">
-                <h4>Email Address</h4>
-                <p>info@example.com</p>
-                <p>contact@example.com</p>
+                <h4>Alamat Email</h4>
+                <p>diki.a.gani@gmail.com</p>
               </div>
             </div>
           </div>
@@ -444,9 +443,8 @@
                 <i class="bi bi-headset"></i>
               </div>
               <div class="info-content">
-                <h4>Hours of Operation</h4>
-                <p>Sunday-Fri: 9 AM - 6 PM</p>
-                <p>Saturday: 9 AM - 4 PM</p>
+                <h4>Jam Operasional</h4>
+                <p>Setiap Hari: 24 Jam</p>
               </div>
             </div>
           </div>
@@ -464,7 +462,7 @@
         <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="300">
           <div class="col-lg-10">
             <div class="contact-form-wrapper">
-              <h2 class="text-center mb-4">Get in Touch</h2>
+              <h2 class="text-center mb-4">Sapa Kami</h2>
 
               <form action="forms/contact.php" method="post" class="php-email-form">
                 <div class="row g-3">
@@ -511,7 +509,7 @@
                   </div>
 
                   <div class="col-12 text-center">
-                    <button type="submit" class="btn btn-primary btn-submit">SEND MESSAGE</button>
+                    <button type="submit" class="btn btn-primary btn-submit">KIRIM PESAN</button>
                   </div>
                 </div>
               </form>
@@ -533,7 +531,7 @@
           <a href="index.html" class="logo d-flex align-items-center">
             <span class="sitename">Sigma RentCar</span>
           </a>
-          <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta donna mare fermentum iaculis eu non diam phasellus.</p>
+          <p>Sigma RentCar, solusi rental mobil terpercaya untuk berbagai kebutuhan anda. Kami hadir dengan komitmen menghadirkan layanan yang mudah, nyaman, dan dapat diandalkan</p>
           <div class="social-links d-flex mt-4">
             <a href=""><i class="bi bi-twitter-x"></i></a>
             <a href=""><i class="bi bi-facebook"></i></a>
@@ -559,7 +557,7 @@
           <p>Subang, Jawa Barat</p>
           <p>Indonesia</p>
           <p class="mt-4"><strong>Nomer Hp:</strong> <span>+62 8121 2280 564</span></p>
-          <p><strong>Email:</strong> <span>diki.a.gani</span></p>
+          <p><strong>Email:</strong> <span>diki.a.gani@gmail.com</span></p>
         </div>
 
       </div>

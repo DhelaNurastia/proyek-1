@@ -37,7 +37,7 @@ if ($data && password_verify($password, $data['password'])) {
             break;
         case 'customer':
             echo "Redirect ke customer...";
-            header("Location: ../Customer/homepage.php");
+            header("Location: ../Customer/index.php");
             break;
         default:
             echo "Role tidak dikenali.";
