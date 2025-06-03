@@ -1,5 +1,8 @@
 <?php
 $base_url = '/Sigma RentCar/';
+
+$username = isset($_SESSION['username']) ? $_SESSION['username'] : 'username';
+?>
 ?>
 
 <!DOCTYPE html>
@@ -74,13 +77,13 @@ $base_url = '/Sigma RentCar/';
             <div class="content">
 
               <div class="main-heading">
-                <h2><b>Selamat Datang Kembali!</b></h2>
+                <h2><b>Selamat Datang Kembali,  <?= htmlspecialchars($username, ENT_QUOTES, 'UTF-8') ?>!</b></h2>
               </div>
 
               <div class="divider"></div>
 
               <div class="description">
-                <p>Siap melanjutkan perjalananmu?!</p>
+                <p>Siap melanjutkan perjalananmu?</p>
               </div>
 
               <div class="cta-button">

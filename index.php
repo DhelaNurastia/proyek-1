@@ -116,7 +116,7 @@
         <div class="row gx-5 align-items-center">
           <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200">
             <div class="about-image position-relative">
-              <img src="assets/image/about/road.jpeg" class="img-fluid rounded-4 shadow-sm" alt="About Image" loading="lazy">
+              <img src="assets/image/About/road.jpeg" class="img-fluid rounded-4 shadow-sm" alt="About Image" loading="lazy">
               <div class="experience-badge">
               </div>
             </div>
@@ -541,7 +541,7 @@
         </div>
 
         <div class="col-lg-2 col-6 footer-links">
-          <h4>Useful Links</h4>
+          <h4>Tautan Penting</h4>
           <ul>
             <li><a href="index.php">Home</a></li>
             <li><a href="about.php">Tentang Kami</a></li>
