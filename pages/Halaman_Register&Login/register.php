@@ -48,7 +48,7 @@
                 <form action="register_proses.php" method="POST" onsubmit="return validateForm()">
 
                     <div class="form-group">
-                        <input type="text" name="nama" id="nama" placeholder="Nama Lengkap" />
+                        <input type="text" name="nama" id="nama" placeholder="Username" />
                         <small class="error" id="err-nama"></small>
                     </div>
 
