@@ -3,7 +3,6 @@ $base_url = '/Sigma RentCar/';
 
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : 'username';
 ?>
-?>
 
 <!DOCTYPE html>
 <html lang="en">
