@@ -8,4 +8,4 @@ git commit -m "Judul apa yang kamu kerjain sebelumnya"
 git push origin main
 
 <!-- Menarik (update) perubahan terbaru dari GitHub ke lokal -->
-git pull 
+git pull
