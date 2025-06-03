@@ -5,9 +5,8 @@ $current_uri = $_SERVER['REQUEST_URI'];
 // Buat penanda bagian aktif
 $isDashboard       = strpos($current_uri, '/admin/index.php') !== false;
 $isUnitMobil           = strpos($current_uri, '/admin/unit-mobil/') !== false;
-$isFasilitas       = strpos($current_uri, '/admin/fasilitas/') !== false;
 $isJenisMobil       = strpos($current_uri, '/admin/jenis-mobil/') !== false;
-$isMobilSection    = $isUnitMobil || $isFasilitas || $isJenisMobil;
+$isMobilSection    = $isUnitMobil || $isJenisMobil;
 
 $isSewaPermintaan  = strpos($current_uri, '/admin/permintaan') !== false;
 $isSewaAktif       = strpos($current_uri, '/admin/sewa-aktif') !== false;
@@ -53,7 +52,6 @@ $isPages           = strpos($current_uri, 'login.php') !== false || strpos($curr
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item <?= $isJenisMobil ? 'active' : '' ?>" href="<?= BASE_URL ?>/admin/jenis-mobil/index.php">Jenis Mobil</a>
                 <a class="collapse-item <?= $isUnitMobil ? 'active' : '' ?>" href="<?= BASE_URL ?>/admin/unit-mobil/index.php">Unit Mobil</a>
-                <a class="collapse-item <?= $isFasilitas ? 'active' : '' ?>" href="<?= BASE_URL ?>/admin/fasilitas/index.php">Fasilitas</a>
             </div>
         </div>
     </li>
