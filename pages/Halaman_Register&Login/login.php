@@ -95,7 +95,7 @@
         function validateLogin() {
             let valid = true;
 
-            const username = document.getElementById("nama");
+            const nama = document.getElementById("nama");
             const password = document.getElementById("password");
 
             // Reset
@@ -103,7 +103,7 @@
             document.querySelectorAll("input").forEach(el => el.classList.remove("error-input"));
 
             if (email.value.trim() === "") {
-                showError(username, "Username wajib diisi");
+                showError(nama, "Username wajib diisi");
                 valid = false;
             }
 

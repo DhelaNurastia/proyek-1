@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 require_once '../../config.php';
 require_once '../../koneksi.php';
 
-$username = $_POST['nama'] ?? '';
+$nama = $_POST['nama'] ?? '';
 $password = $_POST['password'] ?? '';
 
 if (empty($nama) || empty($password)) {
