@@ -82,7 +82,7 @@ $base_url = '/Sigma RentCar/';
               <div class="listing-feature pr-4"><span class="caption">Passenger:</span><span class="number">4</span></div>
             </div>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos eos at eum, voluptatem quibusdam.</p>
-            <p><a href="#" class="btn btn-primary btn-sm">Rent Now</a></p>
+            <p><a href="booking.php" class="btn btn-primary btn-sm">Rent Now</a></p>
           </div>
         </div>
       </div>
