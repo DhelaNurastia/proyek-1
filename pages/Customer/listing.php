@@ -1,69 +1,43 @@
 <?php
-$base_url = '/Sigma RentCar/';
+$base_url = '/proyek-1/';
 ?>
-
-
 <!doctype html>
 <html lang="en">
 
-  <head>
-    <title>Sigma RentCar - Daftar Mobil</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+  <title>Sigma RentCar - Daftar Mobil</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/fonts/icomoon/style.css">
 
-    <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/fonts/icomoon/style.css">
+  <!-- Vendor CSS -->
+  <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/css/bootstrap.min.css">
+  <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/css/bootstrap-datepicker.css">
+  <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/css/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/css/owl.carousel.min.css">
+  <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/css/owl.theme.default.min.css">
+  <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/fonts/flaticon/font/flaticon.css">
+  <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/css/aos.css">
 
-    <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/css/bootstrap-datepicker.css">
-    <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/css/jquery.fancybox.min.css">
-    <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/fonts/flaticon/font/flaticon.css">
-    <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/css/aos.css">
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/css/style.css">
+</head>
 
-    <!-- MAIN CSS -->
-    <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/css/style.css">
+<body>
+  <br><br><br>
 
-  </head>
-
-  <body>
-
-    
-    <div class="site-wrap" id="home-section">
-
-      <div class="site-mobile-menu site-navbar-target">
-        <div class="site-mobile-menu-header">
-          <div class="site-mobile-menu-close mt-3">
-            <span class="icon-close2 js-menu-toggle"></span>
-          </div>
-        </div>
-        <div class="site-mobile-menu-body"></div>
-      </div>      
-      <div class="hero inner-page" style="background-image: url('images/hero_1_a.jpg');">
-        
-        <div class="container">
-          <div class="row align-items-end ">
-            <div class="col-lg-5">
-
-              <div class="intro">
-                <h1><strong>Listings</strong></h1>
-                <div class="custom-breadcrumbs"><a href="index.php">Home</a> <span class="mx-2">/</span> <strong>Listings</strong></div>
-              </div>
-
-            </div>
-          </div>
+  <!-- Listing Section -->
+  <div class="site-section bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-7">
+          <h2 class="section-heading"><strong>Car Listings</strong></h2>
+          <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
         </div>
       </div>
-<div class="site-section bg-light">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-7">
-        <h2 class="section-heading"><strong>Car Listings</strong></h2>
-        <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>    
-      </div>
-    </div>
 
     <!-- PAGE 1 -->
     <div id="page1" class="listing-page row">

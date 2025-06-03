@@ -1623,7 +1623,7 @@ a.learn-more{
 	position: relative;
 	background-size: cover;
 	background-repeat: no-repeat;
-	background-image: url("../images/blog/blog-banner.jpg");
+	background-color: navy;
 }
 .page-banner::before {
 	position: absolute;
