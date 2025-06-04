@@ -1,7 +1,7 @@
 <?php
 $base_url = '/proyek-1/';
 
-$username = isset($_SESSION['username']) ? $_SESSION['username'] : 'username';
+$nama = isset($_SESSION['nama']) ? $_SESSION['nama'] : 'nama';
 ?>
 
 <!DOCTYPE html>
@@ -76,7 +76,7 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : 'username';
             <div class="content">
 
               <div class="main-heading">
-                <h2><b>Selamat Datang Kembali,  <?= htmlspecialchars($username, ENT_QUOTES, 'UTF-8') ?>!</b></h2>
+                <h2><b>Selamat Datang Kembali,  <?= htmlspecialchars($nama, ENT_QUOTES, 'UTF-8') ?>!</b></h2>
               </div>
 
               <div class="divider"></div>

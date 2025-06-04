@@ -7,15 +7,15 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 require_once '../../config.php';
 require_once '../../koneksi.php';
 
-$email = $_POST['email'] ?? '';
+$nama = $_POST['nama'] ?? '';
 $password = $_POST['password'] ?? '';
 
-if (empty($email) || empty($password)) {
+if (empty($nama) || empty($password)) {
     header("Location: login.php?error=1");
     exit;
 }
 
-$user = mysqli_query($db, "SELECT * FROM users WHERE email='$email'");
+$user = mysqli_query($db, "SELECT * FROM users WHERE nama='$nama'");
 $data = mysqli_fetch_array($user);
 
 if ($data && password_verify($password, $data['password'])) {

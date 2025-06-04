@@ -54,7 +54,7 @@
                 <h2>Login</h2>
 
                 <?php if (isset($_GET['error']) && $_GET['error'] == '1'): ?>
-                    <div class="error" style="margin-bottom: 1rem;">Email atau password salah!</div>
+                    <div class="error" style="margin-bottom: 1rem;">username atau password salah!</div>
                 <?php endif; ?>
 
                 <?php if (isset($_GET['register']) && $_GET['register'] == 'success'): ?>
@@ -67,8 +67,8 @@
 
                 <form action="login_proses.php" method="POST" onsubmit="return validateLogin()">
                     <div class="form-group">
-                        <input type="text" name="email" id="email" placeholder="Email" />
-                        <small class="error" id="err-email"></small>
+                        <input type="text" name="nama" id="nama" placeholder="Username" />
+                        <small class="error" id="err-nama"></small>
                     </div>
 
                     <div class="form-group">
@@ -95,7 +95,7 @@
         function validateLogin() {
             let valid = true;
 
-            const email = document.getElementById("email");
+            const nama = document.getElementById("nama");
             const password = document.getElementById("password");
 
             // Reset
@@ -103,7 +103,7 @@
             document.querySelectorAll("input").forEach(el => el.classList.remove("error-input"));
 
             if (email.value.trim() === "") {
-                showError(email, "Email wajib diisi");
+                showError(nama, "Username wajib diisi");
                 valid = false;
             }
 

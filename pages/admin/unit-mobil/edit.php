@@ -2,65 +2,99 @@
 require_once "../../../config.php";
 require_once "../../../koneksi.php";
 
-// Ambil input dari parameter
-$id = $_GET["id"];
+$id = $_GET["id"] ?? null;
+if (!$id) {
+    header("Location: index.php?error=ID tidak ditemukan");
+    exit;
+}
 
-// Query ke database
-$stmt = mysqli_prepare($db, "SELECT * FROM jenis_mobil WHERE id=?");
-mysqli_stmt_bind_param($stmt, "i", $id);
-mysqli_stmt_execute($stmt);
-$jenis_mobil = mysqli_stmt_get_result($stmt)->fetch_assoc();
-mysqli_stmt_close($stmt);
-mysqli_close($db);
+// Ambil data unit_mobil + jenis mobil
+$query = "SELECT unit_mobil.*, jenis_mobil.nama FROM unit_mobil 
+          JOIN jenis_mobil ON unit_mobil.jenis_mobil_id = jenis_mobil.id
+          WHERE unit_mobil.id = ?";
+$stmt = $db->prepare($query);
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$result = $stmt->get_result();
+$unit = $result->fetch_assoc();
+
+if (!$unit) {
+    header("Location: index.php?error=Data tidak ditemukan");
+    exit;
+}
+
+// Ambil semua jenis mobil untuk dropdown
+$jenisMobil = $db->query("SELECT * FROM jenis_mobil")->fetch_all(MYSQLI_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title><?php echo APP_NAME; ?></title>
-    <!-- Styles -->
-    <link href="../../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title><?= APP_NAME ?> - Edit Unit Mobil</title>
+    <link href="../../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
     <link href="../../../assets/css/sb-admin-2.min.css" rel="stylesheet">
-    <link href="../../../assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
     <div id="wrapper">
-        <!-- Sidebar -->
         <?php include '../../../components/sidebar.php'; ?>
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-                <!-- Topbar -->
                 <?php include '../../../components/topbar.php'; ?>
+
                 <div class="container-fluid">
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Edit jenis mobil</h1>
-                    <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel ipsam aspernatur voluptates consectetur labore doloribus placeat!</p>
-                    <!-- Konten Utama -->
-                    <div class="card shadow">
+                    <h1 class="h3 mb-4 text-gray-800">Edit Unit Mobil</h1>
+
+                    <div class="card shadow mb-4">
                         <div class="card-body">
-                            <form action="./actions.php" method="post" class="d-flex flex-column">
-                                <input type="hidden" name="id" value="<?= $jenis_mobil["id"]; ?>">
-                                <div class="mb-3">
-                                    <label for="nama" class="form-label">Nama Jenis</label>
-                                    <input type="text" name="nama" id="nama" class="form-control" value="<?= $jenis_mobil["nama"]; ?>">
+                            <form action="actions.php" method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="id" value="<?= $unit["id"] ?>">
+
+                                <div class="form-group">
+                                    <label for="jenis_mobil_id">Jenis Mobil</label>
+                                    <select name="jenis_mobil_id" id="jenis_mobil_id" class="form-control" required>
+                                        <?php foreach ($jenisMobil as $jm): ?>
+                                            <option value="<?= $jm['id'] ?>" <?= $jm['id'] == $unit['jenis_mobil_id'] ? 'selected' : '' ?>>
+                                                <?= $jm['nama'] ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="harga_sewa" class="form-label">Harga Sewa</label>
-                                    <input type="number" name="harga_sewa" id="harga_sewa" class="form-control" value="<?= $jenis_mobil["harga_sewa"]; ?>">
+
+                                <div class="form-group">
+                                    <label for="foto">Ganti Foto (kosongkan jika tidak diganti)</label>
+                                    <input type="file" name="foto" id="foto" class="form-control-file">
                                 </div>
-                                <div class="mb-3">
-                                    <label for="jumlah_kursi" class="form-label">Jumlah Kursi</label>
-                                    <input type="number" name="jumlah_kursi" id="jumlah_kursi" class="form-control" value="<?= $jenis_mobil["jumlah_kursi"]; ?>">
+
+                                <div class="form-group">
+                                    <label for="plat_nomor">Plat Nomor</label>
+                                    <input type="text" name="plat_nomor" id="plat_nomor" class="form-control" value="<?= $unit['plat_nomor'] ?>" required>
                                 </div>
-                                <div class="d-flex align-items-center justify-content-end">
-                                    <button type="submit" name="update" class="btn btn-primary mr-2"><i class="fas fa-save"></i>Simpan</button>
+
+                                <div class="form-group">
+                                    <label for="warna">Warna</label>
+                                    <input type="text" name="warna" id="warna" class="form-control" value="<?= $unit['warna'] ?>" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="tahun_beli">Tahun Beli</label>
+                                    <input type="number" name="tahun_beli" id="tahun_beli" class="form-control" value="<?= $unit['tahun_beli'] ?>" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="status">Status</label>
+                                    <select name="status" id="status" class="form-control" required>
+                                        <option value="tersedia" <?= $unit['status'] === 'tersedia' ? 'selected' : '' ?>>Tersedia</option>
+                                        <option value="disewa" <?= $unit['status'] === 'disewa' ? 'selected' : '' ?>>Disewa</option>
+                                        <option value="perbaikan" <?= $unit['status'] === 'perbaikan' ? 'selected' : '' ?>>Perbaikan</option>
+                                    </select>
+                                </div>
+
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" name="update" class="btn btn-primary mr-2">
+                                        <i class="fas fa-save"></i> Simpan
+                                    </button>
                                     <a href="./index.php" class="btn btn-secondary">Kembali</a>
                                 </div>
                             </form>
@@ -68,21 +102,14 @@ mysqli_close($db);
                     </div>
                 </div>
             </div>
-            <!-- Footer -->
             <?php include '../../../components/footer.php'; ?>
         </div>
     </div>
     <a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
-    <!-- Logout modal -->
     <?php include '../../../components/logout-modal.php'; ?>
-    <!-- Scripts -->
     <script src="../../../assets/vendor/jquery/jquery.min.js"></script>
     <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../../../assets/vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="../../../assets/js/sb-admin-2.min.js"></script>
-    <script src="../../../assets/vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="../../../assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-    <script src="../../../assets/js/demo/datatables-demo.js"></script>
 </body>
 
 </html>
