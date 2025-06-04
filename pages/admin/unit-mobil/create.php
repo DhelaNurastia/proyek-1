@@ -60,6 +60,15 @@ $jenis_mobil = mysqli_query($db, "SELECT id, nama FROM jenis_mobil ORDER BY nama
                                 </div>
 
                                 <div class="form-group">
+                                    <label for="transmisi">Transmisi</label>
+                                    <select name="transmisi" id="transmisi" class="form-control" required>
+                                        <option value="">-- Pilih Transmisi --</option>
+                                        <option value="Manual">Manual</option>
+                                        <option value="Matic">Matic</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
                                     <label for="status">Status</label>
                                     <select name="status" id="status" class="form-control" required>
                                         <option value="tersedia">Tersedia</option>
@@ -73,6 +82,7 @@ $jenis_mobil = mysqli_query($db, "SELECT id, nama FROM jenis_mobil ORDER BY nama
                                     <a href="index.php" class="btn btn-secondary ml-2">Kembali</a>
                                 </div>
                             </form>
+
                         </div>
                     </div>
                 </div>

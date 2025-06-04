@@ -56,7 +56,7 @@ $nama = isset($_SESSION['nama']) ? $_SESSION['nama'] : 'nama';
             <ul>
               <li><a href="#">Edit Profile</a></li>
               <li><a href="#">Status Blacklist</a></li>
-              <li><a href="logout.php">LogOut</a></li>
+              <li><a href="../Halaman_Register&Login/logout.php">LogOut</a></li>
             </ul>
           </li>
         </ul>

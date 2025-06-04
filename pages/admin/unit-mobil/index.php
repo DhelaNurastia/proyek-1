@@ -7,7 +7,7 @@ require_once "../../../koneksi.php";
 
 <head>
     <meta charset="utf-8">
-    <title><?php echo APP_NAME; ?></title>
+    <title><?= APP_NAME; ?></title>
     <link href="../../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
     <link href="../../../assets/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="../../../assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
@@ -16,11 +16,9 @@ require_once "../../../koneksi.php";
 <body id="page-top">
     <div id="wrapper">
         <?php include '../../../components/sidebar.php'; ?>
-
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 <?php include '../../../components/topbar.php'; ?>
-
                 <div class="container-fluid">
                     <h1 class="h3 mb-2 text-gray-800">Data Unit Mobil</h1>
                     <p class="mb-4">Berikut adalah daftar unit mobil yang tersedia di sistem.</p>
@@ -41,6 +39,7 @@ require_once "../../../koneksi.php";
                                             <th>Plat Nomor</th>
                                             <th>Warna</th>
                                             <th>Tahun Beli</th>
+                                            <th>Transmisi</th>
                                             <th>Harga Sewa</th>
                                             <th>Jumlah Kursi</th>
                                             <th>Status</th>
@@ -50,13 +49,13 @@ require_once "../../../koneksi.php";
                                     <tbody>
                                         <?php
                                         $query = "
-                    SELECT 
-                        u.id, j.nama, u.plat_nomor, u.warna, u.tahun_beli,
-                        j.harga_sewa, j.jumlah_kursi, u.status, u.foto
-                    FROM unit_mobil u
-                    JOIN jenis_mobil j ON u.jenis_mobil_id = j.id
-                    ORDER BY u.id DESC
-                    ";
+                                        SELECT 
+                                            u.id, j.nama AS nama_mobil, u.plat_nomor, u.warna, u.tahun_beli,
+                                            u.transmisi, j.harga_sewa, j.jumlah_kursi, u.status, u.foto
+                                        FROM unit_mobil u
+                                        JOIN jenis_mobil j ON u.jenis_mobil_id = j.id
+                                        ORDER BY u.id DESC
+                                    ";
                                         $result = mysqli_query($db, $query);
                                         $no = 1;
                                         while ($row = mysqli_fetch_assoc($result)) :
@@ -70,15 +69,16 @@ require_once "../../../koneksi.php";
                                                         <em class="text-muted">Tidak ada foto</em>
                                                     <?php endif; ?>
                                                 </td>
-                                                <td><?= htmlspecialchars($row['nama']) ?></td>
+                                                <td><?= htmlspecialchars($row['nama_mobil']) ?></td>
                                                 <td><?= htmlspecialchars($row['plat_nomor']) ?></td>
                                                 <td><?= htmlspecialchars($row['warna']) ?></td>
                                                 <td><?= htmlspecialchars($row['tahun_beli']) ?></td>
+                                                <td><?= htmlspecialchars($row['transmisi']) ?></td>
                                                 <td>Rp <?= number_format($row['harga_sewa']) ?></td>
                                                 <td><?= $row['jumlah_kursi'] ?> Kursi</td>
                                                 <td><span class="badge badge-info"><?= ucfirst($row['status']) ?></span></td>
                                                 <td>
-                                                    <form action="./actions.php" method="post">
+                                                    <form action="./actions.php" method="post" enctype="multipart/form-data">
                                                         <input type="hidden" name="id" value="<?= $row['id'] ?>">
                                                         <a href="edit.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></a>
                                                         <button type="submit" name="delete" class="btn btn-sm btn-danger" onclick="return confirm('Hapus unit mobil ini?')">
