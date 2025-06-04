@@ -1,363 +1,251 @@
 <?php
-$base_url = '/proyek-1/';
+// Koneksi database
+$host = 'localhost';
+$user = 'root';
+$pass = ''; // sesuaikan jika pakai password
+$db = 'proyek-1';
+
+$conn = new mysqli($host, $user, $pass, $db);
+if ($conn->connect_error) {
+  die("Koneksi gagal: " . $conn->connect_error);
+}
+
+// Ambil data mobil tersedia dari join dua tabel
+$sql = "
+  SELECT 
+    u.plat_nomor AS plat,
+    j.nama AS name,
+    j.harga_sewa AS price12h,
+    j.jumlah_kursi AS seats,
+    u.transmisi,
+    u.warna,
+    u.foto
+  FROM unit_mobil u
+  JOIN jenis_mobil j ON u.jenis_mobil_id = j.id
+  WHERE u.status = 'tersedia'
+";
+$result = $conn->query($sql);
+
+$cars = [];
+if ($result && $result->num_rows > 0) {
+  while ($row = $result->fetch_assoc()) {
+    $cars[] = $row;
+  }
+}
+$conn->close();
 ?>
-<!doctype html>
-<html lang="en">
-
+<!DOCTYPE html>
+<html lang="id">
 <head>
-  <title>Sigma RentCar - Daftar Mobil</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <!-- Fonts & Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/fonts/icomoon/style.css">
-
-  <!-- Vendor CSS -->
-  <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/css/bootstrap.min.css">
-  <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/css/bootstrap-datepicker.css">
-  <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/css/jquery.fancybox.min.css">
-  <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/css/owl.carousel.min.css">
-  <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/css/owl.theme.default.min.css">
-  <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/fonts/flaticon/font/flaticon.css">
-  <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/css/aos.css">
-
-  <!-- Main CSS -->
-  <link rel="stylesheet" href="<?= $base_url ?>assets/template/listing/css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rental Mobil - Daftar Mobil</title>
+  <style>
+    /* Style sama seperti punyamu sebelumnya */
+    /* ... (style dari kode kamu di atas tetap dipakai tanpa perubahan besar) ... */
+    :root {
+      --color-primary-dark: #000957;
+      --color-primary: #344CB7;
+      --color-primary-light: #577BC1;
+      --color-accent: #FFEB00;
+      --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font-family);
+      background: #f9faff;
+      color: var(--color-primary-dark);
+    }
+    header {
+      background: var(--color-primary);
+      padding: 1.25rem 2rem;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header h1 { margin: 0; font-weight: 700; font-size: 1.8rem; }
+    main { padding: 2rem; max-width: 1200px; margin: 0 auto; }
+    .search-form {
+      background: white;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #ddd;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+    .search-form input,
+    .search-form select {
+      width: 100%;
+      padding: 0.5rem;
+      border: 2px solid var(--color-primary-light);
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    .car-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .car-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+      padding: 1.4rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .car-photo {
+      width: 100%;
+      height: 160px;
+      border-radius: 8px;
+      object-fit: cover;
+      margin-bottom: 12px;
+    }
+    .car-name { font-size: 1.3rem; font-weight: 700; }
+    .car-info { font-size: 0.9rem; margin: 5px 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .car-info span {
+      background: var(--color-primary-light);
+      color: white;
+      padding: 3px 8px;
+      border-radius: 5px;
+      font-size: 0.82rem;
+    }
+    .car-price { font-weight: bold; margin-top: 0.6rem; color: var(--color-primary); }
+    .rent-button {
+      margin-top: auto;
+      background: var(--color-accent);
+      color: var(--color-primary-dark);
+      border: none;
+      padding: 0.6rem;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .no-results { text-align: center; font-size: 1.2rem; color: #888; margin-top: 2rem; }
+  </style>
 </head>
-
 <body>
-  <br><br><br>
-
-  <!-- Listing Section -->
-  <div class="site-section bg-light">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-7">
-          <h2 class="section-heading"><strong>Car Listings</strong></h2>
-          <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-        </div>
-      </div>
-
-    <!-- PAGE 1 -->
-    <div id="page1" class="listing-page row">
-      <div class="col-md-6 col-lg-4 mb-4">
-        <!-- mobil 1 -->
-        <div class="listing d-block align-items-stretch">
-          <div class="listing-img h-100 mr-4">
-            <img src="<?= $base_url ?>assets/template/listing/images/car_6.jpg" alt="Image" class="img-fluid">
-          </div>
-          <div class="listing-contents h-100">
-            <h3>Mitsubishi Pajero</h3>
-            <div class="rent-price"><strong>$389.00</strong><span class="mx-1">/</span>day</div>
-            <div class="d-block d-md-flex mb-3 border-bottom pb-3">
-              <div class="listing-feature pr-4"><span class="caption">Luggage:</span><span class="number">8</span></div>
-              <div class="listing-feature pr-4"><span class="caption">Doors:</span><span class="number">4</span></div>
-              <div class="listing-feature pr-4"><span class="caption">Passenger:</span><span class="number">4</span></div>
-            </div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos eos at eum, voluptatem quibusdam.</p>
-            <p><a href="booking.php" class="btn btn-primary btn-sm">Rent Now</a></p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-4 mb-4">
-        <!-- mobil 2 -->
-        <div class="listing d-block align-items-stretch">
-          <div class="listing-img h-100 mr-4">
-            <img src="<?= $base_url ?>assets/template/listing/images/car_5.jpg" alt="Image" class="img-fluid">
-          </div>
-          <div class="listing-contents h-100">
-            <h3>Nissan Moco</h3>
-            <div class="rent-price"><strong>$389.00</strong><span class="mx-1">/</span>day</div>
-            <div class="d-block d-md-flex mb-3 border-bottom pb-3">
-              <div class="listing-feature pr-4"><span class="caption">Luggage:</span><span class="number">8</span></div>
-              <div class="listing-feature pr-4"><span class="caption">Doors:</span><span class="number">4</span></div>
-              <div class="listing-feature pr-4"><span class="caption">Passenger:</span><span class="number">4</span></div>
-            </div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos eos at eum, voluptatem quibusdam.</p>
-            <p><a href="#" class="btn btn-primary btn-sm">Rent Now</a></p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-4 mb-4">
-        <!-- mobil 3 -->
-        <div class="listing d-block align-items-stretch">
-          <div class="listing-img h-100 mr-4">
-            <img src="<?= $base_url ?>assets/template/listing/images/car_4.jpg" alt="Image" class="img-fluid">
-          </div>
-          <div class="listing-contents h-100">
-            <h3>Honda Fitta</h3>
-            <div class="rent-price"><strong>$389.00</strong><span class="mx-1">/</span>day</div>
-            <div class="d-block d-md-flex mb-3 border-bottom pb-3">
-              <div class="listing-feature pr-4"><span class="caption">Luggage:</span><span class="number">8</span></div>
-              <div class="listing-feature pr-4"><span class="caption">Doors:</span><span class="number">4</span></div>
-              <div class="listing-feature pr-4"><span class="caption">Passenger:</span><span class="number">4</span></div>
-            </div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos eos at eum, voluptatem quibusdam.</p>
-            <p><a href="#" class="btn btn-primary btn-sm">Rent Now</a></p>
-          </div>
-        </div>
-      </div>
+<header><h1>Rental Mobil</h1></header>
+<main>
+  <form class="search-form" id="searchForm">
+    <div>
+      <label for="pickupDate">Tanggal Pengambilan</label>
+      <input type="date" id="pickupDate" name="pickupDate" />
     </div>
-
-    <!-- PAGE 2 -->
-    <div id="page2" class="listing-page row" style="display:none;">
-      <div class="col-md-6 col-lg-4 mb-4">
-        <!-- mobil 4 -->
-        <div class="listing d-block align-items-stretch">
-          <div class="listing-img h-100 mr-4">
-            <img src="<?= $base_url ?>assets/template/listing/images/car_3.jpg" alt="Image" class="img-fluid">
-          </div>
-          <div class="listing-contents h-100">
-            <h3>Skoda Laura</h3>
-            <div class="rent-price"><strong>$389.00</strong><span class="mx-1">/</span>day</div>
-            <div class="d-block d-md-flex mb-3 border-bottom pb-3">
-              <div class="listing-feature pr-4"><span class="caption">Luggage:</span><span class="number">8</span></div>
-              <div class="listing-feature pr-4"><span class="caption">Doors:</span><span class="number">4</span></div>
-              <div class="listing-feature pr-4"><span class="caption">Passenger:</span><span class="number">4</span></div>
-            </div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos eos at eum, voluptatem quibusdam.</p>
-            <p><a href="#" class="btn btn-primary btn-sm">Rent Now</a></p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-4 mb-4">
-        <!-- mobil 5 -->
-        <div class="listing d-block align-items-stretch">
-          <div class="listing-img h-100 mr-4">
-            <img src="<?= $base_url ?>assets/template/listing/images/car_2.jpg" alt="Image" class="img-fluid">
-          </div>
-          <div class="listing-contents h-100">
-            <h3>Mazda LaPuta</h3>
-            <div class="rent-price"><strong>$389.00</strong><span class="mx-1">/</span>day</div>
-            <div class="d-block d-md-flex mb-3 border-bottom pb-3">
-              <div class="listing-feature pr-4"><span class="caption">Luggage:</span><span class="number">8</span></div>
-              <div class="listing-feature pr-4"><span class="caption">Doors:</span><span class="number">4</span></div>
-              <div class="listing-feature pr-4"><span class="caption">Passenger:</span><span class="number">4</span></div>
-            </div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos eos at eum, voluptatem quibusdam.</p>
-            <p><a href="#" class="btn btn-primary btn-sm">Rent Now</a></p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-4 mb-4">
-        <!-- mobil 6 -->
-        <div class="listing d-block align-items-stretch">
-          <div class="listing-img h-100 mr-4">
-            <img src="<?= $base_url ?>assets/template/listing/images/car_1.jpg" alt="Image" class="img-fluid">
-          </div>
-          <div class="listing-contents h-100">
-            <h3>Buick LaCrosse</h3>
-            <div class="rent-price"><strong>$389.00</strong><span class="mx-1">/</span>day</div>
-            <div class="d-block d-md-flex mb-3 border-bottom pb-3">
-              <div class="listing-feature pr-4"><span class="caption">Luggage:</span><span class="number">8</span></div>
-              <div class="listing-feature pr-4"><span class="caption">Doors:</span><span class="number">4</span></div>
-              <div class="listing-feature pr-4"><span class="caption">Passenger:</span><span class="number">4</span></div>
-            </div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos eos at eum, voluptatem quibusdam.</p>
-            <p><a href="#" class="btn btn-primary btn-sm">Rent Now</a></p>
-          </div>
-        </div>
-      </div>
+    <div>
+      <label for="returnDate">Tanggal Pengembalian</label>
+      <input type="date" id="returnDate" name="returnDate" />
     </div>
-
-    <!-- Pagination -->
-    <div class="row">
-      <div class="col-5">
-        <div class="custom-pagination">
-          <a href="#page1">1</a>
-          <a href="#page2">2</a>
-        </div>
-      </div>
+    <div>
+      <label for="unitName">Nama Unit</label>
+      <input type="text" id="unitName" placeholder="Cari nama unit..." />
     </div>
-  </div>
-</div>
+    <div>
+      <label for="transmission">Transmisi</label>
+      <select id="transmission">
+        <option value="">Semua</option>
+        <option value="Manual">Manual</option>
+        <option value="Matic">Matic</option>
+      </select>
+    </div>
+  </form>
+
+  <section class="car-list" id="carList">
+    <?php foreach ($cars as $car): ?>
+      <article class="car-card" data-name="<?= strtolower($car['name']) ?>" data-trans="<?= $car['transmisi'] ?>">
+        <img src="<?= htmlspecialchars($car['foto']) ?>" alt="<?= htmlspecialchars($car['name']) ?>" class="car-photo" />
+        <h2 class="car-name"><?= htmlspecialchars($car['name']) ?> (<?= htmlspecialchars($car['plat']) ?>)</h2>
+        <div class="car-info">
+          <span><?= $car['transmisi'] ?></span>
+          <span><?= $car['seats'] ?> Kursi</span>
+          <span><?= $car['warna'] ?></span>
+        </div>
+        <div class="car-price">Rp <?= number_format($car['price12h'], 0, ',', '.') ?> / 12 jam</div>
+        <button class="rent-button">Rental Sekarang</button>
+      </article>
+    <?php endforeach; ?>
+  </section>
+
+  <p class="no-results" id="noResults" style="display:none;">Tidak ada mobil yang sesuai kriteria pencarian.</p>
+</main>
 
 <script>
-  // Fungsi pagination klik link
-  document.querySelectorAll('.custom-pagination a').forEach(link => {
-    link.addEventListener('click', function(e) {
-      e.preventDefault(); // cegah default scroll ke anchor
+  const pickupDate = document.getElementById("pickupDate");
+  const returnDate = document.getElementById("returnDate");
+  const nameInput = document.getElementById("unitName");
+  const transmissionSelect = document.getElementById("transmission");
+  const carCards = document.querySelectorAll(".car-card");
+  const noResults = document.getElementById("noResults");
 
-      const targetId = this.getAttribute('href').substring(1); // dapatkan id tanpa #
+  function setMinDates() {
+    const today = new Date().toISOString().split("T")[0];
+    pickupDate.min = today;
+    returnDate.min = today;
+  }
 
-      // sembunyikan semua halaman listing
-      document.querySelectorAll('.listing-page').forEach(page => {
-        page.style.display = 'none';
-      });
+  function updateReturnMinDate() {
+    if (pickupDate.value) {
+      returnDate.min = pickupDate.value;
+      if (returnDate.value < pickupDate.value) {
+        returnDate.value = pickupDate.value;
+      }
+    }
+  }
 
-      // tampilkan halaman yang dipilih
-      document.getElementById(targetId).style.display = 'flex'; // karena .row pakai flex
+  function filterCars() {
+    const name = nameInput.value.trim().toLowerCase();
+    const trans = transmissionSelect.value;
+    let visible = 0;
 
-      // scroll halus ke atas container listing
-      document.getElementById(targetId).scrollIntoView({behavior: 'smooth'});
+    carCards.forEach(card => {
+      const cardName = card.dataset.name;
+      const cardTrans = card.dataset.trans;
+
+      const matchName = name === "" || cardName.includes(name);
+      const matchTrans = trans === "" || cardTrans === trans;
+
+      if (matchName && matchTrans) {
+        card.style.display = "flex";
+        visible++;
+      } else {
+        card.style.display = "none";
+      }
     });
+
+    noResults.style.display = visible === 0 ? "block" : "none";
+  }
+
+  // Event setup
+  setMinDates();
+  pickupDate.addEventListener("change", () => {
+    updateReturnMinDate();
+    filterCars();
   });
+  returnDate.addEventListener("change", filterCars);
+  nameInput.addEventListener("input", filterCars);
+  transmissionSelect.addEventListener("change", filterCars);
+
+  // Tombol Rental Sekarang
+// Tombol Rental Sekarang
+document.querySelectorAll(".rent-button").forEach((btn, i) => {
+  btn.addEventListener("click", () => {
+    const name = carCards[i].querySelector(".car-name").textContent;
+    const pick = pickupDate.value || "";
+    const ret = returnDate.value || "";
+
+    const url = new URL("http://localhost/proyek-1/pages/customer/booking.php");
+    url.searchParams.set("mobil", name);
+    url.searchParams.set("ambil", pick);
+    url.searchParams.set("kembali", ret);
+    window.location.href = url.toString();
+
+  });
+});
+
 </script>
-
-    <div class="site-section">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-7">
-            <h2 class="section-heading"><strong>Testimonials</strong></h2>
-            <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>    
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-4 mb-4 mb-lg-0">
-            <div class="testimonial-2">
-              <blockquote class="mb-4">
-                <p>"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, deserunt eveniet veniam. Ipsam, nam, voluptatum"</p>
-              </blockquote>
-              <div class="d-flex v-card align-items-center">
-                <img src="<?= $base_url ?>assets/template/listing/images/person_1.jpg" alt="Image" class="img-fluid mr-3">
-                <div class="author-name">
-                  <span class="d-block">Mike Fisher</span>
-                  <span>Owner, Ford</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 mb-4 mb-lg-0">
-            <div class="testimonial-2">
-              <blockquote class="mb-4">
-                <p>"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, deserunt eveniet veniam. Ipsam, nam, voluptatum"</p>
-              </blockquote>
-              <div class="d-flex v-card align-items-center">
-                <img src="<?= $base_url ?>assets/template/listing/images/person_2.jpg" alt="Image" class="img-fluid mr-3">
-                <div class="author-name">
-                  <span class="d-block">Jean Stanley</span>
-                  <span>Traveler</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 mb-4 mb-lg-0">
-            <div class="testimonial-2">
-              <blockquote class="mb-4">
-                <p>"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, deserunt eveniet veniam. Ipsam, nam, voluptatum"</p>
-              </blockquote>
-              <div class="d-flex v-card align-items-center">
-                <img src="<?= $base_url ?>assets/template/listing/images/person_3.jpg" alt="Image" class="img-fluid mr-3">
-                <div class="author-name">
-                  <span class="d-block">Katie Rose</span>
-                  <span >Customer</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="site-section bg-primary py-5">
-      <div class="container">
-        <div class="row align-items-center">
-          <div class="col-lg-7 mb-4 mb-md-0">
-            <h2 class="mb-0 text-white">What are you waiting for?</h2>
-            <p class="mb-0 opa-7">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati, laboriosam.</p>
-          </div>
-          <div class="col-lg-5 text-md-right">
-            <a href="#" class="btn btn-primary btn-white">Rent a car now</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-      
-      <footer class="site-footer">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-3">
-              <h2 class="footer-heading mb-4">About Us</h2>
-              <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. </p>
-              <ul class="list-unstyled social">
-                <li><a href="#"><span class="icon-facebook"></span></a></li>
-                <li><a href="#"><span class="icon-instagram"></span></a></li>
-                <li><a href="#"><span class="icon-twitter"></span></a></li>
-                <li><a href="#"><span class="icon-linkedin"></span></a></li>
-              </ul>
-            </div>
-            <div class="col-lg-8 ml-auto">
-              <div class="row">
-                <div class="col-lg-3">
-                  <h2 class="footer-heading mb-4">Quick Links</h2>
-                  <ul class="list-unstyled">
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Testimonials</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Privacy</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                  </ul>
-                </div>
-                <div class="col-lg-3">
-                  <h2 class="footer-heading mb-4">Resources</h2>
-                  <ul class="list-unstyled">
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Testimonials</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Privacy</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                  </ul>
-                </div>
-                <div class="col-lg-3">
-                  <h2 class="footer-heading mb-4">Support</h2>
-                  <ul class="list-unstyled">
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Testimonials</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Privacy</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                  </ul>
-                </div>
-                <div class="col-lg-3">
-                  <h2 class="footer-heading mb-4">Company</h2>
-                  <ul class="list-unstyled">
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Testimonials</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Privacy</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row pt-5 mt-5 text-center">
-            <div class="col-md-12">
-              <div class="border-top pt-5">
-                <p>
-              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-              Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a>
-              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-              </p>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </footer>
-
-    </div>
-
-    <script src="<?= $base_url ?>/template/listing/js/jquery-3.3.1.min.js"></script>
-    <script src="<?= $base_url ?>assets/template/listing/js/popper.min.js"></script>
-    <script src="<?= $base_url ?>assets/template/listing/js/bootstrap.min.js"></script>
-    <script src="<?= $base_url ?>assets/template/listing/js/owl.carousel.min.js"></script>
-    <script src="<?= $base_url ?>assets/template/listing/js/jquery.sticky.js"></script>
-    <script src="<?= $base_url ?>assets/template/listing/js/jquery.waypoints.min.js"></script>
-    <script src="<?= $base_url ?>assets/template/listing/js/jquery.animateNumber.min.js"></script>
-    <script src="<?= $base_url ?>assets/template/listing/js/jquery.fancybox.min.js"></script>
-    <script src="<?= $base_url ?>assets/template/listing/js/jquery.easing.1.3.js"></script>
-    <script src="<?= $base_url ?>assets/template/listing/js/bootstrap-datepicker.min.js"></script>
-    <script src="<?= $base_url ?>assets/template/listing/js/aos.js"></script>
-
-    <script src="<?= $base_url ?>assets/template/listing/js/main.js"></script>
-
-  </body>
-
+</body>
 </html>

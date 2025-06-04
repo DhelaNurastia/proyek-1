@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Rental Mobil - Daftar Mobil</title>
+<style>
+  :root {
+    --color-primary-dark: #000957;
+    --color-primary: #344CB7;
+    --color-primary-light: #577BC1;
+    --color-accent: #FFEB00;
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: var(--font-family);
+    background: #f9faff;
+    color: var(--color-primary-dark);
+  }
+  header {
+    background: var(--color-primary);
+    padding: 1.25rem 2rem;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 8px rgb(0 0 0 / 0.15);
+  }
+  header h1 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+  }
+  main {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .search-form {
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #ddd;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+  }
+  .search-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    color: var(--color-primary-dark);
+  }
+  .search-form input[type="text"],
+  .search-form select,
+  .search-form input[type="date"] {
+    width: 100%;
+    padding: 0.5rem 0.7rem;
+    border: 2px solid var(--color-primary-light);
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  .search-form input[type="text"]:focus,
+  .search-form select:focus,
+  .search-form input[type="date"]:focus {
+    border-color: var(--color-accent);
+    outline: none;
+  }
+  .car-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .car-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgb(0 0 0 / 0.12);
+    padding: 1.4rem 1.6rem;
+    transition: transform 0.2s ease;
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .car-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgb(0 0 0 / 0.18);
+  }
+  .car-photo {
+    width: 100%;
+    height: 160px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-bottom: 12px;
+  }
+  .car-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    color: var(--color-primary-dark);
+  }
+  .car-info {
+    font-size: 0.92rem;
+    margin-bottom: 0.2rem;
+    color: #444;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .car-info span {
+    display: inline-block;
+    margin-top: 6px;
+    background: var(--color-primary-light);
+    color: white;
+    border-radius: 5px;
+    padding: 3px 8px;
+    font-weight: 600;
+    font-size: 0.82rem;
+  }
+  .car-price {
+    margin-top: 0.6rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+  .rent-button {
+    margin-top: auto;
+    background-color: var(--color-accent);
+    color: var(--color-primary-dark);
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    align-self: center;
+    margin-top: 1rem;
+    width: 100%;
+    max-width: 160px;
+  }
+  .rent-button:hover {
+    background-color: #e6d800;
+  }
+  .no-results {
+    text-align: center;
+    color: var(--color-primary);
+    font-size: 1.2rem;
+    margin-top: 3rem;
+  }
+  @media (max-width: 600px) {
+    header h1 {
+      font-size: 1.4rem;
+    }
+    .car-card {
+      padding: 1rem 1.2rem;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Rental Mobil</h1>
+</header>
+<main>
+  <form class="search-form" id="searchForm" autocomplete="off">
+    <div>
+      <label for="pickupDate">Tanggal Pengambilan</label>
+      <input type="date" id="pickupDate" name="pickupDate" />
+    </div>
+    <div>
+      <label for="returnDate">Tanggal Pengembalian</label>
+      <input type="date" id="returnDate" name="returnDate" />
+    </div>
+    <div>
+      <label for="unitName">Nama Unit</label>
+      <input type="text" id="unitName" name="unitName" placeholder="Cari nama unit..." />
+    </div>
+    <div>
+      <label for="transmission">Transmisi</label>
+      <select id="transmission" name="transmission">
+        <option value="">Semua</option>
+        <option value="Manual">Manual</option>
+        <option value="Otomatis">Otomatis</option>
+      </select>
+    </div>
+  </form>
+
+  <section class="car-list" id="carList">
+    <!-- Car cards will be inserted here dynamically -->
+  </section>
+
+  <p class="no-results" id="noResults" style="display:none;">Tidak ada mobil yang sesuai kriteria pencarian.</p>
+</main>
+
+<!-- Car data as JSON embedded to simulate database -->
+<script id="carData" type="application/json">
+[
+  {"name":"Toyota Avanza","price12h":300000,"transmission":"Manual","seats":7,"color":"Putih","photo":"https://cdn.uploadkit.com/tf_0d0e0428590b4e7d833d7961ee13ef76.png"},
+  {"name":"Honda Jazz","price12h":450000,"transmission":"Otomatis","seats":5,"color":"Hitam","photo":"https://cdn.uploadkit.com/tf_38bf0ac481a44ea4a79adcc0e56b37cf.png"},
+  {"name":"Suzuki Ertiga","price12h":350000,"transmission":"Manual","seats":7,"color":"Silver","photo":"https://cdn.uploadkit.com/tf_cb10985af7f54267940c0ba067c48827.png"},
+  {"name":"Daihatsu Xenia","price12h":300000,"transmission":"Manual","seats":7,"color":"Abu-abu","photo":"https://cdn.uploadkit.com/tf_731dd88757104604a92bc851c5b37031.png"},
+  {"name":"Mitsubishi Pajero","price12h":800000,"transmission":"Otomatis","seats":7,"color":"Putih","photo":"https://cdn.uploadkit.com/tf_9e8d33f3fdf74cbb9635d6e78b9e9f0e.png"},
+  {"name":"Toyota Innova","price12h":600000,"transmission":"Otomatis","seats":7,"color":"Hitam","photo":"https://cdn.uploadkit.com/tf_774bd5dcd9f14736a36f564638971cb9.png"},
+  {"name":"BMW X5","price12h":1500000,"transmission":"Otomatis","seats":5,"color":"Putih","photo":"https://cdn.uploadkit.com/tf_7464b357937748118e3ecdc95315ba29.png"},
+  {"name":"Mercedes Benz C-Class","price12h":1800000,"transmission":"Otomatis","seats":5,"color":"Hitam","photo":"https://cdn.uploadkit.com/tf_9d2d7eb158184fc68842c7da4d2a9538.png"},
+  {"name":"Hyundai Creta","price12h":500000,"transmission":"Manual","seats":5,"color":"Merah","photo":"https://cdn.uploadkit.com/tf_aea72a70262b414b8b926849d3cc6b7f.png"},
+  {"name":"Tesla Model 3","price12h":2000000,"transmission":"Otomatis","seats":5,"color":"Putih","photo":"https://cdn.uploadkit.com/tf_8c09b7c30a9e48d6a3caa740e2e3b416.png"},
+  {"name":"Nissan Juke","price12h":550000,"transmission":"Manual","seats":5,"color":"Biru","photo":"https://cdn.uploadkit.com/tf_4a911e7c99464e30bb6afb3eae5a9ed7.png"},
+  {"name":"Ford Everest","price12h":700000,"transmission":"Otomatis","seats":7,"color":"Abu-abu","photo":"https://cdn.uploadkit.com/tf_9f7a8c627b594c5198f9aee8d17b450c.png"},
+  {"name":"Isuzu Panther","price12h":300000,"transmission":"Manual","seats":7,"color":"Hitam","photo":"https://cdn.uploadkit.com/tf_f9898d8a8a5641468a2e24d9e26b1a9a.png"},
+  {"name":"Kia Rio","price12h":400000,"transmission":"Otomatis","seats":5,"color":"Putih","photo":"https://cdn.uploadkit.com/tf_6b71a884011c4fe4b9a700a9257dd21b.png"},
+  {"name":"Audi A4","price12h":1600000,"transmission":"Otomatis","seats":5,"color":"Silver","photo":"https://cdn.uploadkit.com/tf_3d5e2d3aa5734ecbbbe9d45f397f1f0a.png"},
+  {"name":"Volkswagen Polo","price12h":450000,"transmission":"Manual","seats":5,"color":"Biru","photo":"https://cdn.uploadkit.com/tf_48c6baa9eb254df8bfc43d6eea0e0df0.png"},
+  {"name":"Chevrolet Spin","price12h":280000,"transmission":"Manual","seats":7,"color":"Merah","photo":"https://cdn.uploadkit.com/tf_70284e3d86354c3292f3a38e31f6230c.png"},
+  {"name":"Mazda CX-5","price12h":750000,"transmission":"Otomatis","seats":5,"color":"Putih","photo":"https://cdn.uploadkit.com/tf_e35a8d911aa94343bfce92abf5f49a00.png"},
+  {"name":"Honda CR-V","price12h":700000,"transmission":"Otomatis","seats":5,"color":"Hitam","photo":"https://cdn.uploadkit.com/tf_a756b19f1ec94a459290fbaec70a6d0f.png"},
+  {"name":"Toyota Yaris","price12h":400000,"transmission":"Manual","seats":5,"color":"Merah","photo":"https://cdn.uploadkit.com/tf_6ca812b33ad341b4b2e79ef57e7e3f18.png"},
+  {"name":"Lexus RX","price12h":1900000,"transmission":"Otomatis","seats":5,"color":"Silver","photo":"https://cdn.uploadkit.com/tf_042820103c7645bb82aa0b0cf90f4f85.png"}
+]
+</script>
+
+<script>
+  // Parse car data from embedded JSON simulating database fetch
+  const cars = JSON.parse(document.getElementById('carData').textContent);
+
+  // Function to render car cards based on filtered array
+  function renderCars(carArray) {
+    const carList = document.getElementById("carList");
+    carList.innerHTML = "";
+    if (carArray.length === 0) {
+      document.getElementById("noResults").style.display = "block";
+      return;
+    } else {
+      document.getElementById("noResults").style.display = "none";
+    }
+    carArray.forEach(car => {
+      const card = document.createElement("article");
+      card.className = "car-card";
+      card.innerHTML = `
+        <img src="${car.photo}" alt="${car.name}" class="car-photo" />
+        <h2 class="car-name">${car.name}</h2>
+        <div class="car-info" title="Transmisi">${car.transmission}</div>
+        <div class="car-info"><span>Seats: ${car.seats}</span><span>Warna: ${car.color}</span></div>
+        <div class="car-price">Rp ${car.price12h.toLocaleString()} / 12 jam</div>
+        <button class="rent-button" aria-label="Rental sekarang ${car.name}">Rental Sekarang</button>
+      `;
+      carList.appendChild(card);
+
+      // Add click event listener to rent button
+      const rentButton = card.querySelector(".rent-button");
+      rentButton.addEventListener("click", () => {
+        alert(`Anda memilih untuk rental mobil: ${car.name}`);
+        // Additional rental logic can be implemented here
+      });
+    });
+  }
+
+  // Set minimum date to today's date for date inputs
+  function setMinDates() {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    const minDate = `${yyyy}-${mm}-${dd}`;
+
+    const pickupDate = document.getElementById("pickupDate");
+    const returnDate = document.getElementById("returnDate");
+
+    pickupDate.min = minDate;
+    returnDate.min = minDate;
+  }
+
+  // Update returnDate min when pickupDate changes
+  function updateReturnMinDate() {
+    const pickupDate = document.getElementById("pickupDate");
+    const returnDate = document.getElementById("returnDate");
+    if (pickupDate.value) {
+      returnDate.min = pickupDate.value;
+      // If return date is before new min, reset it
+      if (returnDate.value && returnDate.value < pickupDate.value) {
+        returnDate.value = pickupDate.value;
+      }
+    } else {
+      // Reset return min to today if no pickup selected
+      setMinDates();
+    }
+  }
+
+  // Filter cars based on form inputs
+  function filterCars() {
+    let filtered = cars;
+
+    // Date inputs currently do not filter availability due to lack of backend data
+
+    // Filter by unit name
+    const nameFilter = document.getElementById("unitName").value.trim().toLowerCase();
+    if (nameFilter) {
+      filtered = filtered.filter(car => car.name.toLowerCase().includes(nameFilter));
+    }
+
+    // Filter by transmission
+    const transmissionFilter = document.getElementById("transmission").value;
+    if (transmissionFilter) {
+      filtered = filtered.filter(car => car.transmission === transmissionFilter);
+    }
+
+    renderCars(filtered);
+  }
+
+  // Initial setup: set min dates on page load
+  setMinDates();
+
+  // Initial render for all cars
+  renderCars(cars);
+
+  // Event listeners to handle filtering and min date logic
+  document.getElementById("pickupDate").addEventListener("change", () => {
+    updateReturnMinDate();
+    filterCars();
+  });
+  document.getElementById("returnDate").addEventListener("change", filterCars);
+  document.getElementById("unitName").addEventListener("input", filterCars);
+  document.getElementById("transmission").addEventListener("change", filterCars);
+</script>
+</body>
+</html>
