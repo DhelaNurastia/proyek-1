@@ -13,7 +13,7 @@ require_once "../../../koneksi.php";
     <link href="../../../assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
 
-<body id="page-top">
+<body id="page-top"> 
     <div id="wrapper">
         <?php include '../../../components/sidebar.php'; ?>
         <div id="content-wrapper" class="d-flex flex-column">
