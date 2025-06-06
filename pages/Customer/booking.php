@@ -242,7 +242,7 @@ $base_url = '/proyek-1/';
         <div class="form-row">
           <div class="form-group">
             <label for="phone">Phone Number *</label>
-            <input type="tel" id="phone" name="phone" placeholder="+1234567890" pattern="\\+?\\d{7,15}" required />
+            <input type="tel" id="phone" name="phone" placeholder="+62987546" pattern="\\+?\\d{7,15}" required />
             <div class="error" id="errorPhone">Please enter a valid phone number.</div>
           </div>
           <div class="form-group">

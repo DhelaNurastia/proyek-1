@@ -10,14 +10,12 @@
 
   <!-- Favicons -->
   <link href="assets/image/favicon.jpeg" rel="icon">
-  <link href="assets/template/home/Strategy/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Lato:wght@400;700&family=Montserrat:wght@600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <!-- Vendor CSS Files -->
   <link href="assets/template/home/Strategy/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -28,6 +26,14 @@
 
   <!-- Main CSS File -->
   <link href="assets/template/home/Strategy/assets/css/main.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Strategy
+  * Template URL: https://bootstrapmade.com/strategy-bootstrap-agency-template/
+  * Updated: May 09 2025 with Bootstrap v5.3.6
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
 </head>
 
 <body class="index-page">
@@ -38,26 +44,28 @@
       <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <!-- <img src="assets/img/logo.webp" alt=""> -->
-        <h1 class="sitename"><b>Sigma RentCar</b></h1>
-        
+          <img src="assets/image/logo.png" alt="">
       </a>
+
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="index.php" class="active">Home</a></li>
-          <li><a href="about.php">Tentang Kami</a></li>
-          <li><a href="listing.php">Daftar Mobil</a></li>
-          <li><a href="#galeri">Galeri</a></li>
-          <li><a href="#faq">FAQ</a></li>
-          <li class="dropdown"><a href="#"><span>Autentikasi</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+          <li><a href="#hero" class="active">Home</a></li>
+          <li><a href="#about">Tentang Kami</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a href="#team">Team</a></li>
+          <li class="dropdown"><a href="#"><span>Autentifikasi</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="pages/Halaman_Register&Login/register.php">Daftar</a></li>
               <li><a href="pages/Halaman_Register&Login/login.php">Masuk</a></li>
             </ul>
           </li>
-          <li><a href="#contact">Kontak Kami</a></li>
+          <li><a href="#contact">Contact</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
+
+      <a class="btn-getstarted" href="#about">Get Started</a>
 
     </div>
   </header>
@@ -75,7 +83,7 @@
               </div>
 
               <div class="main-heading">
-                <h2><b>Drive Your Journey With <br>Sigma RentCar</b></h2>
+                <h2>Drive Your Journey With <br>Sigma RentCar</h2>
               </div>
 
               <div class="divider"></div>
@@ -85,7 +93,7 @@
               </div>
 
               <div class="cta-button">
-                <a href="listing.php" class="btn">
+                <a href="#services" class="btn">
                   <span>Pesan Sekarang</span>
                   <i class="bi bi-arrow-right"></i>
                 </a>
@@ -103,7 +111,7 @@
     </section><!-- /Hero Section -->
 
     <!-- About Section -->
-    <section id="tentang kami" class="tentang kami section">
+    <section id="about" class="about section">
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
@@ -116,37 +124,261 @@
         <div class="row gx-5 align-items-center">
           <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200">
             <div class="about-image position-relative">
-              <img src="assets/image/About/road.jpeg" class="img-fluid rounded-4 shadow-sm" alt="About Image" loading="lazy">
+              <img src="assets/template/home/Strategy/assets/img/about/about-portrait-1.webp" class="img-fluid rounded-4 shadow-sm" alt="About Image" loading="lazy">
               <div class="experience-badge">
+                <span class="years">20+</span>
+                <span class="text">Years of Expertise</span>
               </div>
             </div>
           </div>
 
           <div class="col-lg-6 mt-4 mt-lg-0" data-aos="fade-left" data-aos-delay="300">
             <div class="about-content">
-              <h1 style="font-family: 'Montserrat'"><b>Sigma RentCar siap menemani perjalanan Anda</b></h1>
-              <p style="text-align: justify; font-family: 'Lato'">Sigma RentCar adalah solusi rental mobil terpercaya untuk berbagai kebutuhan anda. Dari perjalanan pribadi, liburan keluarga, hingga urusan bisnis. Kami hadir dengan komitmen menghadirkan layanan yang mudah, nyaman, dan dapat diandalkan.</p>
-              <ul style="list-style: none; padding: 0;">
-                <li style="margin-bottom: 15px"><h4><i class="fas fa-car" style= "margin-right: 13px; color: white;"></i>Armada lengkap dan terawat</h4></li>
-                <li style="margin-bottom: 15px"><h4><i class="fas fa-dollar-sign" style= "margin-right: 19px; color: white;"></i>Harga transparan tanpa biaya tersembunyi</h4></li>
-                <li style="margin-bottom: 15px"><h4><i class="fas fa-clock" style= "margin-right: 13px; color: white;"></i>Layanan 24 jam</h4></li>
-              </ul>
+              <h2>Meningkatkan Pengalaman Perjalanan Anda Melalui Inovasi</h2>
+              <p class="lead">Kami berkomitmen menyediakan layanan rental mobil yang mudah, fleksibel, dan terpercaya untuk memenuhi kebutuhan transportasi Anda.</p>
+              <p>Dengan perpaduan teknologi canggih dan pelayanan terbaik, kami membantu pelanggan menikmati perjalanan yang aman, nyaman, dan efisien di tengah dunia yang terus berubah.</p>
+
+              <div class="row g-4 mt-3">
+                <div class="col-md-6" data-aos="zoom-in" data-aos-delay="400">
+                  <div class="feature-item">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <h5>Dukungan Tim Profesional</h5>
+                    <p>Tim kami yang berpengalaman siap memberikan layanan personal dan solusi terbaik untuk setiap kebutuhan perjalanan Anda.</p>
+                  </div>
+                </div>
+                <div class="col-md-6" data-aos="zoom-in" data-aos-delay="450">
+                  <div class="feature-item">
+                    <i class="bi bi-lightbulb-fill"></i>
+                    <h5>Pendekatan Inovatif</h5>
+                    <p>Kami menerapkan metode terbaru untuk menghadirkan pengalaman sewa mobil yang praktis dan memuaskan bagi setiap pelanggan.</p>
+                  </div>
+                </div>
+              </div>
+
+              <a href="#" class="btn btn-primary mt-4">Explore Our Services</a>
             </div>
           </div>
         </div>
 
-    <!-- Portfolio Section -->
-    <section id="galeri" class="galeri section">
+    <!-- Services Section -->
+    <section id="services" class="services section">
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
-        <h2>Galeri</h2>
-        <div><span>Galeri Kami</span></div>
+        <h2>Layanan</h2>
+        <div><span>Cek Layanan</span> <span class="description-title">Kami</span></div>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="service-header">
+          <div class="row align-items-center">
+            <div class="col-lg-8 col-md-12">
+              <div class="service-intro">
+                <h2 class="service-heading">
+                  <div>Solusi Inovatif</div>
+                  <div><span>untuk Kebutuhan Transportasi Anda</span></div>
+                </h2>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-12">
+              <div class="service-summary">
+                <p>Kami menggabungkan strategi visioner, pendekatan kreatif, dan teknologi terkini untuk memberikan pengalaman sewa mobil yang luar biasa, mendorong kenyamanan pelanggan, dan menjangkau pasar yang lebih luas.</p>
+                <a href="services.html" class="service-btn">
+                  Lihat Semua Layanan
+                  <i class="bi bi-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="service-card position-relative z-1">
+              <div class="service-icon">
+                <i class="bi bi-building"></i>
+              </div>
+              <h3>
+                <a href="service-details.html">
+                  Kontrak <span>Perusahaan</span>
+                </a>
+              </h3>
+              <p>Kami menawarkan paket kontrak khusus untuk perusahaan dengan berbagai keuntungan dan layanan ekslusif.</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="service-card position-relative z-1">
+              <div class="service-icon">
+                <i class="bi bi-airplane"></i>
+              </div>
+              <h3>
+                <a href="service-details.html">
+                  Layanan Transportasi<span>Bandara</span>
+                </a>
+              </h3>
+              <p>Kami menyediakan layanan transportasi yang handal dan tepat waktu dari dan ke bandara, demi kenyamanan perjalanan Anda.</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="service-card position-relative z-1">
+              <div class="service-icon">
+                <i class="bi bi-arrow-up"></i>
+              </div>
+              <h3>
+                <a href="service-details.html">
+                    Sewa<span>Satu Arah</span>
+                </a>
+              </h3>
+              <p>Kami menyediakan layanan sewa mobil satu arah untuk memudahkan perjalanan Anda tanpa harus kembali ke titik awal.</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="service-card position-relative z-1">
+              <div class="service-icon">
+                <i class="bi bi-house"></i>
+              </div>
+              <h3>
+                <a href="service-details.html">
+                Layanan Penjemputan<span>di Rumah</span>
+                </a>
+              </h3>
+              <p>Nikmati kenyamanan layanan penjemputan langsung dari rumah Anda. Kami siap memberikan layanan terbaik dengan kenyamanan maksimal.</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="service-card position-relative z-1">
+              <div class="service-icon">
+                <i class="bi bi-gem"></i>
+              </div>
+              <h3>
+                <a href="service-details.html">
+                Pendekatan <span>Profesional</span>
+                </a>
+              </h3>
+              <p>Kami mengundang Anda untuk merasakan layanan kami yang inovatif dan terpercaya. Kami menyediakan layanan yang siap memenuhi kebutuhan Anda.</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="service-card position-relative z-1">
+              <div class="service-icon">
+                <i class="bi bi-code-slash"></i>
+              </div>
+              <h3>
+                <a href="service-details.html">
+                  Solusi Transportasi<span>Anda</span>
+                </a>
+              </h3>
+              <p>Tidak ada yang lebih profesional dan handal dalam melayani kebutuhan transportasi Anda. Tim kami siap memberikan pengalaman terbaik untuk perjalanan Anda.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /Services Section -->
+
+    <!-- Steps Section -->
+    <section id="services" class="steps section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Tahapan</h2>
+        <div><span>Tahapan</span> <span class="description-title">Sewa Mobil</span></div>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="steps-wrapper">
+
+          <div class="step-item" data-aos="fade-right" data-aos-delay="200">
+            <div class="step-content">
+              <div class="step-icon">
+                <i class="bi bi-lightbulb"></i>
+              </div>
+              <div class="step-info">
+                <span class="step-number">Langkah Pertama</span>
+                <h3>Masuk atau Daftar Akun</h3>
+                <p>Mulailah dengan login ke akun Anda. Jika belum memiliki akun, silakan daftar terlebih dahulu untuk menikmati kemudahan layanan kami.</p>
+              </div>
+            </div>
+          </div><!-- End Step Item -->
+
+          <div class="step-item" data-aos="fade-left" data-aos-delay="300">
+            <div class="step-content">
+              <div class="step-icon">
+                <i class="bi bi-gear"></i>
+              </div>
+              <div class="step-info">
+                <span class="step-number">Langkah Ke-dua</span>
+                <h3>Pilih Mobil Sesuai Kebutuhan</h3>
+                <p>Jelajahi berbagai pilihan mobil yang tersedia. Pilih kendaraan yang sesuai dengan kebutuhan dan preferensi perjalanan Anda.</p>
+              </div>
+            </div>
+          </div><!-- End Step Item -->
+
+          <div class="step-item" data-aos="fade-right" data-aos-delay="400">
+            <div class="step-content">
+              <div class="step-icon">
+                <i class="bi bi-bar-chart"></i>
+              </div>
+              <div class="step-info">
+                <span class="step-number">Langkah Ke-tiga</span>
+                <h3>Isi Formulir Pemesanan</h3>
+                <p>Lengkapi formulir yang telah kami sediakan dengan detail perjalanan Anda, seperti tanggal sewa, lokasi penjemputan, dan informasi lainnya.</p>
+              </div>
+            </div>
+          </div><!-- End Step Item -->
+
+          <div class="step-item" data-aos="fade-left" data-aos-delay="500">
+            <div class="step-content">
+              <div class="step-icon">
+                <i class="bi bi-check2-circle"></i>
+              </div>
+              <div class="step-info">
+                <span class="step-number">Langkah Ke-empat</span>
+                <h3>Lakukan Pembayaran & Ambil Mobil</h3>
+                <p>Lakukan pembayaran sesuai harga yang tertera. Setelah itu, mobil siap diambil di lokasi yang telah disepakati.</p>
+              </div>
+            </div>
+          </div><!-- End Step Item -->
+
+        </div>
+
+      </div>
+
+    </section><!-- /Steps Section -->
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Portfolio</h2>
+        <div><span>Check Our</span> <span class="description-title">Portfolio</span></div>
       </div><!-- End Section Title -->
 
       <div class="container-fluid" data-aos="fade-up" data-aos-delay="100">
 
         <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+
+          <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="200">
+            <li data-filter="*" class="filter-active">
+              <i class="bi bi-grid-3x3"></i> All Projects
+            </li>
+            <li data-filter=".filter-ui">
+              <i class="bi bi-phone"></i> UI/UX
+            </li>
+            <li data-filter=".filter-development">
+              <i class="bi bi-code-slash"></i> Development
+            </li>
+            <li data-filter=".filter-photography">
+              <i class="bi bi-camera"></i> Photography
+            </li>
+            <li data-filter=".filter-marketing">
+              <i class="bi bi-graph-up"></i> Marketing
+            </li>
+          </ul>
 
           <div class="row g-4 isotope-container" data-aos="fade-up" data-aos-delay="300">
 
@@ -163,6 +395,7 @@
                           <i class="bi bi-arrows-angle-expand"></i>
                         </a>
                         <a href="portfolio-details.html">
+                          <i class="bi bi-arrow-right"></i>
                         </a>
                       </div>
                     </div>
@@ -184,6 +417,7 @@
                           <i class="bi bi-arrows-angle-expand"></i>
                         </a>
                         <a href="portfolio-details.html">
+                          <i class="bi bi-arrow-right"></i>
                         </a>
                       </div>
                     </div>
@@ -205,6 +439,7 @@
                           <i class="bi bi-arrows-angle-expand"></i>
                         </a>
                         <a href="portfolio-details.html">
+                          <i class="bi bi-arrow-right"></i>
                         </a>
                       </div>
                     </div>
@@ -226,6 +461,7 @@
                           <i class="bi bi-arrows-angle-expand"></i>
                         </a>
                         <a href="portfolio-details.html">
+                          <i class="bi bi-arrow-right"></i>
                         </a>
                       </div>
                     </div>
@@ -247,6 +483,7 @@
                           <i class="bi bi-arrows-angle-expand"></i>
                         </a>
                         <a href="portfolio-details.html">
+                          <i class="bi bi-arrow-right"></i>
                         </a>
                       </div>
                     </div>
@@ -268,6 +505,7 @@
                           <i class="bi bi-arrows-angle-expand"></i>
                         </a>
                         <a href="portfolio-details.html">
+                          <i class="bi bi-arrow-right"></i>
                         </a>
                       </div>
                     </div>
@@ -289,6 +527,7 @@
                           <i class="bi bi-arrows-angle-expand"></i>
                         </a>
                         <a href="portfolio-details.html">
+                          <i class="bi bi-arrow-right"></i>
                         </a>
                       </div>
                     </div>
@@ -310,6 +549,7 @@
                           <i class="bi bi-arrows-angle-expand"></i>
                         </a>
                         <a href="portfolio-details.html">
+                          <i class="bi bi-arrow-right"></i>
                         </a>
                       </div>
                     </div>
@@ -325,6 +565,253 @@
       </div>
 
     </section><!-- /Portfolio Section -->
+
+    <!-- Team Section -->
+    <section id="team" class="team section light-background">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Team</h2>
+        <div><span>Check Our</span> <span class="description-title">Team</span></div>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="team-member d-flex">
+              <div class="member-img">
+                <img src="assets/template/home/Strategy/assets/img/person/person-m-7.webp" class="img-fluid" alt="" loading="lazy">
+              </div>
+              <div class="member-info flex-grow-1">
+                <h4>Walter White</h4>
+                <span>Chief Executive Officer</span>
+                <p>Aliquam iure quaerat voluptatem praesentium possimus unde laudantium vel dolorum distinctio dire flow</p>
+                <div class="social">
+                  <a href=""><i class="bi bi-facebook"></i></a>
+                  <a href=""><i class="bi bi-twitter-x"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                  <a href=""><i class="bi bi-youtube"></i></a>
+                </div>
+              </div>
+            </div>
+          </div><!-- End Team Member -->
+
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="team-member d-flex">
+              <div class="member-img">
+                <img src="assets/template/home/Strategy/assets/img/person/person-f-8.webp" class="img-fluid" alt="" loading="lazy">
+              </div>
+              <div class="member-info flex-grow-1">
+                <h4>Sarah Jhonson</h4>
+                <span>Product Manager</span>
+                <p>Labore ipsam sit consequatur exercitationem rerum laboriosam laudantium aut quod dolores exercitationem ut</p>
+                <div class="social">
+                  <a href=""><i class="bi bi-facebook"></i></a>
+                  <a href=""><i class="bi bi-twitter-x"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                  <a href=""><i class="bi bi-youtube"></i></a>
+                </div>
+              </div>
+            </div>
+          </div><!-- End Team Member -->
+
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="team-member d-flex">
+              <div class="member-img">
+                <img src="assets/template/home/Strategy/assets/img/person/person-m-6.webp" class="img-fluid" alt="" loading="lazy">
+              </div>
+              <div class="member-info flex-grow-1">
+                <h4>William Anderson</h4>
+                <span>CTO</span>
+                <p>Illum minima ea autem doloremque ipsum quidem quas aspernatur modi ut praesentium vel tque sed facilis at qui</p>
+                <div class="social">
+                  <a href=""><i class="bi bi-facebook"></i></a>
+                  <a href=""><i class="bi bi-twitter-x"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                  <a href=""><i class="bi bi-youtube"></i></a>
+                </div>
+              </div>
+            </div>
+          </div><!-- End Team Member -->
+
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="400">
+            <div class="team-member d-flex">
+              <div class="member-img">
+                <img src="assets/template/home/Strategy/assets/img/person/person-f-4.webp" class="img-fluid" alt="" loading="lazy">
+              </div>
+              <div class="member-info flex-grow-1">
+                <h4>Amanda Jepson</h4>
+                <span>Accountant</span>
+                <p>Magni voluptatem accusamus assumenda cum nisi aut qui dolorem voluptate sed et veniam quasi quam consectetur</p>
+                <div class="social">
+                  <a href=""><i class="bi bi-facebook"></i></a>
+                  <a href=""><i class="bi bi-twitter-x"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                  <a href=""><i class="bi bi-youtube"></i></a>
+                </div>
+              </div>
+            </div>
+          </div><!-- End Team Member -->
+
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="500">
+            <div class="team-member d-flex">
+              <div class="member-img">
+                <img src="assets/template/home/Strategy/assets/img/person/person-m-12.webp" class="img-fluid" alt="" loading="lazy">
+              </div>
+              <div class="member-info flex-grow-1">
+                <h4>Brian Doe</h4>
+                <span>Marketing</span>
+                <p>Qui consequuntur quos accusamus magnam quo est molestiae eius laboriosam sunt doloribus quia impedit laborum velit</p>
+                <div class="social">
+                  <a href=""><i class="bi bi-facebook"></i></a>
+                  <a href=""><i class="bi bi-twitter-x"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                  <a href=""><i class="bi bi-youtube"></i></a>
+                </div>
+              </div>
+            </div>
+          </div><!-- End Team Member -->
+
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="600">
+            <div class="team-member d-flex">
+              <div class="member-img">
+                <img src="assets/template/home/Strategy/assets/img/person/person-f-9.webp" class="img-fluid" alt="" loading="lazy">
+              </div>
+              <div class="member-info flex-grow-1">
+                <h4>Josepha Palas</h4>
+                <span>Operation</span>
+                <p>Sint sint eveniet explicabo amet consequatur nesciunt error enim rerum earum et omnis fugit eligendi cupiditate vel</p>
+                <div class="social">
+                  <a href=""><i class="bi bi-facebook"></i></a>
+                  <a href=""><i class="bi bi-twitter-x"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                  <a href=""><i class="bi bi-youtube"></i></a>
+                </div>
+              </div>
+            </div>
+          </div><!-- End Team Member -->
+
+        </div>
+
+      </div>
+
+    </section><!-- /Team Section -->
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Pricing</h2>
+        <div><span>Check Our</span> <span class="description-title">Pricing</span></div>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4">
+          <!-- Basic Plan -->
+          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="200">
+            <div class="pricing-card">
+              <div class="plan-header">
+                <div class="plan-icon">
+                  <i class="bi bi-box"></i>
+                </div>
+                <h3>Starter</h3>
+                <p>For individuals just getting started</p>
+              </div>
+              <div class="plan-pricing">
+                <div class="price">
+                  <span class="currency">$</span>
+                  <span class="amount">12</span>
+                  <span class="period">/month</span>
+                </div>
+              </div>
+              <div class="plan-features">
+                <ul>
+                  <li><i class="bi bi-check-circle-fill"></i> Nullam accumsan lorem</li>
+                  <li><i class="bi bi-check-circle-fill"></i> Vestibulum auctor dapibus</li>
+                  <li><i class="bi bi-check-circle-fill"></i> Nulla consequat massa</li>
+                  <li class="disabled"><i class="bi bi-x-circle-fill"></i> In enim justo rhoncus ut</li>
+                  <li class="disabled"><i class="bi bi-x-circle-fill"></i> Curabitur ullamcorper ultricies</li>
+                </ul>
+              </div>
+              <div class="plan-cta">
+                <a href="#" class="btn-plan">Choose Plan</a>
+              </div>
+            </div>
+          </div><!-- End Basic Plan -->
+
+          <!-- Professional Plan -->
+          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="300">
+            <div class="pricing-card popular">
+              <div class="popular-tag">Most Popular</div>
+              <div class="plan-header">
+                <div class="plan-icon">
+                  <i class="bi bi-briefcase"></i>
+                </div>
+                <h3>Professional</h3>
+                <p>For small teams and growing businesses</p>
+              </div>
+              <div class="plan-pricing">
+                <div class="price">
+                  <span class="currency">$</span>
+                  <span class="amount">39</span>
+                  <span class="period">/month</span>
+                </div>
+              </div>
+              <div class="plan-features">
+                <ul>
+                  <li><i class="bi bi-check-circle-fill"></i> Donec quam felis ultricies</li>
+                  <li><i class="bi bi-check-circle-fill"></i> Nam eget dui etiam rhoncus</li>
+                  <li><i class="bi bi-check-circle-fill"></i> Maecenas tempus tellus</li>
+                  <li><i class="bi bi-check-circle-fill"></i> Donec pede justo fringilla</li>
+                  <li class="disabled"><i class="bi bi-x-circle-fill"></i> Cras dapibus vivamus</li>
+                </ul>
+              </div>
+              <div class="plan-cta">
+                <a href="#" class="btn-plan">Choose Plan</a>
+              </div>
+            </div>
+          </div><!-- End Professional Plan -->
+
+          <!-- Enterprise Plan -->
+          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="400">
+            <div class="pricing-card">
+              <div class="plan-header">
+                <div class="plan-icon">
+                  <i class="bi bi-building"></i>
+                </div>
+                <h3>Enterprise</h3>
+                <p>For large organizations and corporations</p>
+              </div>
+              <div class="plan-pricing">
+                <div class="price">
+                  <span class="currency">$</span>
+                  <span class="amount">79</span>
+                  <span class="period">/month</span>
+                </div>
+              </div>
+              <div class="plan-features">
+                <ul>
+                  <li><i class="bi bi-check-circle-fill"></i> Etiam sit amet orci eget</li>
+                  <li><i class="bi bi-check-circle-fill"></i> Pellentesque posuere vulputate</li>
+                  <li><i class="bi bi-check-circle-fill"></i> Quisque rutrum aenean</li>
+                  <li><i class="bi bi-check-circle-fill"></i> Fusce vulputate eleifend</li>
+                  <li><i class="bi bi-check-circle-fill"></i> Phasellus viverra nulla</li>
+                </ul>
+              </div>
+              <div class="plan-cta">
+                <a href="#" class="btn-plan">Choose Plan</a>
+              </div>
+            </div>
+          </div><!-- End Enterprise Plan -->
+        </div>
+
+      </div>
+
+    </section><!-- /Pricing Section -->
 
     <!-- Faq Section -->
     <section class="faq-9 faq section" id="faq">
@@ -432,7 +919,7 @@
               </div>
               <div class="info-content">
                 <h4>Alamat Email</h4>
-                <p>diki.a.gani@gmail.com</p>
+                <p>diki.a.gani@gmail.com<</p>
               </div>
             </div>
           </div>
@@ -443,7 +930,7 @@
                 <i class="bi bi-headset"></i>
               </div>
               <div class="info-content">
-                <h4>Jam Operasional</h4>
+                <h4>Jam Operasiona</h4>
                 <p>Setiap Hari: 24 Jam</p>
               </div>
             </div>
@@ -454,7 +941,7 @@
 
       <!-- Google Maps (Full Width) -->
       <div class="map-section" data-aos="fade-up" data-aos-delay="200">
-        <iframe src="https://www.google.com/maps/embed?pb=!3m2!1sid!2sid!4v1748557127752!5m2!1sid!2sid!6m8!1m7!1saeCPQmBQoaLH3l9KsB5imA!2m2!1d-6.573965375823104!2d107.7642212194211!3f52.75634532104675!4f-31.14106148219296!5f0.7820865974627469" width="800" height="600" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <iframe src="https://www.google.com/maps/embed?pb=!3m2!1sid!2sid!4v1748557127752!5m2!1sid!2sid!6m8!1m7!1saeCPQmBQoaLH3l9KsB5imA!2m2!1d-6.573965375823104!2d107.7642212194211!3f52.75634532104675!4f-31.14106148219296!5f0.7820865974627469" width="100%" height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
 
       <!-- Contact Form Section (Overlapping) -->
@@ -531,7 +1018,7 @@
           <a href="index.html" class="logo d-flex align-items-center">
             <span class="sitename">Sigma RentCar</span>
           </a>
-          <p>Sigma RentCar, solusi rental mobil terpercaya untuk berbagai kebutuhan anda. Kami hadir dengan komitmen menghadirkan layanan yang mudah, nyaman, dan dapat diandalkan</p>
+          <p>Sigma RentCar, solusi rental mobil terpercaya untuk berbagai kebutuhan anda. Kami hadir dengan komitmen menghadirkan layanan yang mudah, nyaman, dan dapat diandalkan.</p>
           <div class="social-links d-flex mt-4">
             <a href="https://www.tiktok.com/@sigma_rentcar?_t=ZS-8wtmnFIOOvd&_r=1"><i class="bi bi-tiktok"></i></a>
             <a href="https://www.facebook.com/share/16bwovUwpX/?mibextid=wwXIfr"><i class="bi bi-facebook"></i></a>
@@ -540,19 +1027,30 @@
         </div>
 
         <div class="col-lg-2 col-6 footer-links">
-          <h4>Tautan Penting</h4>
+          <h4>Useful Links</h4>
           <ul>
-            <li><a href="index.php">Home</a></li>
-            <li><a href="about.php">Tentang Kami</a></li>
-            <li><a href="listing.php">Daftar Mobil</a></li>
-            <li><a href="#galeri">Galeri</a></li>
-            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About us</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Terms of service</a></li>
+            <li><a href="#">Privacy policy</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Layanan Kami</h4>
+          <ul>
+            <li>Rental 24 Jam</a></li>
+            <li>Rental Harian</a></li>
+            <li>Rental Mingguan</a></li>
+            <li>Rental Mobil dengan Supir</a></li>
+            <li>Rental Mobil Lepas Kunci</a></li>
           </ul>
         </div>
 
         <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
           <h4>Kontak Kami</h4>
-          <p>Jl.Letnan Jenderal S.Parman</p>
+          <p>Jl. Letnan Jenderal S.Parman</p>
           <p>Subang, Jawa Barat</p>
           <p>Indonesia</p>
           <p class="mt-4"><strong>Nomer Hp:</strong> <span>+62 8121 2280 564</span></p>
@@ -588,7 +1086,7 @@
   <script src="assets/template/home/Strategy/assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="assets/template/home/Strategy/assets/vendor/glightbox/js/glightbox.min.js"></script>
   <script src="assets/template/home/Strategy/assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
-  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/template/home/Strategy/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
 
   <!-- Main JS File -->
   <script src="assets/template/home/Strategy/assets/js/main.js"></script>
