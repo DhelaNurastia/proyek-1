@@ -1,3 +1,7 @@
+<?php
+$base_url = '/proyek-1/';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +19,7 @@
   }
 
   body {
-    background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80');
+    background-image: url('<?= $base_url ?>assets/image/form.jpg');
     background-size: cover;
     background-position: center center;
     font-family: var(--font-family);

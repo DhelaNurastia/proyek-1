@@ -45,20 +45,19 @@ $conn->close();
     /* ... (style dari kode kamu di atas tetap dipakai tanpa perubahan besar) ... */
     :root {
       --color-primary-dark: #000957;
-      --color-primary: #344CB7;
-      --color-primary-light: #577BC1;
-      --color-accent: #FFEB00;
       --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: var(--font-family);
-      background: #f9faff;
+      background: url('../../assets/image/listing.jpg') no-repeat center center fixed;
+      background-size: cover;
       color: var(--color-primary-dark);
     }
+
     header {
-      background: var(--color-primary);
+      background: var(--color-primary-dark);
       padding: 1.25rem 2rem;
       color: white;
       display: flex;
@@ -68,10 +67,9 @@ $conn->close();
     header h1 { margin: 0; font-weight: 700; font-size: 1.8rem; }
     main { padding: 2rem; max-width: 1200px; margin: 0 auto; }
     .search-form {
-      background: white;
+      background: rgba(255, 255, 255, 0.6); /* Transparansi 92% */
       padding: 1rem 1.5rem;
       border-radius: 8px;
-      box-shadow: 0 0 10px #ddd;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 1.2rem;
@@ -79,9 +77,10 @@ $conn->close();
     }
     .search-form input,
     .search-form select {
+      background: rgba(255, 255, 255, 0.6);
       width: 100%;
       padding: 0.5rem;
-      border: 2px solid var(--color-primary-light);
+      border: 2px solid var(--color-primary-dark);
       border-radius: 6px;
       font-size: 1rem;
     }
@@ -91,7 +90,7 @@ $conn->close();
       gap: 1.5rem;
     }
     .car-card {
-      background: white;
+      background: rgba(255, 255, 255, 0.6); /* Transparansi 92% */
       border-radius: 10px;
       box-shadow: 0 3px 8px rgba(0,0,0,0.12);
       padding: 1.4rem;
@@ -108,17 +107,17 @@ $conn->close();
     .car-name { font-size: 1.3rem; font-weight: 700; }
     .car-info { font-size: 0.9rem; margin: 5px 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
     .car-info span {
-      background: var(--color-primary-light);
+      background: var(--color-primary-dark);
       color: white;
       padding: 3px 8px;
       border-radius: 5px;
       font-size: 0.82rem;
     }
-    .car-price { font-weight: bold; margin-top: 0.6rem; color: var(--color-primary); }
+    .car-price { font-weight: bold; margin-top: 0.6rem; color: var(--color-primary-dark); }
     .rent-button {
       margin-top: auto;
-      background: var(--color-accent);
-      color: var(--color-primary-dark);
+      background: var(--color-primary-dark);
+      color: white;
       border: none;
       padding: 0.6rem;
       border-radius: 8px;
@@ -165,6 +164,7 @@ $conn->close();
           <span><?= $car['warna'] ?></span>
         </div>
         <div class="car-price">Rp <?= number_format($car['price12h'], 0, ',', '.') ?> / 12 jam</div>
+        <br>
         <button class="rent-button">Rental Sekarang</button>
       </article>
     <?php endforeach; ?>
