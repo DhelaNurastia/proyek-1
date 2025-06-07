@@ -202,7 +202,7 @@
               <li><a href="pages/Halaman_Register&Login/login.php">Masuk</a></li>
             </ul>
           </li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="#contact">Kontak</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
