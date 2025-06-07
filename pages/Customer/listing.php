@@ -526,7 +526,7 @@ while ($row = $result->fetch_assoc()) {
             <div class=\"car-info-item\"><i class=\"bi bi-palette\"></i> ${car.warna}</div>
             <div class=\"car-info-item\"><span class=\"car-status ${statusClass}\">${statusText}</span></div>
           </div>
-          <button class=\"rent-button\">Rental Sekarang</button>
+          <a href="booking.php?id=${car.id}" class="rent-button">Rental Sekarang</a>
         </article>
       `;
     }).join('');
