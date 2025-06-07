@@ -44,12 +44,12 @@ $nama = isset($_SESSION['nama']) ? $_SESSION['nama'] : 'nama';
       <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <!-- <img src="assets/img/logo.webp" alt=""> -->
-        <h1 class="sitename"><b>Sigma RentCar</b></h1>
+        <h1 class="sitename">Sigma RentCar</h1>
         
       </a>
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="index_customer.php" class="active">Home</a></li>
+          <li><a href="pages/customer/index.php" class="active">Home</a></li>
           <li><a href="listing.php">Daftar Mobil</a></li>
           <li><a href="#riwayat booking">Riwayat Booking</a></li>
           <li class="dropdown"><a href="#"><span>Akun</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
@@ -324,6 +324,17 @@ $nama = isset($_SESSION['nama']) ? $_SESSION['nama'] : 'nama';
             <li><a href="listing.php">Daftar Mobil</a></li>
             <li><a href="#galeri">Galeri</a></li>
             <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Layanan Kami</h4>
+          <ul>
+            <li>Rental 24 Jam</a></li>
+            <li>Rental Harian</a></li>
+            <li>Rental Mingguan</a></li>
+            <li>Rental Mobil dengan Supir</a></li>
+            <li>Rental Mobil Lepas Kunci</a></li>
           </ul>
         </div>
 
