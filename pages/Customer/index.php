@@ -49,12 +49,12 @@ $nama = isset($_SESSION['nama']) ? $_SESSION['nama'] : 'nama';
       </a>
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="pages/customer/index.php" class="active">Home</a></li>
+          <li><a href="index.php" class="active">Home</a></li>
           <li><a href="listing.php">Daftar Mobil</a></li>
-          <li><a href="pages/customer/riwayat.php">Riwayat Booking</a></li>
+          <li><a href="riwayat.php">Riwayat Booking</a></li>
           <li class="dropdown"><a href="#"><span>Akun</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
-              <li><a href="#">Edit Profile</a></li>
+              <li><a href="#">Profile</a></li>
               <li><a href="#">Status Blacklist</a></li>
               <li><a href="../Halaman_Register&Login/logout.php">LogOut</a></li>
             </ul>

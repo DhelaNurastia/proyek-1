@@ -8,12 +8,12 @@ $base_url = '/proyek-1/';
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Starter Page - Strategy Bootstrap Template</title>
+  <title>Riwayat Booking</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
 
   <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
+  <link href="<?= $base_url ?>assets/image/favicon.jpeg" rel="icon">
   <link href="<?= $base_url ?>assets/template/home/Strategy/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Fonts -->
@@ -121,9 +121,9 @@ $base_url = '/proyek-1/';
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="pages/customer/index.php">Home</a></li>
-          <li><a href="listing.phpt">Daftar Mobil</a></li>
-          <li><a href="riwayat.php">Riwayat Booking</a></li>
+          <li><a href="index.php">Home</a></li>
+          <li><a href="listing.php">Daftar Mobil</a></li>
+          <li><a href="riwayat.php" class="active">Riwayat Booking</a></li>
           <li class="dropdown"><a href="#"><span>Akun</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="#">Profile</a></li>
@@ -143,12 +143,12 @@ $base_url = '/proyek-1/';
     <!-- Page Title -->
     <div class="page-title dark-background" data-aos="fade">
       <div class="container position-relative">
-        <h1>Starter Page</h1>
-        <p>Esse dolorum voluptatum ullam est sint nemo et est ipsa porro placeat quibusdam quia assumenda numquam molestias.</p>
+        <h1>Riwayat Pemesanan Mobil</h1>
+        <p>Lihat kembali daftar pemesanan mobil yang pernah Anda lakukan.</p>
         <nav class="breadcrumbs">
           <ol>
             <li><a href="index.html">Home</a></li>
-            <li class="current">riwayat Booking</li>
+            <li class="current">Riwayat Booking</li>
           </ol>
         </nav>
       </div>

@@ -32,7 +32,7 @@ while ($row = $result->fetch_assoc()) {
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Sigma RentCar - Katalog</title>
+  <title>Katalog</title>
   <meta name="description" content="" />
   <meta name="keywords" content="" />
 
@@ -271,9 +271,9 @@ while ($row = $result->fetch_assoc()) {
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="pages/customer/index.php">Home</a></li>
-          <li><a href="pages/customer/listing.php" class="active">Daftar Mobil</a></li>
-          <li><a href="pages/customer/riwayat.php">Riwayat Booking</a></li>
+          <li><a href="index.php">Home</a></li>
+          <li><a href="listing.php" class="active">Daftar Mobil</a></li>
+          <li><a href="riwayat.php">Riwayat Booking</a></li>
           <li class="dropdown">
             <a href="#"
               ><span>Akun</span>
