@@ -32,7 +32,7 @@ while ($row = $result->fetch_assoc()) {
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Starter Page - Strategy Bootstrap Template</title>
+  <title>Sigma RentCar - Katalog</title>
   <meta name="description" content="" />
   <meta name="keywords" content="" />
 
@@ -162,35 +162,30 @@ while ($row = $result->fetch_assoc()) {
       box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
     }
 
-    .car-name {
-      font-weight: 700;
-      font-size: 1.375rem;
+    .car-info-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 0.75rem 1.25rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      margin-top: 0.75rem;
       color: white !important;
-      margin-bottom: 0.6rem;
-      user-select: text;
+      font-size: 0.95rem;
     }
 
     /* Flex container for car info row */
-    .car-info-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem 2rem;
-      color: white !important;
-      font-size: 1rem;
-      user-select: text;
-    }
+
 
     .car-info-item {
       display: flex;
       align-items: center;
-      gap: 0.375rem;
-      color: white !important;
+      gap: 0.5rem;
+      white-space: nowrap;
     }
 
-    /* Simple monochrome icons using bootstrap icons */
     .car-info-item i {
-      color: #9ca3af; /* lighter gray */
-      font-size: 1.1rem;
+      font-size: 1rem;
+      color: #f3f4f6;
       flex-shrink: 0;
     }
 
@@ -277,7 +272,7 @@ while ($row = $result->fetch_assoc()) {
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="index.php">Home</a></li>
-          <li><a href="listing.php">Daftar Mobil</a></li>
+          <li><a href="listing.php" class="active">Daftar Mobil</a></li>
           <li><a href="#riwayat booking">Riwayat Booking</a></li>
           <li class="dropdown">
             <a href="#"
@@ -305,8 +300,8 @@ while ($row = $result->fetch_assoc()) {
         <p>Mulai dari city car hemat BBM hingga SUV untuk liburan keluarga — kami siap menemani setiap perjalanan Anda.</p>
         <nav class="breadcrumbs">
           <ol>
-            <li><a href="index.html">Home</a></li>
-            <li class="current">Halaman Booking</li>
+            <li><a href="index.php">Home</a></li>
+            <li class="listing.php">Halaman Booking</li>
           </ol>
         </nav>
       </div>
@@ -518,14 +513,14 @@ while ($row = $result->fetch_assoc()) {
         <article class=\"car-card\" tabindex=\"0\">
           <img src="${foto}" alt="${car.unitName}" style="width:100%; border-radius: 0.5rem; margin-bottom: 1rem; object-fit: cover; height: 180px;">
           <h4 class=\"car-name\">${car.unitName}</h4>
-          <div class=\"car-info-row\">
-            <div class=\"car-info-item\"><i class=\"bi bi-cash-coin\"></i> ${formatCurrency(car.pricePer12h)}</div>
-            <div class=\"car-info-item\"><i class=\"bi bi-gear\"></i> ${car.transmisi}</div>
-            <div class=\"car-info-item\"><i class=\"bi bi-people\"></i> ${car.seats} seats</div>
-            <div class=\"car-info-item\"><i class=\"bi bi-card-text\"></i> ${car.plat_nomor}</div>
-            <div class=\"car-info-item\"><i class=\"bi bi-palette\"></i> ${car.warna}</div>
-            <div class=\"car-info-item\"><span class=\"car-status ${statusClass}\">${statusText}</span></div>
-          </div>
+            <div class="car-info-row">
+              <div class="car-info-item"><i class="bi bi-cash-coin"></i><span>${formatCurrency(car.pricePer12h)}</span></div>
+              <div class="car-info-item"><i class="bi bi-gear"></i><span>${car.transmisi}</span></div>
+              <div class="car-info-item"><i class="bi bi-people"></i><span>${car.seats} seats</span></div>
+              <div class="car-info-item"><i class="bi bi-card-text"></i><span>${car.plat_nomor}</span></div>
+              <div class="car-info-item"><i class="bi bi-palette"></i><span>${car.warna}</span></div>
+              <div class="car-info-item"><span class="car-status ${statusClass}">${statusText}</span></div>
+            </div>
           <a href="booking.php?id=${car.id}" class="rent-button">Rental Sekarang</a>
         </article>
       `;
