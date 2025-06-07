@@ -8,6 +8,146 @@
   <meta name="description" content="">
   <meta name="keywords" content="">
 
+    <style>
+    body {
+      margin: 0;
+      font-family: 'Nunito Sans', sans-serif;
+      background: #ffffff;
+      color: #6b7280;
+      line-height: 1.6;
+      font-size: 17px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column; 
+      align-items: center;     
+      padding: 4rem 1rem 5rem;
+    }
+
+
+    main {
+      max-width: 1200px;
+      width: 100%;
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+
+    h2.section-title {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 700;
+      font-size: 48px;
+      color: #111827;
+      margin-bottom: 0.25rem;
+      user-select: none;
+    }
+
+    .section-subtitle {
+      color: #6b7280;
+      font-size: 18px;
+      margin-bottom: 2rem;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    .car-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.75rem;
+      padding-top: 1rem;
+    }
+
+    .car-card {
+      background-color: transparent !important;
+      box-shadow: none !important;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(6px);
+      border-radius: 0.75rem;
+      box-shadow: 0 6px 16px rgb(0 0 0 / 0.1);
+      padding: 1.75rem 2rem;
+      font-family: 'Nunito Sans', sans-serif;
+      color: white !important;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+
+    .car-card:hover,
+    .car-card:focus-visible {
+      outline: none;
+      box-shadow: 0 12px 32px rgba(37, 99, 235, 0.3);
+      transform: translateY(-6px);
+      background: #f9fafb;
+    }
+
+    .car-card:focus-visible {
+      box-shadow: 0 0 0 3px #2563eb;
+    }
+
+    .car-image {
+      width: 100%;
+      height: 170px;
+      border-radius: 0.5rem;
+      object-fit: cover;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 12px rgb(0 0 0 / 0.08);
+    }
+
+    .car-name {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: white !important;
+      margin-bottom: 0.75rem;
+    }
+
+    .car-info-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem 2rem;
+      color: white !important;
+      font-size: 1rem;
+    }
+
+    .car-info-item {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      min-width: 120px;
+    }
+
+    .car-info-item i {
+      color: white !important;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .rent-button {
+      margin-top: 1.5rem;
+      display: inline-block;
+      width: 100%;
+      padding: 0.75rem 0;
+      background-color: #2563eb; 
+      color: #ffffff;
+      font-size: 1rem;
+      font-weight: 600;
+      text-align: center;
+      border: none;
+      border-radius: 0.75rem; 
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      text-decoration: none;
+    }
+
+    .rent-button:hover {
+      background-color: #1e40af; 
+      transform: scale(1.03);
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.4);
+    }
+  </style>
+
   <!-- Favicons -->
   <link href="assets/image/favicon.jpeg" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -51,9 +191,11 @@
         <ul>
           <li><a href="#hero" class="active">Home</a></li>
           <li><a href="#about">Tentang Kami</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="listing.php">Portfolio</a></li>
-          <li><a href="#team">Team</a></li>
+          <li><a href="#services">Layanan</a></li>
+          <li><a href="#steps">Tahapan</a></li>
+          <li><a href="#galeri">Galeri</a></li>
+          <li><a href="#catalog">Katalog</a></li>
+          <li><a href="#faq">FAQ</a></li>
           <li class="dropdown"><a href="#"><span>Autentifikasi</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="pages/Halaman_Register&Login/register.php">Daftar</a></li>
@@ -279,7 +421,7 @@
     </section><!-- /Services Section -->
 
     <!-- Steps Section -->
-    <section id="services" class="steps section">
+    <section id="steps" class="steps section">
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
@@ -350,35 +492,13 @@
     </section><!-- /Steps Section -->
 
     <!-- Portfolio Section -->
-    <section id="portfolio" class="portfolio section">
+    <section id="galeri" class="galeri section">
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
-        <h2>Portfolio</h2>
-        <div><span>Check Our</span> <span class="description-title">Portfolio</span></div>
+        <h2>Galeri</h2>
+        <div><span>Lihat Galeri</span> <span class="description-title">Kami</span></div>
       </div><!-- End Section Title -->
-
-      <div class="container-fluid" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
-
-          <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="200">
-            <li data-filter="*" class="filter-active">
-              <i class="bi bi-grid-3x3"></i> All Projects
-            </li>
-            <li data-filter=".filter-ui">
-              <i class="bi bi-phone"></i> UI/UX
-            </li>
-            <li data-filter=".filter-development">
-              <i class="bi bi-code-slash"></i> Development
-            </li>
-            <li data-filter=".filter-photography">
-              <i class="bi bi-camera"></i> Photography
-            </li>
-            <li data-filter=".filter-marketing">
-              <i class="bi bi-graph-up"></i> Marketing
-            </li>
-          </ul>
 
           <div class="row g-4 isotope-container" data-aos="fade-up" data-aos-delay="300">
 
@@ -388,16 +508,6 @@
                   <img src="assets/template/home/Strategy/assets/img/portfolio/portfolio-1.webp" class="img-fluid" alt="" loading="lazy">
                   <div class="entry-overlay">
                     <div class="overlay-content">
-                      <div class="entry-meta">UI/UX Design</div>
-                      <h3 class="entry-title">Mobile Banking App</h3>
-                      <div class="entry-links">
-                        <a href="assets/template/home/Strategy/assets/img/portfolio/portfolio-1.webp" class="glightbox" data-gallery="portfolio-gallery-ui" data-glightbox="title: Mobile Banking App; description: Praesent commodo cursus magna, vel scelerisque nisl consectetur.">
-                          <i class="bi bi-arrows-angle-expand"></i>
-                        </a>
-                        <a href="portfolio-details.html">
-                          <i class="bi bi-arrow-right"></i>
-                        </a>
-                      </div>
                     </div>
                   </div>
                 </figure>
@@ -410,16 +520,6 @@
                   <img src="assets/template/home/Strategy/assets/img/portfolio/portfolio-10.webp" class="img-fluid" alt="" loading="lazy">
                   <div class="entry-overlay">
                     <div class="overlay-content">
-                      <div class="entry-meta">Development</div>
-                      <h3 class="entry-title">E-Learning Platform</h3>
-                      <div class="entry-links">
-                        <a href="assets/template/home/Strategy/assets/img/portfolio/portfolio-10.webp" class="glightbox" data-gallery="portfolio-gallery-development" data-glightbox="title: E-Learning Platform; description: Nulla vitae elit libero, a pharetra augue mollis interdum.">
-                          <i class="bi bi-arrows-angle-expand"></i>
-                        </a>
-                        <a href="portfolio-details.html">
-                          <i class="bi bi-arrow-right"></i>
-                        </a>
-                      </div>
                     </div>
                   </div>
                 </figure>
@@ -432,16 +532,6 @@
                   <img src="assets/template/home/Strategy/assets/img/portfolio/portfolio-7.webp" class="img-fluid" alt="" loading="lazy">
                   <div class="entry-overlay">
                     <div class="overlay-content">
-                      <div class="entry-meta">Photography</div>
-                      <h3 class="entry-title">Urban Architecture</h3>
-                      <div class="entry-links">
-                        <a href="assets/template/home/Strategy/assets/img/portfolio/portfolio-7.webp" class="glightbox" data-gallery="portfolio-gallery-photography" data-glightbox="title: Urban Architecture; description: Sed ut perspiciatis unde omnis iste natus error sit voluptatem.">
-                          <i class="bi bi-arrows-angle-expand"></i>
-                        </a>
-                        <a href="portfolio-details.html">
-                          <i class="bi bi-arrow-right"></i>
-                        </a>
-                      </div>
                     </div>
                   </div>
                 </figure>
@@ -454,16 +544,6 @@
                   <img src="assets/template/home/Strategy/assets/img/portfolio/portfolio-4.webp" class="img-fluid" alt="" loading="lazy">
                   <div class="entry-overlay">
                     <div class="overlay-content">
-                      <div class="entry-meta">Marketing</div>
-                      <h3 class="entry-title">Social Media Campaign</h3>
-                      <div class="entry-links">
-                        <a href="assets/template/home/Strategy/assets/img/portfolio/portfolio-4.webp" class="glightbox" data-gallery="portfolio-gallery-marketing" data-glightbox="title: Social Media Campaign; description: Quis autem vel eum iure reprehenderit qui in ea voluptate.">
-                          <i class="bi bi-arrows-angle-expand"></i>
-                        </a>
-                        <a href="portfolio-details.html">
-                          <i class="bi bi-arrow-right"></i>
-                        </a>
-                      </div>
                     </div>
                   </div>
                 </figure>
@@ -476,16 +556,6 @@
                   <img src="assets/template/home/Strategy/assets/img/portfolio/portfolio-2.webp" class="img-fluid" alt="" loading="lazy">
                   <div class="entry-overlay">
                     <div class="overlay-content">
-                      <div class="entry-meta">UI/UX Design</div>
-                      <h3 class="entry-title">Smart Home Interface</h3>
-                      <div class="entry-links">
-                        <a href="assets/template/home/Strategy/assets/img/portfolio/portfolio-2.webp" class="glightbox" data-gallery="portfolio-gallery-ui" data-glightbox="title: Smart Home Interface; description: At vero eos et accusamus et iusto odio dignissimos ducimus.">
-                          <i class="bi bi-arrows-angle-expand"></i>
-                        </a>
-                        <a href="portfolio-details.html">
-                          <i class="bi bi-arrow-right"></i>
-                        </a>
-                      </div>
                     </div>
                   </div>
                 </figure>
@@ -498,16 +568,6 @@
                   <img src="assets/template/home/Strategy/assets/img/portfolio/portfolio-11.webp" class="img-fluid" alt="" loading="lazy">
                   <div class="entry-overlay">
                     <div class="overlay-content">
-                      <div class="entry-meta">Development</div>
-                      <h3 class="entry-title">Cloud Management System</h3>
-                      <div class="entry-links">
-                        <a href="assets/template/home/Strategy/assets/img/portfolio/portfolio-11.webp" class="glightbox" data-gallery="portfolio-gallery-development" data-glightbox="title: Cloud Management System; description: Temporibus autem quibusdam et aut officiis debitis.">
-                          <i class="bi bi-arrows-angle-expand"></i>
-                        </a>
-                        <a href="portfolio-details.html">
-                          <i class="bi bi-arrow-right"></i>
-                        </a>
-                      </div>
                     </div>
                   </div>
                 </figure>
@@ -520,16 +580,6 @@
                   <img src="assets/template/home/Strategy/assets/img/portfolio/portfolio-8.webp" class="img-fluid" alt="" loading="lazy">
                   <div class="entry-overlay">
                     <div class="overlay-content">
-                      <div class="entry-meta">Photography</div>
-                      <h3 class="entry-title">Nature Collection</h3>
-                      <div class="entry-links">
-                        <a href="assets/template/home/Strategy/assets/img/portfolio/portfolio-8.webp" class="glightbox" data-gallery="portfolio-gallery-photography" data-glightbox="title: Nature Collection; description: Integer posuere erat a ante venenatis dapibus posuere velit aliquet.">
-                          <i class="bi bi-arrows-angle-expand"></i>
-                        </a>
-                        <a href="portfolio-details.html">
-                          <i class="bi bi-arrow-right"></i>
-                        </a>
-                      </div>
                     </div>
                   </div>
                 </figure>
@@ -542,16 +592,6 @@
                   <img src="assets/template/home/Strategy/assets/img/portfolio/portfolio-5.webp" class="img-fluid" alt="" loading="lazy">
                   <div class="entry-overlay">
                     <div class="overlay-content">
-                      <div class="entry-meta">Marketing</div>
-                      <h3 class="entry-title">Brand Strategy</h3>
-                      <div class="entry-links">
-                        <a href="assets/template/home/Strategy/assets/img/portfolio/portfolio-5.webp" class="glightbox" data-gallery="portfolio-gallery-marketing" data-glightbox="title: Brand Strategy; description: Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum.">
-                          <i class="bi bi-arrows-angle-expand"></i>
-                        </a>
-                        <a href="portfolio-details.html">
-                          <i class="bi bi-arrow-right"></i>
-                        </a>
-                      </div>
                     </div>
                   </div>
                 </figure>
@@ -566,252 +606,76 @@
 
     </section><!-- /Portfolio Section -->
 
-    <!-- Team Section -->
-    <section id="team" class="team section light-background">
-
+    <!-- Catalog Section -->
+    <section id="catalog" class="catalog section">
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
-        <h2>Team</h2>
-        <div><span>Check Our</span> <span class="description-title">Team</span></div>
+        <h2>Katalog</h2>
+        <div><span>Cek Unit</span> <span class="description-title">Kami</span></div>
       </div><!-- End Section Title -->
 
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <?php
+        $host = "localhost";
+        $user = "root";
+        $pass = "";
+        $db   = "proyek-1";
 
-        <div class="row gy-4">
+        $conn = new mysqli($host, $user, $pass, $db);
+        if ($conn->connect_error) {
+          die("Koneksi gagal: " . $conn->connect_error);
+        }
 
-          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-            <div class="team-member d-flex">
-              <div class="member-img">
-                <img src="assets/template/home/Strategy/assets/img/person/person-m-7.webp" class="img-fluid" alt="" loading="lazy">
-              </div>
-              <div class="member-info flex-grow-1">
-                <h4>Walter White</h4>
-                <span>Chief Executive Officer</span>
-                <p>Aliquam iure quaerat voluptatem praesentium possimus unde laudantium vel dolorum distinctio dire flow</p>
-                <div class="social">
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-twitter-x"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                  <a href=""><i class="bi bi-youtube"></i></a>
+        $sql = "SELECT unit_mobil.*, jenis_mobil.nama AS nama_mobil, jenis_mobil.harga_sewa, jenis_mobil.jumlah_kursi
+                FROM unit_mobil
+                JOIN jenis_mobil ON unit_mobil.jenis_mobil_id = jenis_mobil.id
+                WHERE unit_mobil.status = 'tersedia'";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0): ?>
+        <div class="car-list" role="list">
+          <?php while($row = $result->fetch_assoc()): ?>
+            <article class="car-card" tabindex="0" role="listitem" aria-label="Mobil <?= $row['nama_mobil']; ?>, harga <?= number_format($row['harga_sewa'], 0, ',', '.'); ?> rupiah per 12 jam, transmisi <?= $row['transmisi']; ?>, <?= $row['jumlah_kursi']; ?> kursi, plat nomor <?= $row['plat_nomor']; ?>, warna <?= $row['warna']; ?>">
+              <img
+                src="<?= !empty($row['foto']) ? 'assets/foto_mobil/' . $row['foto'] : 'https://via.placeholder.com/300x170?text=No+Image'; ?>"
+                alt="Foto mobil <?= $row['nama_mobil']; ?> warna <?= $row['warna']; ?>"
+                class="car-image"
+              />
+              <h3 class="car-name"><?= $row['nama_mobil']; ?></h3>
+              <div class="car-info-row">
+                <div class="car-info-item" title="Harga per 12 jam">
+                  <i class="bi bi-cash-coin"></i>
+                  Rp<?= number_format($row['harga_sewa'], 0, ',', '.'); ?>
+                </div>
+                <div class="car-info-item" title="Transmisi">
+                  <i class="bi bi-gear"></i>
+                  <?= $row['transmisi']; ?>
+                </div>
+                <div class="car-info-item" title="Jumlah Kursi">
+                  <i class="bi bi-people"></i>
+                  <?= $row['jumlah_kursi']; ?> Kursi
+                </div>
+                <div class="car-info-item" title="Plat Nomor">
+                  <i class="bi bi-card-text"></i>
+                  <?= $row['plat_nomor']; ?>
+                </div>
+                <div class="car-info-item" title="Warna">
+                  <i class="bi bi-palette"></i>
+                  <?= $row['warna']; ?>
                 </div>
               </div>
-            </div>
-          </div><!-- End Team Member -->
-
-          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
-            <div class="team-member d-flex">
-              <div class="member-img">
-                <img src="assets/template/home/Strategy/assets/img/person/person-f-8.webp" class="img-fluid" alt="" loading="lazy">
-              </div>
-              <div class="member-info flex-grow-1">
-                <h4>Sarah Jhonson</h4>
-                <span>Product Manager</span>
-                <p>Labore ipsam sit consequatur exercitationem rerum laboriosam laudantium aut quod dolores exercitationem ut</p>
-                <div class="social">
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-twitter-x"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                  <a href=""><i class="bi bi-youtube"></i></a>
-                </div>
-              </div>
-            </div>
-          </div><!-- End Team Member -->
-
-          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
-            <div class="team-member d-flex">
-              <div class="member-img">
-                <img src="assets/template/home/Strategy/assets/img/person/person-m-6.webp" class="img-fluid" alt="" loading="lazy">
-              </div>
-              <div class="member-info flex-grow-1">
-                <h4>William Anderson</h4>
-                <span>CTO</span>
-                <p>Illum minima ea autem doloremque ipsum quidem quas aspernatur modi ut praesentium vel tque sed facilis at qui</p>
-                <div class="social">
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-twitter-x"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                  <a href=""><i class="bi bi-youtube"></i></a>
-                </div>
-              </div>
-            </div>
-          </div><!-- End Team Member -->
-
-          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="400">
-            <div class="team-member d-flex">
-              <div class="member-img">
-                <img src="assets/template/home/Strategy/assets/img/person/person-f-4.webp" class="img-fluid" alt="" loading="lazy">
-              </div>
-              <div class="member-info flex-grow-1">
-                <h4>Amanda Jepson</h4>
-                <span>Accountant</span>
-                <p>Magni voluptatem accusamus assumenda cum nisi aut qui dolorem voluptate sed et veniam quasi quam consectetur</p>
-                <div class="social">
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-twitter-x"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                  <a href=""><i class="bi bi-youtube"></i></a>
-                </div>
-              </div>
-            </div>
-          </div><!-- End Team Member -->
-
-          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="500">
-            <div class="team-member d-flex">
-              <div class="member-img">
-                <img src="assets/template/home/Strategy/assets/img/person/person-m-12.webp" class="img-fluid" alt="" loading="lazy">
-              </div>
-              <div class="member-info flex-grow-1">
-                <h4>Brian Doe</h4>
-                <span>Marketing</span>
-                <p>Qui consequuntur quos accusamus magnam quo est molestiae eius laboriosam sunt doloribus quia impedit laborum velit</p>
-                <div class="social">
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-twitter-x"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                  <a href=""><i class="bi bi-youtube"></i></a>
-                </div>
-              </div>
-            </div>
-          </div><!-- End Team Member -->
-
-          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="600">
-            <div class="team-member d-flex">
-              <div class="member-img">
-                <img src="assets/template/home/Strategy/assets/img/person/person-f-9.webp" class="img-fluid" alt="" loading="lazy">
-              </div>
-              <div class="member-info flex-grow-1">
-                <h4>Josepha Palas</h4>
-                <span>Operation</span>
-                <p>Sint sint eveniet explicabo amet consequatur nesciunt error enim rerum earum et omnis fugit eligendi cupiditate vel</p>
-                <div class="social">
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-twitter-x"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                  <a href=""><i class="bi bi-youtube"></i></a>
-                </div>
-              </div>
-            </div>
-          </div><!-- End Team Member -->
-
+              <a href="pages/Halaman_Register&Login/login.php" class="rent-button">Rental Sekarang</a>
+            </article>
+          <?php endwhile; ?>
+        </div>
+      <?php else: ?>
+        <p>Tidak ada mobil tersedia saat ini.</p>
+      <?php endif; ?>
+    </section>
         </div>
 
       </div>
 
     </section><!-- /Team Section -->
-
-    <!-- Pricing Section -->
-    <section id="pricing" class="pricing section">
-
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Pricing</h2>
-        <div><span>Check Our</span> <span class="description-title">Pricing</span></div>
-      </div><!-- End Section Title -->
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="row gy-4">
-          <!-- Basic Plan -->
-          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="200">
-            <div class="pricing-card">
-              <div class="plan-header">
-                <div class="plan-icon">
-                  <i class="bi bi-box"></i>
-                </div>
-                <h3>Starter</h3>
-                <p>For individuals just getting started</p>
-              </div>
-              <div class="plan-pricing">
-                <div class="price">
-                  <span class="currency">$</span>
-                  <span class="amount">12</span>
-                  <span class="period">/month</span>
-                </div>
-              </div>
-              <div class="plan-features">
-                <ul>
-                  <li><i class="bi bi-check-circle-fill"></i> Nullam accumsan lorem</li>
-                  <li><i class="bi bi-check-circle-fill"></i> Vestibulum auctor dapibus</li>
-                  <li><i class="bi bi-check-circle-fill"></i> Nulla consequat massa</li>
-                  <li class="disabled"><i class="bi bi-x-circle-fill"></i> In enim justo rhoncus ut</li>
-                  <li class="disabled"><i class="bi bi-x-circle-fill"></i> Curabitur ullamcorper ultricies</li>
-                </ul>
-              </div>
-              <div class="plan-cta">
-                <a href="#" class="btn-plan">Choose Plan</a>
-              </div>
-            </div>
-          </div><!-- End Basic Plan -->
-
-          <!-- Professional Plan -->
-          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="300">
-            <div class="pricing-card popular">
-              <div class="popular-tag">Most Popular</div>
-              <div class="plan-header">
-                <div class="plan-icon">
-                  <i class="bi bi-briefcase"></i>
-                </div>
-                <h3>Professional</h3>
-                <p>For small teams and growing businesses</p>
-              </div>
-              <div class="plan-pricing">
-                <div class="price">
-                  <span class="currency">$</span>
-                  <span class="amount">39</span>
-                  <span class="period">/month</span>
-                </div>
-              </div>
-              <div class="plan-features">
-                <ul>
-                  <li><i class="bi bi-check-circle-fill"></i> Donec quam felis ultricies</li>
-                  <li><i class="bi bi-check-circle-fill"></i> Nam eget dui etiam rhoncus</li>
-                  <li><i class="bi bi-check-circle-fill"></i> Maecenas tempus tellus</li>
-                  <li><i class="bi bi-check-circle-fill"></i> Donec pede justo fringilla</li>
-                  <li class="disabled"><i class="bi bi-x-circle-fill"></i> Cras dapibus vivamus</li>
-                </ul>
-              </div>
-              <div class="plan-cta">
-                <a href="#" class="btn-plan">Choose Plan</a>
-              </div>
-            </div>
-          </div><!-- End Professional Plan -->
-
-          <!-- Enterprise Plan -->
-          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="400">
-            <div class="pricing-card">
-              <div class="plan-header">
-                <div class="plan-icon">
-                  <i class="bi bi-building"></i>
-                </div>
-                <h3>Enterprise</h3>
-                <p>For large organizations and corporations</p>
-              </div>
-              <div class="plan-pricing">
-                <div class="price">
-                  <span class="currency">$</span>
-                  <span class="amount">79</span>
-                  <span class="period">/month</span>
-                </div>
-              </div>
-              <div class="plan-features">
-                <ul>
-                  <li><i class="bi bi-check-circle-fill"></i> Etiam sit amet orci eget</li>
-                  <li><i class="bi bi-check-circle-fill"></i> Pellentesque posuere vulputate</li>
-                  <li><i class="bi bi-check-circle-fill"></i> Quisque rutrum aenean</li>
-                  <li><i class="bi bi-check-circle-fill"></i> Fusce vulputate eleifend</li>
-                  <li><i class="bi bi-check-circle-fill"></i> Phasellus viverra nulla</li>
-                </ul>
-              </div>
-              <div class="plan-cta">
-                <a href="#" class="btn-plan">Choose Plan</a>
-              </div>
-            </div>
-          </div><!-- End Enterprise Plan -->
-        </div>
-
-      </div>
-
-    </section><!-- /Pricing Section -->
 
     <!-- Faq Section -->
     <section class="faq-9 faq section" id="faq">
