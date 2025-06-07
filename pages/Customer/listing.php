@@ -271,16 +271,16 @@ while ($row = $result->fetch_assoc()) {
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="index.php">Home</a></li>
-          <li><a href="listing.php" class="active">Daftar Mobil</a></li>
-          <li><a href="#riwayat booking">Riwayat Booking</a></li>
+          <li><a href="pages/customer/index.php">Home</a></li>
+          <li><a href="pages/customer/listing.php" class="active">Daftar Mobil</a></li>
+          <li><a href="pages/customer/riwayat.php">Riwayat Booking</a></li>
           <li class="dropdown">
             <a href="#"
               ><span>Akun</span>
               <i class="bi bi-chevron-down toggle-dropdown"></i
             ></a>
             <ul>
-              <li><a href="#">Edit Profile</a></li>
+              <li><a href="#">Profile</a></li>
               <li><a href="#">Status Blacklist</a></li>
               <li><a href="../Halaman_Register&Login/logout.php">LogOut</a></li>
             </ul>
@@ -307,18 +307,6 @@ while ($row = $result->fetch_assoc()) {
       </div>
     </div>
     <!-- End Page Title -->
-
-    <!-- Starter Section Section -->
-    <section id="starter-section" class="starter-section section">
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Daftar Mobil</h2>
-        <div>
-          <span>Pilihan</span>
-          <span class="description-title">Unit Mobil</span>
-        </div>
-      </div>
-      <!-- End Section Title -->
 
         <!-- Car filter and listing start -->
         <section class="car-filter-section" aria-labelledby="carFilterTitle">

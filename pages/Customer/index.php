@@ -51,7 +51,7 @@ $nama = isset($_SESSION['nama']) ? $_SESSION['nama'] : 'nama';
         <ul>
           <li><a href="pages/customer/index.php" class="active">Home</a></li>
           <li><a href="listing.php">Daftar Mobil</a></li>
-          <li><a href="#riwayat booking">Riwayat Booking</a></li>
+          <li><a href="pages/customer/riwayat.php">Riwayat Booking</a></li>
           <li class="dropdown"><a href="#"><span>Akun</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="#">Edit Profile</a></li>

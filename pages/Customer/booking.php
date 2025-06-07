@@ -122,11 +122,17 @@
       min-width: 180px;
     }
 
-    /* Form Styles */
-    form {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.5rem 2rem;
+    /* Group for time inputs side by side */
+    .grouped-time-inputs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .grouped-time-inputs .form-group {
+      flex: 1 1 45%;
+      min-width: 180px;
     }
 
     /* Field wrapper for inputs and labels */
@@ -148,6 +154,8 @@
     input[type="email"],
     input[type="tel"],
     input[type="date"],
+    input[type="time"],
+    input[type="file"],
     select,
     textarea {
       font-family: 'Nunito Sans', sans-serif;
@@ -165,6 +173,8 @@
     input[type="email"]:focus,
     input[type="tel"]:focus,
     input[type="date"]:focus,
+    input[type="time"]:focus,
+    input[type="file"]:focus,
     select:focus,
     textarea:focus {
       outline: none;
@@ -183,7 +193,7 @@
       color: white;
       border: none;
       border-radius: 0.75rem;
-      cursor: pointer;
+      cursor: not-allowed;
       transition: background-color 0.3s ease;
       user-select: none;
       margin-top: 1.5rem;
@@ -191,8 +201,13 @@
       width: 150px;
     }
 
-    button[type="submit"]:hover,
-    button[type="submit"]:focus {
+    button[type="submit"]:enabled {
+      cursor: pointer;
+      background-color: #111827;
+    }
+
+    button[type="submit"]:enabled:hover,
+    button[type="submit"]:enabled:focus {
       background-color: #2563eb;
       outline: none;
     }
@@ -230,33 +245,47 @@
         <h1 id="formTitle">Form Rental Mobil</h1>
         <p class="description">Silakan isi formulir di bawah untuk menyewa mobil pilihan Anda dengan mudah dan cepat.</p>
 
-        <!-- Top info: Rental Duration removed as requested -->
-
-        <form id="rental-car-form" novalidate>
-          <div class="grouped-inputs">
-            <div class="form-group">
-              <label for="full-name">Nama Lengkap</label>
-              <input type="text" id="full-name" name="full-name" placeholder="Nama lengkap Anda" required autocomplete="name" />
-            </div>
-
-            <div class="form-group">
-              <label for="address">Alamat</label>
-              <input type="text" id="address" name="address" placeholder="Alamat lengkap Anda" required />
-            </div>
+        <!-- Nama Lengkap & Alamat side by side -->
+        <div class="grouped-inputs">
+          <div class="form-group">
+            <label for="full-name">Nama Lengkap</label>
+            <input type="text" id="full-name" name="full-name" placeholder="Nama lengkap Anda" required autocomplete="name" />
           </div>
 
-          <div class="grouped-inputs">
-            <div class="form-group">
-              <label for="phone-number">Nomor Telepon</label>
-              <input type="tel" id="phone-number" name="phone-number" placeholder="+62 812 3456 7890" required autocomplete="tel" />
-            </div>
+          <div class="form-group">
+            <label for="address">Alamat</label>
+            <textarea id="address" name="address" rows="2" placeholder="Alamat lengkap Anda" required></textarea>
+          </div>
+        </div>
 
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" id="email" name="email" placeholder="email@example.com" required autocomplete="email" />
-            </div>
+        <!-- Nomor Telepon & Email side by side -->
+        <div class="grouped-inputs">
+          <div class="form-group">
+            <label for="phone-number">Nomor Telepon</label>
+            <input type="tel" id="phone-number" name="phone-number" placeholder="+62 812 3456 7890" required autocomplete="tel" />
           </div>
 
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="email@example.com" required autocomplete="email" />
+          </div>
+        </div>
+
+        <!-- Jam Pengambilan & Jam Pengembalian side by side -->
+        <div class="grouped-time-inputs">
+          <div class="form-group">
+            <label for="pickup-time">Jam Pengambilan</label>
+            <input type="time" id="pickup-time" name="pickup-time" required />
+          </div>
+
+          <div class="form-group">
+            <label for="return-time">Jam Pengembalian</label>
+            <input type="time" id="return-time" name="return-time" required />
+          </div>
+        </div>
+
+        <!-- Tanggal Pengambilan & Tanggal Pengembalian side by side -->
+        <div class="grouped-inputs">
           <div class="form-group">
             <label for="pickup-date">Tanggal Pengambilan</label>
             <input type="date" id="pickup-date" name="pickup-date" required />
@@ -266,39 +295,54 @@
             <label for="return-date">Tanggal Pengembalian</label>
             <input type="date" id="return-date" name="return-date" required />
           </div>
+        </div>
 
-          <div class="form-group full-width">
-            <label>Fasilitas</label>
-            <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
-              <label><input type="checkbox" name="facilities" value="Supir" /> Supir</label>
-              <label><input type="checkbox" name="facilities" value="Lepas Kunci" /> Lepas Kunci</label>
-            </div>
+        <!-- KK and KTP Document inputs side by side -->
+        <div class="grouped-inputs">
+          <div class="form-group">
+            <label for="document-kk">Upload Dokumen KK<span aria-hidden="true" style="color: #e11d48;"> *</span></label>
+            <input type="file" id="document-kk" name="document-kk" accept=".jpg,.jpeg,.png,.pdf" required aria-describedby="docKKHelp" />
+            <small id="docKKHelp" style="color: #6b7280; font-size: 0.875rem;">Format: JPG, PNG, atau PDF</small>
           </div>
 
-          <div class="form-group full-width">
-            <label>Jaminan</label>
-            <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
-              <label><input type="checkbox" name="guarantee" value="Uang" /> Uang</label>
-              <label><input type="checkbox" name="guarantee" value="Motor" /> Motor</label>
-            </div>
+          <div class="form-group">
+            <label for="document-ktp">Upload Dokumen KTP<span aria-hidden="true" style="color: #e11d48;"> *</span></label>
+            <input type="file" id="document-ktp" name="document-ktp" accept=".jpg,.jpeg,.png,.pdf" required aria-describedby="docKTPHelp" />
+            <small id="docKTPHelp" style="color: #6b7280; font-size: 0.875rem;">Format: JPG, PNG, atau PDF</small>
           </div>
+        </div>
 
-          <div class="form-group full-width">
-            <label for="payment-method">Cara Pembayaran</label>
-            <select id="payment-method" name="payment-method" required>
-              <option value="" disabled selected>Pilih cara pembayaran</option>
-              <option value="Transfer">Transfer</option>
-              <option value="Cash">Cash</option>
-            </select>
+        <div class="form-group full-width">
+          <label>Fasilitas</label>
+          <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+            <label><input type="checkbox" name="facilities" value="Supir" /> Supir</label>
+            <label><input type="checkbox" name="facilities" value="Lepas Kunci" /> Lepas Kunci</label>
           </div>
+        </div>
 
-          <div class="form-group full-width">
-            <label for="rental-cost">Biaya Sewa</label>
-            <input type="text" id="rental-cost" name="rental-cost" readonly />
+        <div class="form-group full-width">
+          <label>Jaminan</label>
+          <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+            <label><input type="checkbox" name="guarantee" value="Uang" /> Uang</label>
+            <label><input type="checkbox" name="guarantee" value="Motor" /> Motor</label>
           </div>
+        </div>
 
-          <button type="submit">Sewa Sekarang</button>
-        </form>
+        <div class="form-group full-width">
+          <label for="payment-method">Cara Pembayaran</label>
+          <select id="payment-method" name="payment-method" required>
+            <option value="" disabled selected>Pilih cara pembayaran</option>
+            <option value="Transfer">Transfer</option>
+            <option value="Cash">Cash</option>
+          </select>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="rental-cost">Biaya Sewa</label>
+          <input type="text" id="rental-cost" name="rental-cost" readonly />
+        </div>
+
+        <button type="submit" id="submit-button" disabled>Sewa Sekarang</button>
       </div>
 
       <aside class="car-details-container" aria-label="Detail mobil yang dipilih">
@@ -375,9 +419,30 @@
       return Math.max(0, Math.floor(diffTime / oneDay) + 1);
     }
 
+    // Get form fields for validation and event handling
+    const form = document.getElementById('rental-car-form') || document.querySelector('form');
+    const submitButton = document.getElementById('submit-button');
+
+    // Inputs IDs to validate for completeness - exclude rental-cost because it's readonly and calculated
+    const requiredInputsSelectors = [
+      '#full-name',
+      '#address',
+      '#phone-number',
+      '#email',
+      '#pickup-time',
+      '#return-time',
+      '#pickup-date',
+      '#return-date',
+      '#document-kk',
+      '#document-ktp',
+      '#payment-method'
+    ];
+
+    // Date inputs for min date logic
     const pickupDateInput = document.getElementById('pickup-date');
     const returnDateInput = document.getElementById('return-date');
 
+    // Car details elements
     const carPhoto = document.getElementById('car-photo');
     const detailName = document.getElementById('detail-name');
     const detailPrice = document.getElementById('detail-price');
@@ -388,8 +453,7 @@
 
     const rentalCostInput = document.getElementById('rental-cost');
 
-    // Example: You may set the selected car here dynamically from backend or user input
-    // For demonstration, default to first car
+    // Example default selected car
     let selectedCar = carData[0];
     function showCarDetails(car) {
       selectedCar = car;
@@ -422,10 +486,15 @@
         returnDateInput.min = today;
       }
       updateRentalCost();
+      validateForm();
     });
 
-    returnDateInput.addEventListener('change', updateRentalCost);
+    returnDateInput.addEventListener('change', () => {
+      updateRentalCost();
+      validateForm();
+    });
 
+    // Compute rental cost based on selected car and days between dates
     function updateRentalCost() {
       if (!selectedCar || !pickupDateInput.value || !returnDateInput.value) {
         rentalCostInput.value = 'Rp0';
@@ -446,7 +515,51 @@
     // Initial render of car details
     showCarDetails(selectedCar);
 
-    // Form submission can be handled by you in backend
+    // Form validation function to enable/disable submit button
+    function validateForm() {
+      let allFilled = true;
+      for (const selector of requiredInputsSelectors) {
+        const element = document.querySelector(selector);
+        if (!element) {
+          allFilled = false;
+          break;
+        }
+        // File inputs check for file presence
+        if (element.type === 'file') {
+          if (!element.files || element.files.length === 0) {
+            allFilled = false;
+            break;
+          }
+        } else {
+          if (!element.value.trim() || !element.checkValidity()) {
+            allFilled = false;
+            break;
+          }
+        }
+      }
+      submitButton.disabled = !allFilled;
+    }
+
+    // Attach event listeners for validation on all required inputs
+    requiredInputsSelectors.forEach(selector => {
+      const input = document.querySelector(selector);
+      if (input) {
+        input.addEventListener('input', validateForm);
+        input.addEventListener('change', validateForm);
+      }
+    });
+
+    // Initial validate on page load
+    validateForm();
+
+    // Form submission handler (placeholder)
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      if (submitButton.disabled) return;
+      alert('Form submitted successfully!');
+      // Real submission logic goes here
+    });
+
   </script>
 </body>
 
