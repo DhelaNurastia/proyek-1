@@ -292,47 +292,82 @@ $permintaan_sewa = mysqli_fetch_assoc(mysqli_query($db, "SELECT COUNT(*) AS tota
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                     </div>
+                    <!-- Content Row -->
+                    <div class="row">
 
-                    <!-- Statistik Cards -->
-                    <div class="row text-center mb-4">
-                        <div class="col-md-3 mb-4">
-                            <div class="card shadow h-100">
-                                <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                    <div class="stat-value" style="font-size: 2rem;">🚗 <?= $total_unit ?></div>
-                                    <div class="stat-title">Jumlah Unit Mobil</div>
-                                    <a href="#">Lihat selengkapnya</a>
+                        <!-- Unit mobil card-->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Jumlah Unit Mobil</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $total_unit ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-car fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 mb-4">
-                            <div class="card shadow h-100">
-                                <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                    <div class="stat-value" style="font-size: 2rem;">✅ <?= $total_booking ?></div>
-                                    <div class="stat-title">Total Booking</div>
-                                    <a href="#">Lihat selengkapnya</a>
+
+                        <!-- Total booking card -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Total Booking</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $total_booking ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-bookmark fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 mb-4">
-                            <div class="card shadow h-100">
-                                <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                    <div class="stat-value" style="font-size: 2rem;">👥 <?= $total_customer ?></div>
-                                    <div class="stat-title">Total Customer</div>
-                                    <a href="#">Lihat selengkapnya</a>
+
+                        <!-- Total customer card -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Customer</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $total_customer ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 mb-4">
-                            <div class="card shadow h-100">
-                                <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                    <div class="stat-value" style="font-size: 2rem;">📩 <?= $permintaan_sewa ?></div>
-                                    <div class="stat-title">Permintaan Sewa Hari Ini</div>
-                                    <a href="#">Validasi Sekarang</a>
+
+                        <!-- Permintaan booking hari ini -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                Permintaan Sewa Masuk Hari Ini</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $permintaan_sewa ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Statistic Card -->
+                    <!-- Content Row End -->
+
 
                     <!-- Grafik dan pie chart -->
                     <div class="row">

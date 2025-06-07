@@ -1,6 +1,6 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    echo "Akses tidak diizinkan!";
+    echo "<script>alert('Akses tidak diizinkan!'); window.location.href='register.php';</script>";
     exit;
 }
 
@@ -14,31 +14,40 @@ $konfirmasi = $_POST['konfirmasi'] ?? '';
 
 // Validasi dasar
 if (empty($nama) || empty($email) || empty($password) || empty($konfirmasi)) {
-    echo "Semua field harus diisi!";
+    echo "<script>alert('Semua field harus diisi!'); window.location.href='register.php';</script>";
     exit;
 }
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo "Format email tidak valid!";
+    echo "<script>alert('Format email tidak valid!'); window.location.href='register.php';</script>";
     exit;
 }
 
 if (strlen($password) < 6) {
-    echo "Password minimal 6 karakter!";
+    echo "<script>alert('Password minimal 6 karakter!'); window.location.href='register.php';</script>";
     exit;
 }
 
 if ($password !== $konfirmasi) {
-    echo "Konfirmasi password tidak cocok!";
+    echo "<script>alert('Konfirmasi password tidak cocok!'); window.location.href='register.php';</script>";
     exit;
 }
 
 // Validasi file dokumen
 $allowed = ['jpg', 'jpeg', 'png', 'pdf'];
+$max_size = 2 * 1024 * 1024; // 2MB
+
 foreach (['ktp', 'sim', 'kk'] as $doc) {
     $ext = pathinfo($_FILES[$doc]['name'], PATHINFO_EXTENSION);
+    $size = $_FILES[$doc]['size'];
+
     if (!in_array(strtolower($ext), $allowed)) {
-        echo strtoupper($doc) . " harus berupa JPG, PNG, atau PDF!";
+        echo "<script>alert('" . strtoupper($doc) . " harus berupa JPG, PNG, atau PDF!'); window.location.href='register.php';</script>";
+        exit;
+    }
+
+    if ($size > $max_size) {
+        echo "<script>alert('" . strtoupper($doc) . " tidak boleh lebih dari 2MB!'); window.location.href='register.php';</script>";
         exit;
     }
 }
@@ -46,7 +55,7 @@ foreach (['ktp', 'sim', 'kk'] as $doc) {
 // Cek email sudah ada
 $cek = mysqli_query($db, "SELECT id FROM users WHERE email = '$email'");
 if (mysqli_num_rows($cek) > 0) {
-    echo "Email sudah terdaftar!";
+    echo "<script>alert('Email sudah terdaftar!'); window.location.href='register.php';</script>";
     exit;
 }
 
@@ -58,20 +67,20 @@ $query = mysqli_query($db, "INSERT INTO users (nama, email, password, role, blac
     VALUES ('$nama', '$email', '$hashed', 'customer', 0, '$status')");
 
 if (!$query) {
-    echo "Gagal menyimpan data user.";
+    echo "<script>alert('Gagal menyimpan data user.'); window.location.href='register.php';</script>";
     exit;
 }
 
 $id_user = mysqli_insert_id($db);
 
 // Upload file dokumen
-$upload_dir = '../../uploads/dokumen-user/';
+$upload_dir = '../../uploads/dokumen_user/';
 if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
 
 function uploadFile($name, $prefix)
 {
     global $upload_dir;
-    $filename = $prefix . "_" . time() . "_" . basename($_FILES[$name]['name']);
+    $filename = $prefix . "_" . time() . "_" . uniqid() . "." . pathinfo($_FILES[$name]['name'], PATHINFO_EXTENSION);
     $filepath = $upload_dir . $filename;
     move_uploaded_file($_FILES[$name]['tmp_name'], $filepath);
     return $filename;
@@ -85,5 +94,5 @@ $file_kk  = uploadFile('kk', 'kk');
 mysqli_query($db, "INSERT INTO dokumen_user (id_user, file_ktp, file_sim, file_kk)
     VALUES ('$id_user', '$file_ktp', '$file_sim', '$file_kk')");
 
-header("Location: login.php?register=success");
+echo "<script>alert('Pendaftaran berhasil! Silakan login.'); window.location.href='login.php';</script>";
 exit;
