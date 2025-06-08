@@ -1,179 +1,201 @@
-<?php
-require_once "../../config.php";
-require_once "../../koneksi.php";
-?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Daftar Akun</title>
-
-    <!-- Custom fonts for this template-->
-    <link href="/proyek-1/assets/template/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-    <!-- Custom styles for this template-->
-    <link href="../../assets/css/sb-admin-2.min.css" rel="stylesheet">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
             background-color: #f4f4f4;
         }
 
-        .card {
-            background-color: black;
+        .header {
+            background-color: #000957;
+            height: 350px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            color: white;
         }
 
-        .bg-register-image {
-            background: url('../../assets/img/logo.png') no-repeat center center;
-            background-size: contain; /* Mengatur ukuran logo agar sesuai */
+        .header img {
+            max-width: 150px;
+            margin-top: 2px;
         }
 
-        .form-box {
-            padding: 30px;
+        .header h3,
+        .header p {
+            margin: 10px 0 0;
         }
 
-        .form-box h2 {
+        .form-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            margin-top: -160px;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-container {
+            background: #fff;
+            padding: 30px 40px;
+            box-shadow: 0px 0px 20px 8px rgba(0, 9, 87, 0.4);
+            max-width: 600px;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 10px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .form-container:hover {
+            box-shadow: 0px 0px 25px 10px rgba(240, 231, 65, 0.6);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
             color: #000957;
-            margin-bottom: 20px;
         }
 
         .form-group {
-            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
         }
 
-        .form-box input {
+        .form-group .input-box {
+            width: 48%;
+            margin-bottom: 10px;
+        }
+
+        .input-box label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .input-box input[type="text"],
+        .input-box input[type="email"],
+        .input-box input[type="password"],
+        .input-box input[type="file"] {
             width: 100%;
             padding: 10px;
-            border-radius: 5px;
+            box-sizing: border-box;
             border: 1px solid #ccc;
-            transition: border-color 0.3s;
+            border-radius: 4px;
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
 
-        .form-box input:focus {
-            border-color: #344CB7;
+        .input-box input:focus {
+            border-color: #87cefa;
+            box-shadow: 0 0 6px #000957;
             outline: none;
         }
 
-        button {
-            background-color: #344CB7;
-            color: white;
+        .submit-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .submit-button button {
+            padding: 10px 20px;
+            background-color: #000957;
             border: none;
-            padding: 10px;
-            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            border-radius: 4px;
             cursor: pointer;
-            width: 100%;
-            transition: background-color 0.3s;
         }
 
-        button:hover {
-            background-color: #577BC1;
+        .submit-button button:hover {
+            background-color: rgba(240, 231, 65, 0.6);
+            color: #000;
         }
 
-        .error {
-            color: red;
-            font-size: 0.85em;
-            margin-top: 4px;
-            display: block;
-        }
-
-        input.error-input {
-            border: 2px solid red;
-        }
-
-        .file-description {
-            font-size: 0.85em;
-            color: #777;
-            margin-top: 4px;
-            display: none;
-        }
-
-        .file-input-container {
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 1rem;
+        .form-footer a{
+            color : #000957;
         }
     </style>
 </head>
 
-<body class="bg-gradient-primary">
-
-    <div class="container">
-
-        <div class="card o-hidden border-0 shadow-lg my-5">
-            <div class="card-body p-0">
-                <div class="row">
-                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
-                    <div class="col-lg-7">
-                        <div class="p-5">
-                            <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Buat Akun Baru!</h1>
-                            </div>
-                            <form action="register_proses.php" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
-                                <div class="form-group">
-                                    <input type="text" name="nama" id="nama" class="form-control form-control-user" placeholder="Username" />
-                                    <small class="error" id="err-nama"></small>
-                                </div>
-
-                                <div class="form-group">
-                                    <input type="email" name="email" id="email" class="form-control form-control-user" placeholder="Email" />
-                                    <small class="error" id="err-email"></small>
-                                </div>
-
-                                <div class="form-group">
-                                    <input type="password" name="password" id="password" class="form-control form-control-user" placeholder="Password" />
-                                    <small class="error" id="err-password"></small>
-                                </div>
-
-                                <div class="form-group">
-                                    <input type="password" name="konfirmasi" id="konfirmasi" class="form-control form-control-user" placeholder="Konfirmasi Password" />
-                                    <small class="error" id="err-konfirmasi"></small>
-                                </div>
-
-                                <div class="form-group file-input-container">
-                                    <label for="sim">Upload SIM:</label>
-                                    <input type="file" name="sim" id="sim" accept=".jpg,.jpeg,.png,.pdf" onchange="checkFileSize(this, 'err-sim', 'desc-sim')" />
-                                    <small class="file-description" id="desc-sim">Format: JPG, JPEG, PNG, PDF. Maksimal 2MB.</small>
-                                    <small class="error" id="err-sim"></small>
-                                </div>
-
-                                <div class="form-group file-input-container">
-                                    <label for="kk">Upload KK:</label>
-                                    <input type="file" name="kk" id="kk" accept=".jpg,.jpeg,.png,.pdf" onchange="checkFileSize(this, 'err-kk', 'desc-kk')" />
-                                    <small class="file-description" id="desc-kk">Format: JPG, JPEG, PNG, PDF. Maksimal 2MB.</small>
-                                    <small class="error" id="err-kk"></small>
-                                </div>
-
-                                <div class="form-group file-input-container">
-                                    <label for="ktp">Upload KTP:</label>
-                                    <input type="file" name="ktp" id="ktp" accept=".jpg,.jpeg,.png,.pdf" onchange="checkFileSize(this, 'err-ktp', 'desc-ktp')" />
-                                    <small class="file-description" id="desc-ktp">Format: JPG, JPEG, PNG, PDF. Maksimal 2MB.</small>
-                                    <small class="error" id="err-ktp"></small>
-                                </div>
-
-                                <button type="submit">Daftar</button>
-                            </form>
-
-                            <p class="text-center" style="margin-top: 1rem;">
-                                Sudah punya akun? <a href="login.php" style="color: #285ad7;">Login di sini</a>
-                            </p>
-                        </div>
+<body>
+    <div class="header">
+        <img src="../../assets/img/logo.png" alt="Logo">
+        <h3>yuk, mulai petualanganmu di sini!</h3>
+        <p>Pilih mobil, booking, dan gaskeun bareng kami!</p>
+    </div>
+    <div class="form-wrapper">
+        <div class="form-container">
+            <h2>Buat Akun Mu</h2>
+            <form action="register_proses.php" method="post" enctype="multipart/form-data" onsubmit=" return validateForm()">
+                <div class="form-group">
+                    <div class="input-box">
+                        <input type="text" name="nama" id="nama" placeholder="Username" />
+                        <small class="error" id="err-nama"></small>
+                    </div>
+                    <div class="input-box">
+                        <input type="email" name="email" id="email" placeholder="Email" />
+                        <small class="error" id="err-email"></small>
                     </div>
                 </div>
-            </div>
-        </div>
 
+                <div class="form-group">
+                    <div class="input-box">
+                        <input type="password" name="password" id="password" placeholder="Password" />
+                        <small class="error" id="err-password"></small>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" name="konfirmasi" id="konfirmasi" placeholder="Konfirmasi Password" />
+                        <small class="error" id="err-konfirmasi"></small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-box">
+                        <label for="kk">Upload KK</label>
+                        <input type="file" name="kk" id="kk" accept=".jpg,.jpeg,.png,.pdf"
+                            onchange="checkFileSize(this, 'err-kk', 'desc-kk')" />
+                        <small class="file-description" id="desc-kk">Format: JPG, JPEG, PNG, PDF. Maksimal 2MB.</small>
+                        <small class="error" id="err-kk"></small>
+                    </div>
+                    <div class="input-box">
+                        <label for="ktp">Upload KTP</label>
+                        <input type="file" name="ktp" id="ktp" accept=".jpg,.jpeg,.png,.pdf"
+                            onchange="checkFileSize(this, 'err-ktp', 'desc-ktp')" />
+                        <small class="file-description" id="desc-ktp">Format: JPG, JPEG, PNG, PDF. Maksimal 2MB.</small>
+                        <small class="error" id="err-ktp"></small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-box" style="width:100%">
+                        <label for="sim">Upload SIM</label>
+                        <input type="file" name="sim" id="sim" accept=".jpg,.jpeg,.png,.pdf"
+                            onchange="checkFileSize(this, 'err-sim', 'desc-sim')" />
+                        <small class="file-description" id="desc-sim">Format: JPG, JPEG, PNG, PDF. Maksimal 2MB.</small>
+                        <small class="error" id="err-sim"></small>
+                    </div>
+                </div>
+
+                <div class="submit-button">
+                    <button type="submit" aria-label="Daftar">Daftar</button>
+            </form>
+
+            <p class="form-footer">
+                Sudah punya akun? <a href="login.php">Login di sini</a>
+            </p>
+        </div>
+        </form>
+    </div>
     </div>
 
-    <!-- VALIDASI JAVASCRIPT -->
     <script>
         function validateForm() {
             let valid = true;
@@ -258,6 +280,12 @@ require_once "../../koneksi.php";
                     document.getElementById(descId).style.display = "block"; // Tampilkan keterangan
                 }
             }
+        }
+
+        function togglePassword(id) {
+            const passwordInput = document.getElementById(id);
+            const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+            passwordInput.setAttribute("type", type);
         }
     </script>
 </body>
