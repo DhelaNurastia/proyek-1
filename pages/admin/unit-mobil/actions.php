@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update"]) && isset($_
     // Proses upload foto jika ada
     if (!empty($_FILES["foto"]["name"])) {
         $nama_file = basename($_FILES["foto"]["name"]);
-        $target = __DIR__ . "/uploads/" . $nama_file;
+        $target = __DIR__ . "/../../../uploads/dokumen-user/foto-mobil/" . $nama_file;
         move_uploaded_file($_FILES["foto"]["tmp_name"], $target);
     } else {
         $nama_file = null;
@@ -71,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["create"])) {
     if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
         $tmp_name = $_FILES['foto']['tmp_name'];
         $foto = time() . '_' . basename($_FILES['foto']['name']);
-        move_uploaded_file($tmp_name, __DIR__ . '/uploads/' . $foto);
+        move_uploaded_file($tmp_name, __DIR__ . "/../../../uploads/dokumen-user/foto-mobil/" . $foto);
     }
 
     // Simpan ke database

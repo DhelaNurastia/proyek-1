@@ -7,19 +7,26 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 require_once '../../koneksi.php';
 
 // Ambil data form
-$nama      = $_POST['nama'] ?? '';
-$email     = $_POST['email'] ?? '';
-$password  = $_POST['password'] ?? '';
-$konfirmasi = $_POST['konfirmasi'] ?? '';
+$nama_lengkap = $_POST['nama_lengkap'] ?? '';
+$telepon      = $_POST['telepon'] ?? '';
+$nama         = $_POST['nama'] ?? '';
+$email        = $_POST['email'] ?? '';
+$password     = $_POST['password'] ?? '';
+$konfirmasi   = $_POST['konfirmasi'] ?? '';
 
 // Validasi dasar
-if (empty($nama) || empty($email) || empty($password) || empty($konfirmasi)) {
+if (empty($nama_lengkap) || empty($telepon) || empty($nama) || empty($email) || empty($password) || empty($konfirmasi)) {
     echo "<script>alert('Semua field harus diisi!'); window.location.href='register.php';</script>";
     exit;
 }
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     echo "<script>alert('Format email tidak valid!'); window.location.href='register.php';</script>";
+    exit;
+}
+
+if (!preg_match('/^[0-9]+$/', $telepon)) {
+    echo "<script>alert('Nomor telepon hanya boleh angka!'); window.location.href='register.php';</script>";
     exit;
 }
 
@@ -63,8 +70,8 @@ if (mysqli_num_rows($cek) > 0) {
 $hashed = password_hash($password, PASSWORD_DEFAULT);
 $status = "belum diverifikasi";
 
-$query = mysqli_query($db, "INSERT INTO users (nama, email, password, role, blacklist, status_verifikasi)
-    VALUES ('$nama', '$email', '$hashed', 'customer', 0, '$status')");
+$query = mysqli_query($db, "INSERT INTO users (nama_lengkap, telepon, nama, email, password, role, blacklist, status_verifikasi)
+    VALUES ('$nama_lengkap', '$telepon', '$nama', '$email', '$hashed', 'customer', 0, '$status')");
 
 if (!$query) {
     echo "<script>alert('Gagal menyimpan data user.'); window.location.href='register.php';</script>";
@@ -74,7 +81,7 @@ if (!$query) {
 $id_user = mysqli_insert_id($db);
 
 // Upload file dokumen
-$upload_dir = '../../uploads/dokumen_user/';
+$upload_dir = '../../uploads/dokumen-user/';
 if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
 
 function uploadFile($name, $prefix)
@@ -96,3 +103,4 @@ mysqli_query($db, "INSERT INTO dokumen_user (id_user, file_ktp, file_sim, file_k
 
 echo "<script>alert('Pendaftaran berhasil! Silakan login.'); window.location.href='login.php';</script>";
 exit;
+

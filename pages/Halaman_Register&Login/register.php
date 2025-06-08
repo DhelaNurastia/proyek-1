@@ -119,8 +119,8 @@
             color: #000;
         }
 
-        .form-footer a{
-            color : #000957;
+        .form-footer a {
+            color: #000957;
         }
     </style>
 </head>
@@ -137,12 +137,23 @@
             <form action="register_proses.php" method="post" enctype="multipart/form-data" onsubmit=" return validateForm()">
                 <div class="form-group">
                     <div class="input-box">
+                        <input type="text" name="nama_lengkap" id="nama_lengkap" placeholder="Nama Lengkap" />
+                        <small class="error" id="err-nama_lengkap"></small>
+                    </div>
+                    <div class="input-box">
                         <input type="text" name="nama" id="nama" placeholder="Username" />
                         <small class="error" id="err-nama"></small>
                     </div>
+                </div>
+
+                <div class="form-group">
                     <div class="input-box">
                         <input type="email" name="email" id="email" placeholder="Email" />
                         <small class="error" id="err-email"></small>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" name="telepon" id="telepon" placeholder="Nomor Telepon" />
+                        <small class="error" id="err-telepon"></small>
                     </div>
                 </div>
 
@@ -185,7 +196,7 @@
                 </div>
 
                 <div class="submit-button">
-                    <button type="submit" aria-label="Daftar">Daftar</button>
+                    <button type="submit" aria-label="Daftar" href="login.php">Daftar</button>
             </form>
 
             <p class="form-footer">
@@ -200,8 +211,10 @@
         function validateForm() {
             let valid = true;
 
+            const nama_lengkap = document.getElementById("nama_lengkap");
             const nama = document.getElementById("nama");
             const email = document.getElementById("email");
+            const telepon = document.getElementById("telepon");
             const password = document.getElementById("password");
             const konfirmasi = document.getElementById("konfirmasi");
             const sim = document.getElementById("sim");
@@ -212,8 +225,13 @@
             document.querySelectorAll(".error").forEach(el => el.textContent = "");
             document.querySelectorAll("input").forEach(el => el.classList.remove("error-input"));
 
+            if (nama_lengkap.value.trim() === "") {
+                showError(nama_lengkap, "Nama lengkap harus diisi");
+                valid = false;
+            }
+
             if (nama.value.trim() === "") {
-                showError(nama, "Nama lengkap harus diisi");
+                showError(nama, "Username harus diisi");
                 valid = false;
             }
 
@@ -222,6 +240,14 @@
                 valid = false;
             } else if (!validateEmail(email.value)) {
                 showError(email, "Format email tidak valid");
+                valid = false;
+            }
+
+            if (telepon.value.trim() === "") {
+                showError(telepon, "Nomor telepon harus diisi");
+                valid = false;
+            } else if (!/^[0-9]+$/.test(telepon.value)) {
+                showError(telepon, "Nomor telepon hanya boleh angka");
                 valid = false;
             }
 
@@ -288,6 +314,7 @@
             passwordInput.setAttribute("type", type);
         }
     </script>
+
 </body>
 
 </html>

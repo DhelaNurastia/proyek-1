@@ -12,26 +12,103 @@ require_once "../../../koneksi.php";
     <link href="../../../assets/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="../../../assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <style>
-        .card {
-            border-radius: 15px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            margin-bottom: 20px;
+        
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            justify-content: center;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        .custom-card {
+            background-color: #0f172a;
+            color: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+            border: 1px solid #1e293b;
+            width: 320px;
         }
 
-        .card-img-top {
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
+        .custom-card img {
+            width: 100%;
             height: 200px;
             object-fit: cover;
+            background-color: #1e293b;
         }
 
-        .badge {
-            font-size: 0.9rem;
+        .custom-card .card-body {
+            padding: 20px;
+        }
+
+        .custom-card .card-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .custom-card .card-row {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            margin-bottom: 8px;
+            gap: 24px;
+        }
+
+        .custom-card .card-row span {
+            display: flex;
+            align-items: center;
+        }
+
+        .custom-card .card-row i {
+            margin-right: 6px;
+            min-width: 16px;
+            text-align: center;
+        }
+
+        .status-label {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            background-color: #10b981;
+            color: white;
+        }
+
+        .status-disewa {
+            background-color: #f59e0b;
+        }
+
+        .status-perbaikan {
+            background-color: #ef4444;
+        }
+
+        .custom-card .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .custom-card .btn-action {
+            flex: 1;
+            margin: 0 4px;
+            text-align: center;
+            background-color: #334155;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s ease;
+        }
+
+        .custom-card .btn-action:hover {
+            background-color: #1e293b;
         }
     </style>
 </head>
@@ -56,27 +133,38 @@ require_once "../../../koneksi.php";
                             JOIN jenis_mobil j ON u.jenis_mobil_id = j.id
                             ORDER BY u.id DESC
                         ";
+
                         $result = mysqli_query($db, $query);
                         while ($row = mysqli_fetch_assoc($result)) :
+                            $statusClass = match ($row['status']) {
+                                'disewa' => 'status-label status-disewa',
+                                'perbaikan' => 'status-label status-perbaikan',
+                                default => 'status-label'
+                            };
                         ?>
-                            <div class="col-md-4">
-                                <div class="card shadow">
-                                    <img src="./uploads/<?= $row['foto'] ?>" alt="Foto Mobil" class="card-img-top">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><?= htmlspecialchars($row['nama_mobil']) ?></h5>
-                                        <p class="card-text">
-                                            <strong>Plat Nomor:</strong> <?= htmlspecialchars($row['plat_nomor']) ?><br>
-                                            <strong>Warna:</strong> <?= htmlspecialchars($row['warna']) ?><br>
-                                            <strong>Tahun Beli:</strong> <?= htmlspecialchars($row['tahun_beli']) ?><br>
-                                            <strong>Transmisi:</strong> <?= htmlspecialchars($row['transmisi']) ?><br>
-                                            <strong>Harga Sewa:</strong> Rp <?= number_format($row['harga_sewa']) ?><br>
-                                            <strong>Jumlah Kursi:</strong> <?= $row['jumlah_kursi'] ?> Kursi<br>
-                                            <span class="badge badge-info"><?= ucfirst($row['status']) ?></span>
-                                        </p>
-                                        <a href="edit.php?id=<?= $row['id'] ?>" class="btn btn-secondary"><i class="fas fa-edit"></i> Edit</a>
-                                        <form action="./actions.php" method="post" style="display:inline;">
+                            <div class="custom-card">
+                                <img src="../../../uploads/dokumen-user/foto-mobil/<?= $row['foto'] ?>" alt="Foto mobil <?= htmlspecialchars($row['nama_mobil']) ?>">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?= htmlspecialchars($row['nama_mobil']) ?></h5>
+                                    <span class="<?= $statusClass ?>">
+                                        <?= $row['status'] === 'tersedia' ? 'Ready' : ($row['status'] === 'disewa' ? 'Disewa' : 'Perbaikan') ?>
+                                    </span>
+                                    <div class="card-row">
+                                        <span><i class="fas fa-money-bill-wave"></i> Rp<?= number_format($row['harga_sewa']) ?></span>
+                                        <span><i class="fas fa-cogs"></i> <?= htmlspecialchars($row['transmisi']) ?></span>
+                                    </div>
+                                    <div class="card-row">
+                                        <span><i class="fas fa-users"></i> <?= $row['jumlah_kursi'] ?> Kursi</span>
+                                        <span><i class="fas fa-car"></i> <?= htmlspecialchars($row['plat_nomor']) ?></span>
+                                    </div>
+                                    <div class="card-row">
+                                        <span><i class="fas fa-palette"></i> <?= htmlspecialchars($row['warna']) ?></span>
+                                    </div>
+                                    <div class="action-buttons">
+                                        <a href="edit.php?id=<?= $row['id'] ?>" class="btn-action"><i class="fas fa-edit"></i> Edit</a>
+                                        <form action="actions.php" method="post" style="display:inline;">
                                             <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                                            <button type="submit" name="delete" class="btn btn-danger" onclick="return confirm('Hapus unit mobil ini?')">
+                                            <button type="submit" name="delete" class="btn-action" onclick="return confirm('Hapus unit mobil ini?')">
                                                 <i class="fas fa-trash"></i> Hapus
                                             </button>
                                         </form>
@@ -103,3 +191,5 @@ require_once "../../../koneksi.php";
 </body>
 
 </html>
+
+
