@@ -280,7 +280,7 @@ while ($row = $result->fetch_assoc()) {
               <i class="bi bi-chevron-down toggle-dropdown"></i
             ></a>
             <ul>
-              <li><a href="#">Profile</a></li>
+              <li><a href="profile.php">Profile</a></li>
               <li><a href="#">Status Blacklist</a></li>
               <li><a href="../Halaman_Register&Login/logout.php">LogOut</a></li>
             </ul>
@@ -431,8 +431,8 @@ while ($row = $result->fetch_assoc()) {
   <script src="<?= $base_url ?>assets/template/home/Strategy/assets/js/main.js"></script>
 
   <script>
-  const cars = <?php echo json_encode($cars); ?>;
-  console.log(cars); // Debugging sementara
+  const cars = <?= json_encode($cars) ?>;
+  const baseURL = <?= json_encode($base_url) ?>;
 
   function formatCurrency(value) {
     return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(value);
@@ -450,7 +450,6 @@ while ($row = $result->fetch_assoc()) {
   pickupInput.value = todayStr;
   returnInput.value = todayStr;
 
-  // Saat pickup-date berubah, set minimal return-date = pickup-date
   pickupInput.addEventListener('change', () => {
     returnInput.min = pickupInput.value;
     if (returnInput.value < pickupInput.value) {
@@ -473,13 +472,14 @@ while ($row = $result->fetch_assoc()) {
     const transmission = transmissionSelect.value;
 
     if (!pickupDate || !returnDate) {
-      carListContainer.innerHTML = `<p class=\"no-results\">Please select both Pickup and Return dates.</p>`;
+      carListContainer.innerHTML = `<p class="no-results">Please select both Pickup and Return dates.</p>`;
       return;
     }
-    if (pickupDate > returnDate) {
-      carListContainer.innerHTML = `<p class=\"no-results\">Return date must be on or after Pickup date.</p>`;
+    if (pickupDate >= returnDate) {
+      carListContainer.innerHTML = `<p class="no-results">Return date must be after Pickup date.</p>`;
       return;
     }
+
 
     const filtered = cars.filter(car => {
       if (car.availableFrom > pickupDate || car.availableTo < returnDate) return false;
@@ -489,27 +489,30 @@ while ($row = $result->fetch_assoc()) {
     });
 
     if (filtered.length === 0) {
-      carListContainer.innerHTML = `<p class=\"no-results\">No cars match your search criteria.</p>`;
+      carListContainer.innerHTML = `<p class="no-results">No cars match your search criteria.</p>`;
       return;
     }
 
     carListContainer.innerHTML = filtered.map(car => {
       const statusClass = 'available';
       const statusText = 'Available';
-      const foto = car.foto && car.foto.trim() !== '' ? `<?= $base_url ?>assets/foto_mobil/${car.foto}` : 'https://via.placeholder.com/320x180?text=No+Image';
+      const foto = car.foto && car.foto.trim() !== ''
+        ? `${baseURL}assets/foto_mobil/${car.foto}`
+        : 'https://via.placeholder.com/320x180?text=No+Image';
+
       return `
-        <article class=\"car-card\" tabindex=\"0\">
+        <article class="car-card" tabindex="0">
           <img src="${foto}" alt="${car.unitName}" style="width:100%; border-radius: 0.5rem; margin-bottom: 1rem; object-fit: cover; height: 180px;">
-          <h4 class=\"car-name\">${car.unitName}</h4>
-            <div class="car-info-row">
-              <div class="car-info-item"><i class="bi bi-cash-coin"></i><span>${formatCurrency(car.pricePer12h)}</span></div>
-              <div class="car-info-item"><i class="bi bi-gear"></i><span>${car.transmisi}</span></div>
-              <div class="car-info-item"><i class="bi bi-people"></i><span>${car.seats} seats</span></div>
-              <div class="car-info-item"><i class="bi bi-card-text"></i><span>${car.plat_nomor}</span></div>
-              <div class="car-info-item"><i class="bi bi-palette"></i><span>${car.warna}</span></div>
-              <div class="car-info-item"><span class="car-status ${statusClass}">${statusText}</span></div>
-            </div>
-          <a href="booking.php?id=${car.id}" class="rent-button">Rental Sekarang</a>
+          <h4 class="car-name">${car.unitName}</h4>
+          <div class="car-info-row">
+            <div class="car-info-item"><i class="bi bi-cash-coin"></i><span>${formatCurrency(car.pricePer12h)}</span></div>
+            <div class="car-info-item"><i class="bi bi-gear"></i><span>${car.transmisi}</span></div>
+            <div class="car-info-item"><i class="bi bi-people"></i><span>${car.seats} seats</span></div>
+            <div class="car-info-item"><i class="bi bi-card-text"></i><span>${car.plat_nomor}</span></div>
+            <div class="car-info-item"><i class="bi bi-palette"></i><span>${car.warna}</span></div>
+            <div class="car-info-item"><span class="car-status ${statusClass}">${statusText}</span></div>
+          </div>
+          <a href="booking.php?unit_mobil_id=${car.id}" class="btn btn-primary">Rental Sekarang</a>
         </article>
       `;
     }).join('');

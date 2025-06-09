@@ -126,7 +126,7 @@ $base_url = '/proyek-1/';
           <li><a href="riwayat.php" class="active">Riwayat Booking</a></li>
           <li class="dropdown"><a href="#"><span>Akun</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
-              <li><a href="#">Profile</a></li>
+              <li><a href="profile.php">Profile</a></li>
               <li><a href="#">Status Blacklist</a></li>
               <li><a href="../Halaman_Register&Login/logout.php">LogOut</a></li>
             </ul>

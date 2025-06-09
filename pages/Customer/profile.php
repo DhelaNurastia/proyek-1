@@ -1,5 +1,5 @@
-<?php
-$base_url = '/proyek-1/';
+<?php 
+$base_url = '/proyek-1/'
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +13,7 @@ $base_url = '/proyek-1/';
   <meta name="keywords" content="" />
 
   <!-- Favicons -->
-  <link href="<?= $base_url ?>assets/image/favicon.jpeg" rel="icon" />
+  <link href="assets/img/favicon.png" rel="icon" />
   <link href="<?= $base_url ?>assets/template/home/Strategy/assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
 
   <!-- Fonts -->
@@ -67,18 +67,7 @@ $base_url = '/proyek-1/';
       margin-bottom: 1rem;
     }
 
-    /* Override color for Personal Details and Documents card titles */
-    .info-cards .card:nth-child(1) > h3,
-    .info-cards .card:nth-child(2) > h3 {
-      color: #111827;
-    }
-
-    .profile-section p {
-      font-size: 1.125rem;
-      margin-bottom: 1rem;
-      line-height: 1.5;
-    }
-
+    /* Profile Hero with two buttons side by side */
     .profile-hero {
       text-align: center;
       max-width: 600px;
@@ -88,6 +77,10 @@ $base_url = '/proyek-1/';
       border-bottom: 1px solid rgba(255 255 255 / 0.15);
       background: transparent;
       box-shadow: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
     }
 
     .profile-avatar {
@@ -96,7 +89,7 @@ $base_url = '/proyek-1/';
       border-radius: 50%;
       object-fit: cover;
       box-shadow: 0 8px 20px rgba(255 255 255 / 0.3);
-      margin-bottom: 1.25rem;
+      margin-bottom: 0;
       background: transparent;
       border: 2px solid #fff;
     }
@@ -105,11 +98,17 @@ $base_url = '/proyek-1/';
       font-size: 1.25rem;
       font-weight: 600;
       color: #ddd;
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.0rem;
     }
 
     .profile-cta {
-      margin-top: 1.75rem;
+      margin-top: 0;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+      max-width: 300px;
     }
 
     .btn-primary {
@@ -123,6 +122,8 @@ $base_url = '/proyek-1/';
       cursor: pointer;
       transition: background-color 0.3s ease;
       text-align: center;
+      flex: 1 1 auto;
+      min-width: 120px;
     }
 
     .btn-primary:hover,
@@ -137,7 +138,8 @@ $base_url = '/proyek-1/';
       gap: 2rem;
       margin-top: 3rem;
       background: transparent;
-      color: #111827; /* text inside cards dark */
+      /* Override text color to white inside cards */
+      color: #fff;
     }
 
     /* Cards with background and shadow */
@@ -150,8 +152,21 @@ $base_url = '/proyek-1/';
       flex-direction: column;
       gap: 1rem;
       transition: box-shadow 0.3s ease;
-      color: #111827; /* override text to dark */
+      color: #fff; /* Set white text for all text in these cards */
     }
+
+    /* Override card text color to black */
+    .card h3,
+    .card label,
+    .card div.value,
+    .document-list,
+    .document-list li {
+      color: #fff !important;
+    }
+
+    /* But personal detail and document cards text white */
+    /* Since the user wants all text in Personal Details and Documents cards white */
+    /* We already set card text to white */
 
     .card:hover {
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
@@ -159,15 +174,9 @@ $base_url = '/proyek-1/';
 
     .card label {
       font-weight: 600;
-      color: #6b7280;
       font-size: 0.875rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-    }
-
-    .card div.value {
-      font-size: 1.25rem;
-      font-weight: 600;
     }
 
     .document-list {
@@ -175,19 +184,30 @@ $base_url = '/proyek-1/';
       padding-left: 0;
       margin: 0;
       background: transparent;
-      color: #111827; /* dark text inside card */
     }
 
     .document-list li {
       font-size: 1.125rem;
       font-weight: 600;
       padding: 0.35rem 0;
-      border-bottom: 1px solid #e5e7eb;
-      color: #111827;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
 
     .document-list li:last-child {
       border-bottom: none;
+    }
+
+    .rental-history {
+      margin-top: 3rem;
+      color: #111827; /* rental history text dark */
+    }
+
+    .rental-history h2 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #111827;
     }
 
     .rental-list {
@@ -198,12 +218,11 @@ $base_url = '/proyek-1/';
       grid-template-columns: 1fr;
       gap: 1.5rem;
       background: transparent;
-      color: #111827; /* text dark inside cards */
     }
 
     /* Rental history cards with background */
     .rental-item {
-      background: #374151;
+      background: #f9fafb;
       border-radius: 0.75rem;
       padding: 1.5rem 2rem;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -338,6 +357,10 @@ $base_url = '/proyek-1/';
         width: 100px;
         height: 100px;
       }
+
+      .profile-hero {
+        max-width: 100%;
+      }
     }
   </style>
 </head>
@@ -400,6 +423,21 @@ $base_url = '/proyek-1/';
     </div>
     <!-- End Page Title -->
 
+    <!-- Starter Section Section -->
+    <section id="starter-section" class="starter-section section">
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Starter Section</h2>
+        <div><span>Check Our</span> <span class="description-title">Starter Section</span></div>
+      </div>
+      <!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up">
+        <p>Use this page as a starter for your own custom pages.</p>
+      </div>
+    </section>
+    <!-- /Starter Section Section -->
+
     <!-- Profile Section Inserted Below Starter Section -->
     <section class="profile-section container" aria-label="User Profile">
       <section class="profile-hero" aria-label="User Profile Introduction">
@@ -411,6 +449,7 @@ $base_url = '/proyek-1/';
         </p>
         <div class="profile-cta">
           <button class="btn-primary" aria-label="Edit Profile">Edit Profile</button>
+          <button class="btn-primary" aria-label="View Rental History" id="btnRentalHistory">Rental History</button>
         </div>
       </section>
 
@@ -440,34 +479,6 @@ $base_url = '/proyek-1/';
             </ul>
           </article>
         </div>
-      </section>
-
-      <section class="rental-history" aria-label="Rental History">
-        <h2>Rental History</h2>
-
-        <ul class="rental-list">
-          <li class="rental-item" tabindex="0" role="listitem">
-            <div class="rental-details">
-              <div class="car-model">Toyota Highlander 2022</div>
-              <div class="rental-date">March 10, 2024 - March 15, 2024</div>
-            </div>
-            <div class="rental-status">Completed</div>
-          </li>
-          <li class="rental-item" tabindex="0" role="listitem">
-            <div class="rental-details">
-              <div class="car-model">Honda CR-V 2023</div>
-              <div class="rental-date">April 2, 2024 - April 7, 2024</div>
-            </div>
-            <div class="rental-status pending">Pending</div>
-          </li>
-          <li class="rental-item" tabindex="0" role="listitem">
-            <div class="rental-details">
-              <div class="car-model">BMW X5 2021</div>
-              <div class="rental-date">June 20, 2023 - June 25, 2023</div>
-            </div>
-            <div class="rental-status">Completed</div>
-          </li>
-        </ul>
       </section>
 
       <section class="contact-section" aria-label="Contact Form">
@@ -565,6 +576,13 @@ $base_url = '/proyek-1/';
 
   <!-- Main JS File -->
   <script src="<?= $base_url ?>assets/template/home/Strategy/assets/js/main.js"></script>
+
+  <script>
+    // Smooth scroll to rental history
+    document.getElementById('btnRentalHistory').addEventListener('click', function () {
+      document.getElementById('rentalHistorySection').scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
 </body>
 
 </html>

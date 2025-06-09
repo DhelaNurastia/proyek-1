@@ -358,55 +358,6 @@
   </main>
 
   <script>
-    // Car data with photos and details (example, replace with your backend dynamic data)
-    const carData = [
-      {
-        name: 'Avanza',
-        pricePer12h: 150000,
-        transmission: 'Manual',
-        seats: 7,
-        plate: 'B 1234 ABC',
-        color: 'Putih',
-        photo: 'https://cdn.pixabay.com/photo/2014/04/03/10/42/car-311293_1280.png',
-      },
-      {
-        name: 'Jazz',
-        pricePer12h: 200000,
-        transmission: 'Automatic',
-        seats: 5,
-        plate: 'D 5678 XYZ',
-        color: 'Hitam',
-        photo: 'https://cdn.pixabay.com/photo/2013/07/13/12/46/car-160849_1280.png',
-      },
-      {
-        name: 'Xpander',
-        pricePer12h: 180000,
-        transmission: 'Manual',
-        seats: 7,
-        plate: 'F 4321 QWE',
-        color: 'Silver',
-        photo: 'https://cdn.pixabay.com/photo/2014/04/02/11/25/car-304664_1280.png',
-      },
-      {
-        name: 'Mobilio',
-        pricePer12h: 190000,
-        transmission: 'Automatic',
-        seats: 7,
-        plate: 'L 8765 RTY',
-        color: 'Merah',
-        photo: 'https://cdn.pixabay.com/photo/2019/06/18/16/05/red-4287363_1280.png',
-      },
-      {
-        name: 'Ertiga',
-        pricePer12h: 160000,
-        transmission: 'Manual',
-        seats: 7,
-        plate: 'B 9876 ZXC',
-        color: 'Biru',
-        photo: 'https://cdn.pixabay.com/photo/2017/01/06/19/15/car-1958926_1280.png',
-      },
-    ];
-
     // Utility: format number as IDR currency
     function formatCurrency(value) {
       return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(value);
@@ -561,6 +512,94 @@
     });
 
   </script>
-</body>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const userId = <?php echo $_SESSION['user_id']; ?>;
+  const unitMobilId = <?php echo $_GET['unit_mobil_id']; ?>;
+  let hargaSewa = 0;
+
+  // Load info user
+  $.get('booking_backend.php', { id_user: userId }, function (data) {
+    const user = JSON.parse(data);
+    $('#infoUser').html(`
+      <p>Nama: ${user.nama}</p>
+      <p>Alamat: ${user.alamat}</p>
+      <p>No. Telepon: ${user.telepon}</p>
+      <p>Email: ${user.email}</p>
+      <p>KK: <a href="uploads/dokumen-user/${user.file_kk}" target="_blank">Lihat</a></p>
+      <p>KTP: <a href="uploads/dokumen-user/${user.file_ktp}" target="_blank">Lihat</a></p>
+    `);
+  });
+
+  // Load info mobil dan simpan harga sewa
+  $.get('booking_backend.php', { unit_mobil_id: unitMobilId }, function (data) {
+    const mobil = JSON.parse(data);
+    hargaSewa = mobil.harga_sewa;
+    $('#infoMobil').html(`
+      <p>Nama Mobil: ${mobil.nama}</p>
+      <p>Harga Sewa per 12 jam: Rp${mobil.harga_sewa}</p>
+      <p>Plat Nomor: ${mobil.plat_nomor}</p>
+      <p>Warna: ${mobil.warna}</p>
+      <p>Transmisi: ${mobil.transmisi}</p>
+      <p>Tahun Beli: ${mobil.tahun_beli}</p>
+    `);
+  });
+
+  // Fungsi untuk hitung total biaya dan validasi waktu
+  async function hitungBiaya() {
+    const tglAwal = document.getElementById('tanggal_pengambilan').value;
+    const jamAwal = document.getElementById('jam_pengambilan').value;
+    const tglAkhir = document.getElementById('tanggal_pengembalian').value;
+    const jamAkhir = document.getElementById('jam_pengembalian').value;
+    const fasilitas = document.getElementById('fasilitas').value;
+    const unitMobilId = document.getElementById('unit_mobil_id').value;
+
+    if (tglAwal && jamAwal && tglAkhir && jamAkhir && unitMobilId) {
+      const start = new Date(`${tglAwal}T${jamAwal}`);
+      const end = new Date(`${tglAkhir}T${jamAkhir}`);
+
+      if (end <= start) {
+        alert("Tanggal atau jam pengembalian harus setelah pengambilan.");
+        return;
+      }
+
+      const durasiJam = Math.ceil((end - start) / (1000 * 60 * 60));
+      const periode12Jam = Math.ceil(durasiJam / 12);
+
+      // Ambil harga sewa dari server
+      const response = await fetch(`get_harga.php?unit_id=${unitMobilId}`);
+      const data = await response.json();
+      const hargaPer12Jam = parseInt(data.harga);
+
+      let totalBiaya = hargaPer12Jam * periode12Jam;
+
+      if (fasilitas === "dengan supir") {
+        totalBiaya += 250000;
+      }
+
+      document.getElementById('total_biaya').value = totalBiaya;
+    }
+  }
+
+  document.getElementById('tanggal_pengambilan').addEventListener('change', hitungBiaya);
+  document.getElementById('jam_pengambilan').addEventListener('change', hitungBiaya);
+  document.getElementById('tanggal_pengembalian').addEventListener('change', hitungBiaya);
+  document.getElementById('jam_pengembalian').addEventListener('change', hitungBiaya);
+  document.getElementById('fasilitas').addEventListener('change', hitungBiaya);
+
+  const form = document.getElementById('bookingForm');
+  const submitButton = form.querySelector('button[type="submit"]');
+
+  if (form && submitButton) {
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      if (submitButton.disabled) return;
+      alert('Form submitted successfully!');
+      form.submit();
+    });
+  }
+});
+</script>
+</body>
 </html>
