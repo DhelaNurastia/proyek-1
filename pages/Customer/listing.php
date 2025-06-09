@@ -333,8 +333,7 @@ while ($row = $result->fetch_assoc()) {
             </div>
           </form>
           <p id="carFilterDesc" class="visually-hidden">
-            Filter the car listing by pickup &amp; return date, unit name, and
-            transmission type
+            Filter daftar mobil berdasarkan tanggal pengambilan & pengembalian, nama unit, dan jenis transmisi.
           </p>
 
           <div id="car-list" class="car-list" aria-live="polite" aria-relevant="all"></div>
@@ -472,11 +471,11 @@ while ($row = $result->fetch_assoc()) {
     const transmission = transmissionSelect.value;
 
     if (!pickupDate || !returnDate) {
-      carListContainer.innerHTML = `<p class="no-results">Please select both Pickup and Return dates.</p>`;
+      carListContainer.innerHTML = `<p class="no-results">Silakan pilih tanggal Pengambilan dan Pengembalian.</p>`;
       return;
     }
     if (pickupDate >= returnDate) {
-      carListContainer.innerHTML = `<p class="no-results">Return date must be after Pickup date.</p>`;
+      carListContainer.innerHTML = `<p class="no-results">Tanggal pengembalian harus setelah tanggal pengambilan.</p>`;
       return;
     }
 

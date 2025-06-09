@@ -163,7 +163,7 @@
                 </div>
 
                 <div class="submit-button">
-                    <button type="submit" aria-label="Daftar">Daftar</button>
+                    <button type="submit" aria-label="Daftar">Masuk</button>
             </form>
 
             <p style="text-align: center; margin-top: 1rem;">
