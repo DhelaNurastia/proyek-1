@@ -464,58 +464,72 @@ while ($row = $result->fetch_assoc()) {
     car.availableTo = future.toISOString().split("T")[0];
   });
 
-  function filterCars() {
-    const pickupDate = pickupInput.value;
-    const returnDate = returnInput.value;
-    const unitName = unitNameInput.value.trim().toLowerCase();
-    const transmission = transmissionSelect.value;
+function filterCars() {
+  const pickupDate = pickupInput.value;
+  const returnDate = returnInput.value;
+  const unitName = unitNameInput.value.trim().toLowerCase();
+  const transmission = transmissionSelect.value;
 
-    if (!pickupDate || !returnDate) {
-      carListContainer.innerHTML = `<p class="no-results">Silakan pilih tanggal Pengambilan dan Pengembalian.</p>`;
-      return;
-    }
-    if (pickupDate >= returnDate) {
-      carListContainer.innerHTML = `<p class="no-results">Tanggal pengembalian harus setelah tanggal pengambilan.</p>`;
-      return;
-    }
+  let filtered = cars;
 
-
-    const filtered = cars.filter(car => {
-      if (car.availableFrom > pickupDate || car.availableTo < returnDate) return false;
-      if (unitName && !car.unitName.toLowerCase().includes(unitName)) return false;
-      if (transmission !== 'all' && car.transmisi !== transmission) return false;
-      return true;
-    });
-
-    if (filtered.length === 0) {
-      carListContainer.innerHTML = `<p class="no-results">No cars match your search criteria.</p>`;
-      return;
-    }
-
-    carListContainer.innerHTML = filtered.map(car => {
-      const statusClass = 'available';
-      const statusText = 'Available';
-      const foto = car.foto && car.foto.trim() !== ''
-        ? `${baseURL}assets/foto_mobil/${car.foto}`
-        : 'https://via.placeholder.com/320x180?text=No+Image';
-
-      return `
-        <article class="car-card" tabindex="0">
-          <img src="${foto}" alt="${car.unitName}" style="width:100%; border-radius: 0.5rem; margin-bottom: 1rem; object-fit: cover; height: 180px;">
-          <h4 class="car-name">${car.unitName}</h4>
-          <div class="car-info-row">
-            <div class="car-info-item"><i class="bi bi-cash-coin"></i><span>${formatCurrency(car.pricePer12h)}</span></div>
-            <div class="car-info-item"><i class="bi bi-gear"></i><span>${car.transmisi}</span></div>
-            <div class="car-info-item"><i class="bi bi-people"></i><span>${car.seats} seats</span></div>
-            <div class="car-info-item"><i class="bi bi-card-text"></i><span>${car.plat_nomor}</span></div>
-            <div class="car-info-item"><i class="bi bi-palette"></i><span>${car.warna}</span></div>
-            <div class="car-info-item"><span class="car-status ${statusClass}">${statusText}</span></div>
-          </div>
-          <a href="booking.php?unit_mobil_id=${car.id}" class="btn btn-primary">Rental Sekarang</a>
-        </article>
-      `;
-    }).join('');
+  // ❌ Jangan izinkan tanggal pengembalian sebelum pengambilan
+  if (pickupDate && returnDate && pickupDate >= returnDate) {
+    carListContainer.innerHTML = `<p class="no-results">Tanggal pengembalian harus setelah tanggal pengambilan.</p>`;
+    return;
   }
+
+  // ✅ Hanya filter tanggal jika user mengisi kedua tanggal
+  if (pickupDate && returnDate) {
+    filtered = filtered.filter(car => {
+      const carStart = new Date(car.availableFrom);
+      const carEnd = new Date(car.availableTo);
+      const pick = new Date(pickupDate);
+      const ret = new Date(returnDate);
+
+      return carStart <= pick && carEnd >= ret;
+    });
+  }
+
+  // ✅ Filter nama unit
+  if (unitName) {
+    filtered = filtered.filter(car => car.unitName.toLowerCase().includes(unitName));
+  }
+
+  // ✅ Filter transmisi
+  if (transmission !== 'all') {
+    filtered = filtered.filter(car => car.transmisi === transmission);
+  }
+
+  // ✅ Tampilkan hasil
+  if (filtered.length === 0) {
+    carListContainer.innerHTML = `<p class="no-results">Mobil tidak ditemukan.</p>`;
+    return;
+  }
+
+  carListContainer.innerHTML = filtered.map(car => {
+    const statusClass = 'available';
+    const statusText = 'Available';
+    const foto = car.foto && car.foto.trim() !== ''
+      ? `${baseURL}assets/foto_mobil/${car.foto}`
+      : 'https://via.placeholder.com/320x180?text=No+Image';
+
+    return `
+      <article class="car-card" tabindex="0">
+        <img src="${foto}" alt="${car.unitName}" style="width:100%; border-radius: 0.5rem; margin-bottom: 1rem; object-fit: cover; height: 180px;">
+        <h4 class="car-name">${car.unitName}</h4>
+        <div class="car-info-row">
+          <div class="car-info-item"><i class="bi bi-cash-coin"></i><span>${formatCurrency(car.pricePer12h)}</span></div>
+          <div class="car-info-item"><i class="bi bi-gear"></i><span>${car.transmisi}</span></div>
+          <div class="car-info-item"><i class="bi bi-people"></i><span>${car.seats} seats</span></div>
+          <div class="car-info-item"><i class="bi bi-card-text"></i><span>${car.plat_nomor}</span></div>
+          <div class="car-info-item"><i class="bi bi-palette"></i><span>${car.warna}</span></div>
+          <div class="car-info-item"><span class="car-status ${statusClass}">${statusText}</span></div>
+        </div>
+        <a href="booking.php?unit_mobil_id=${car.id}" class="btn btn-primary">Rental Sekarang</a>
+      </article>
+    `;
+  }).join('');
+}
 
   [pickupInput, returnInput, unitNameInput, transmissionSelect].forEach(el => {
     el.addEventListener('input', filterCars);
@@ -523,8 +537,6 @@ while ($row = $result->fetch_assoc()) {
 
   filterCars();
 </script>
-
-
 </body>
 
 </html>
