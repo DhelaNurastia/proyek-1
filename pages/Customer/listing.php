@@ -1,15 +1,13 @@
-<?php
-$base_url = '/Sigma RentCar/';
-// Koneksi database langsung disini karena belum ada db_connect.php
-$host = 'localhost';
-$user = 'root';
-$pass = '';
-$db   = 'proyek-1';
+<?php 
+require_once '../../koneksi.php';
 
-$conn = new mysqli($host, $user, $pass, $db);
+$base_url = "http://localhost/proyek-1/";
 
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
+
+$db = mysqli_connect(hostname: HOSTNAME, username: USERNAME, password: PASSWORD, database: DATABASE);
+
+if ($db->connect_error) {
+  die("Connection failed: " . $db->connect_error);
 }
 
 $query = "SELECT u.id, j.nama AS unitName, j.harga_sewa AS pricePer12h,
@@ -19,7 +17,7 @@ $query = "SELECT u.id, j.nama AS unitName, j.harga_sewa AS pricePer12h,
           JOIN jenis_mobil j ON u.jenis_mobil_id = j.id
           WHERE u.status = 'tersedia'";
 
-$result = $conn->query($query);
+$result = $db->query($query);
 $cars = [];
 while ($row = $result->fetch_assoc()) {
   $cars[] = $row;
@@ -55,7 +53,7 @@ while ($row = $result->fetch_assoc()) {
   <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
 
   <!-- Main CSS File -->
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/css/index.css" rel="stylesheet" />
+  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/css/main.css" rel="stylesheet" />
 
   <style>
     /* Car filter section with no background or container box, spaced by margin & padding only */
@@ -510,13 +508,20 @@ function filterCars() {
     const statusClass = 'available';
     const statusText = 'Available';
     const foto = car.foto && car.foto.trim() !== ''
-      ? `${baseURL}assets/foto_mobil/${car.foto}`
+      ? `${baseURL}uploads/dokumen-user/foto-mobil/${car.foto}`
       : 'https://via.placeholder.com/320x180?text=No+Image';
+
+    console.log("BaseURL:", baseURL);
+    console.log("car.foto:", car.foto);
+    console.log("Full path:", baseURL + 'uploads/dokumen-user/foto-mobil/' + car.foto);
 
     return `
       <article class="car-card" tabindex="0">
-        <img src="${foto}" alt="${car.unitName}" style="width:100%; border-radius: 0.5rem; margin-bottom: 1rem; object-fit: cover; height: 180px;">
-        <h4 class="car-name">${car.unitName}</h4>
+<img src="${car.foto && car.foto.trim() !== '' ? baseURL + 'uploads/dokumen-user/foto-mobil/' + car.foto.trim() : 'https://via.placeholder.com/320x180?text=No+Image'}"
+     onerror="this.onerror=null; this.src='https://via.placeholder.com/320x180?text=No+Image';"
+     alt="${car.unitName}" 
+     style="width:100%; border-radius: 0.5rem; margin-bottom: 1rem; object-fit: cover; height: 180px;">
+          <h4 class="car-name">${car.unitName}</h4>
         <div class="car-info-row">
           <div class="car-info-item"><i class="bi bi-cash-coin"></i><span>${formatCurrency(car.pricePer12h)}</span></div>
           <div class="car-info-item"><i class="bi bi-gear"></i><span>${car.transmisi}</span></div>
