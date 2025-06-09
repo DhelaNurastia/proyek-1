@@ -2,125 +2,57 @@
 if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
+
 if (!isset($_SESSION['user_id'])) {
   header("Location: login.php");
   exit();
 }
-?>
 
+include '../../koneksi.php'; // pastikan koneksi database ada di file ini
 
+// Fetch user data
+if (isset($_GET['id_user'])) {
+  $id = $_GET['id_user'];
+  $stmt = $conn->prepare("SELECT * FROM user WHERE id = ?");
+  $stmt->bind_param("i", $id);
+  $stmt->execute();
+  $result = $stmt->get_result()->fetch_assoc();
+  echo json_encode($result);
+  exit();
+}
 
-<?php
-include 'booking_backend.php';
-?>
+// Fetch mobil data
+if (isset($_GET['unit_mobil_id'])) {
+  $id = $_GET['unit_mobil_id'];
+  $stmt = $db->prepare("SELECT * FROM unit_mobil WHERE id = ?");
+  $stmt->bind_param("i", $id);
+  $stmt->execute();
+  $result = $stmt->get_result()->fetch_assoc();
+  echo json_encode($result);
+  exit();
+}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Form Booking</title>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
-  <h2>Form Booking</h2>
-  <form id="bookingForm" method="POST" action="booking_backend.php">
-    <input type="hidden" name="unit_mobil_id" id="unit_mobil_id" value="<?php echo $_GET['unit_mobil_id']; ?>">
+// Proses Booking
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $user_id = $_SESSION['user_id'];
+  $unit_mobil_id = $_POST['unit_mobil_id'];
+  $tanggal_pengambilan = $_POST['tanggal_pengambilan'];
+  $jam_pengambilan = $_POST['jam_pengambilan'];
+  $tanggal_pengembalian = $_POST['tanggal_pengembalian'];
+  $jam_pengembalian = $_POST['jam_pengembalian'];
+  $fasilitas = $_POST['fasilitas'];
+  $jaminan = $_POST['jaminan'];
+  $metode_pembayaran = $_POST['metode_pembayaran'];
 
-    <div id="infoUser"></div>
+  // Simpan ke database booking
+  $stmt = $conn->prepare("INSERT INTO booking (user_id, unit_mobil_id, tanggal_pengambilan, jam_pengambilan, tanggal_pengembalian, jam_pengembalian, fasilitas, jaminan, metode_pembayaran) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+  $stmt->bind_param("iisssssss", $user_id, $unit_mobil_id, $tanggal_pengambilan, $jam_pengambilan, $tanggal_pengembalian, $jam_pengembalian, $fasilitas, $jaminan, $metode_pembayaran);
 
-    <label for="tanggal_pengambilan">Tanggal Pengambilan:</label>
-    <input type="date" name="tanggal_pengambilan" id="tanggal_pengambilan" required><br>
-
-    <label for="jam_pengambilan">Jam Pengambilan:</label>
-    <input type="time" name="jam_pengambilan" id="jam_pengambilan" required><br>
-
-    <label for="tanggal_pengembalian">Tanggal Pengembalian:</label>
-    <input type="date" name="tanggal_pengembalian" id="tanggal_pengembalian" required><br>
-
-    <label for="jam_pengembalian">Jam Pengembalian:</label>
-    <input type="time" name="jam_pengembalian" id="jam_pengembalian" required><br>
-
-    <label for="fasilitas">Fasilitas:</label>
-    <select name="fasilitas" id="fasilitas">
-      <option value="lepas kunci">Lepas Kunci</option>
-      <option value="dengan supir">Dengan Supir (+Rp100.000)</option>
-    </select><br>
-
-    <label for="jaminan">Jaminan:</label>
-    <select name="jaminan">
-      <option value="motor">Motor</option>
-      <option value="uang">Uang</option>
-    </select><br>
-
-    <label for="metode_pembayaran">Cara Pembayaran:</label>
-    <select name="metode_pembayaran">
-      <option value="transfer">Transfer</option>
-      <option value="cash">Cash</option>
-    </select><br>
-
-    <p><strong>Total Biaya:</strong> <span id="totalBiaya">Rp0</span></p>
-
-    <button type="submit">Booking Sekarang</button>
-  </form>
-
-  <h3>Info Mobil</h3>
-  <div id="infoMobil"></div>
-
-<script>
-$(document).ready(function () {
-  const userId = <?php echo $_SESSION['user_id']; ?>;
-  const unitMobilId = <?php echo $_GET['unit_mobil_id']; ?>;
-  let hargaSewa = 0;
-
-  // Load info user
-  $.get('booking_backend.php', { id_user: userId }, function (data) {
-    const user = JSON.parse(data);
-    $('#infoUser').html(`
-      <p>Nama: ${user.nama}</p>
-      <p>Alamat: ${user.alamat}</p>
-      <p>No. Telepon: ${user.telepon}</p>
-      <p>Email: ${user.email}</p>
-      <p>KK: <a href="uploads/dokumen-user/${user.file_kk}" target="_blank">Lihat</a></p>
-      <p>KTP: <a href="uploads/dokumen-user/${user.file_ktp}" target="_blank">Lihat</a></p>
-    `);
-  });
-
-  // Load info mobil dan simpan harga sewa
-  $.get('booking_backend.php', { unit_mobil_id: unitMobilId }, function (data) {
-    const mobil = JSON.parse(data);
-    hargaSewa = mobil.harga_sewa;
-    $('#infoMobil').html(`
-      <p>Nama Mobil: ${mobil.nama}</p>
-      <p>Harga Sewa per 12 jam: Rp${mobil.harga_sewa}</p>
-      <p>Plat Nomor: ${mobil.plat_nomor}</p>
-      <p>Warna: ${mobil.warna}</p>
-      <p>Transmisi: ${mobil.transmisi}</p>
-      <p>Tahun Beli: ${mobil.tahun_beli}</p>
-    `);
-  });
-
-  // Fungsi untuk hitung total biaya
-  function hitungBiaya() {
-    const tglAwal = $('#tanggal_pengambilan').val();
-    const jamAwal = $('#jam_pengambilan').val();
-    const tglAkhir = $('#tanggal_pengembalian').val();
-    const jamAkhir = $('#jam_pengembalian').val();
-    const fasilitas = $('#fasilitas').val();
-
-    if (tglAwal && jamAwal && tglAkhir && jamAkhir) {
-      const start = new Date(`${tglAwal}T${jamAwal}`);
-      const end = new Date(`${tglAkhir}T${jamAkhir}`);
-      const durasiJam = Math.ceil((end - start) / (1000 * 60 * 60));
-      const blok12jam = Math.ceil(durasiJam / 12);
-      let total = hargaSewa * blok12jam;
-      if (fasilitas === 'dengan supir') total += 100000;
-      $('#totalBiaya').text(`Rp${total.toLocaleString('id-ID')}`);
-    }
+  if ($stmt->execute()) {
+    echo json_encode(['status' => 'success', 'message' => 'Booking berhasil']);
+  } else {
+    echo json_encode(['status' => 'error', 'message' => 'Gagal melakukan booking']);
   }
 
-  $('#tanggal_pengambilan, #jam_pengambilan, #tanggal_pengembalian, #jam_pengembalian, #fasilitas').on('change', hitungBiaya);
-});
-</script>
-</body>
-</html>
+  exit();
+}

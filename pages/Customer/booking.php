@@ -97,7 +97,8 @@
       font-weight: 700;
       font-size: 3rem;
       margin-bottom: 0.6rem;
-      color: #111827; /* almost black */
+      color: #111827;
+      /* almost black */
       user-select: none;
     }
 
@@ -360,7 +361,11 @@
   <script>
     // Utility: format number as IDR currency
     function formatCurrency(value) {
-      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(value);
+      return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 0
+      }).format(value);
     }
 
     // Calculate difference in days (inclusive)
@@ -406,6 +411,7 @@
 
     // Example default selected car
     let selectedCar = carData[0];
+
     function showCarDetails(car) {
       selectedCar = car;
       carPhoto.src = car.photo;
@@ -510,8 +516,96 @@
       alert('Form submitted successfully!');
       // Real submission logic goes here
     });
-
   </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const userId = <?php echo $_SESSION['user_id']; ?>;
+  const unitMobilId = <?php echo $_GET['unit_mobil_id']; ?>;
+  let hargaSewa = 0;
+
+  // Load info user
+  $.get('booking_backend.php', { id_user: userId }, function (data) {
+    const user = JSON.parse(data);
+    $('#infoUser').html(`
+      <p>Nama: ${user.nama}</p>
+      <p>Alamat: ${user.alamat}</p>
+      <p>No. Telepon: ${user.telepon}</p>
+      <p>Email: ${user.email}</p>
+      <p>KK: <a href="uploads/dokumen-user/${user.file_kk}" target="_blank">Lihat</a></p>
+      <p>KTP: <a href="uploads/dokumen-user/${user.file_ktp}" target="_blank">Lihat</a></p>
+    `);
+  });
+
+  // Load info mobil dan simpan harga sewa
+  $.get('booking_backend.php', { unit_mobil_id: unitMobilId }, function (data) {
+    const mobil = JSON.parse(data);
+    hargaSewa = mobil.harga_sewa;
+    $('#infoMobil').html(`
+      <p>Nama Mobil: ${mobil.nama}</p>
+      <p>Harga Sewa per 12 jam: Rp${mobil.harga_sewa}</p>
+      <p>Plat Nomor: ${mobil.plat_nomor}</p>
+      <p>Warna: ${mobil.warna}</p>
+      <p>Transmisi: ${mobil.transmisi}</p>
+      <p>Tahun Beli: ${mobil.tahun_beli}</p>
+    `);
+  });
+
+  // Fungsi untuk hitung total biaya dan validasi waktu
+  async function hitungBiaya() {
+    const tglAwal = document.getElementById('tanggal_pengambilan').value;
+    const jamAwal = document.getElementById('jam_pengambilan').value;
+    const tglAkhir = document.getElementById('tanggal_pengembalian').value;
+    const jamAkhir = document.getElementById('jam_pengembalian').value;
+    const fasilitas = document.getElementById('fasilitas').value;
+    const unitMobilId = document.getElementById('unit_mobil_id').value;
+
+    if (tglAwal && jamAwal && tglAkhir && jamAkhir && unitMobilId) {
+      const start = new Date(`${tglAwal}T${jamAwal}`);
+      const end = new Date(`${tglAkhir}T${jamAkhir}`);
+
+      if (end <= start) {
+        alert("Tanggal atau jam pengembalian harus setelah pengambilan.");
+        return;
+      }
+
+      const durasiJam = Math.ceil((end - start) / (1000 * 60 * 60));
+      const periode12Jam = Math.ceil(durasiJam / 12);
+
+      // Ambil harga sewa dari server
+      const response = await fetch(`get_harga.php?unit_id=${unitMobilId}`);
+      const data = await response.json();
+      const hargaPer12Jam = parseInt(data.harga);
+
+      let totalBiaya = hargaPer12Jam * periode12Jam;
+
+      if (fasilitas === "dengan supir") {
+        totalBiaya += 250000;
+      }
+
+      document.getElementById('total_biaya').value = totalBiaya;
+    }
+  }
+
+  document.getElementById('tanggal_pengambilan').addEventListener('change', hitungBiaya);
+  document.getElementById('jam_pengambilan').addEventListener('change', hitungBiaya);
+  document.getElementById('tanggal_pengembalian').addEventListener('change', hitungBiaya);
+  document.getElementById('jam_pengembalian').addEventListener('change', hitungBiaya);
+  document.getElementById('fasilitas').addEventListener('change', hitungBiaya);
+
+  const form = document.getElementById('bookingForm');
+  const submitButton = form.querySelector('button[type="submit"]');
+
+  if (form && submitButton) {
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      if (submitButton.disabled) return;
+      alert('Form submitted successfully!');
+      form.submit();
+    });
+  }
+});
+</script>
 </body>
 
 </html>
