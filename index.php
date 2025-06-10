@@ -266,11 +266,7 @@
         <div class="row gx-5 align-items-center">
           <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200">
             <div class="about-image position-relative">
-              <img src="assets/template/home/Strategy/assets/img/about/about-portrait-1.webp" class="img-fluid rounded-4 shadow-sm" alt="About Image" loading="lazy">
-              <div class="experience-badge">
-                <span class="years">20+</span>
-                <span class="text">Years of Expertise</span>
-              </div>
+              <img src="assets/image/road.jpeg" class="img-fluid rounded-4 shadow-sm" alt="About Image" loading="lazy">
             </div>
           </div>
 
