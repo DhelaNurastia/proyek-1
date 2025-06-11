@@ -1,3 +1,34 @@
+<?php
+// Start the session
+session_start();
+
+// Include your database connection file
+include('../../koneksi.php');
+
+// Check if the user is logged in (assuming user_id is stored in session)
+if(isset($_SESSION['user_id'])){
+    $user_id = $_SESSION['user_id']; // Get the logged-in user's ID
+} else {
+    // Redirect to login page if the user is not logged in
+    header("Location: login.php");
+    exit();
+}
+
+// SQL query to fetch user data, including documents
+$query = "SELECT nama_lengkap, alamat, telepon, email, file_ktp, file_kk 
+          FROM users 
+          LEFT JOIN dokumen_user ON users.id = dokumen_user.id_user
+          WHERE users.id = $user_id";
+$result = mysqli_query($db, $query);
+
+// Check if the query was successful
+if ($result) {
+    $user = mysqli_fetch_assoc($result);
+} else {
+    echo "Error fetching data.";
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -250,12 +281,12 @@
         <div class="grouped-inputs">
           <div class="form-group">
             <label for="full-name">Nama Lengkap</label>
-            <input type="text" id="full-name" name="full-name" placeholder="Nama lengkap Anda" required autocomplete="name" />
+            <input type="text" id="nama_lengkap" name="nama_lengkap" value="<?php echo $user['nama_lengkap']; ?>" required>
           </div>
 
           <div class="form-group">
             <label for="address">Alamat</label>
-            <textarea id="address" name="address" rows="2" placeholder="Alamat lengkap Anda" required></textarea>
+            <textarea id="alamat" name="alamat" required><?php echo $user['alamat']; ?></textarea>
           </div>
         </div>
 
@@ -263,12 +294,12 @@
         <div class="grouped-inputs">
           <div class="form-group">
             <label for="phone-number">Nomor Telepon</label>
-            <input type="tel" id="phone-number" name="phone-number" placeholder="+62 812 3456 7890" required autocomplete="tel" />
+            <input type="tel" id="nomor_telepon" name="nomor_telepon" value="<?php echo $user['telepon']; ?>" required>
           </div>
 
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="email@example.com" required autocomplete="email" />
+            <input type="email" id="email" name="email" value="<?php echo $user['email']; ?>" required>
           </div>
         </div>
 
