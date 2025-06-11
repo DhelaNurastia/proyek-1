@@ -33,7 +33,7 @@ if ($data && password_verify($password, $data['password'])) {
             header("Location: ../marketing/dashboard_marketing.php");
             break;
         case 'checker':
-            header("Location: ../checker/dashboard_checker.php");
+            header("Location: ../checker/index.php");
             break;
         case 'customer':
             echo "Redirect ke customer...";
