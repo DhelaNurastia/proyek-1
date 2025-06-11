@@ -532,7 +532,7 @@ function filterCars() {
           <div class="car-info-item"><i class="bi bi-palette"></i><span>${car.warna}</span></div>
           <div class="car-info-item"><span class="car-status ${statusClass}">${statusText}</span></div>
         </div>
-        <a href="booking.php?unit_mobil_id=${car.id}" class="btn btn-primary">Rental Sekarang</a>
+        <a href="booking.php?id_unit=<?= $mobil['id_unit'] ?>">Rental Sekarang</a>
       </article>
     `;
   }).join('');

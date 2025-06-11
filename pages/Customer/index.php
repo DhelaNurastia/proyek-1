@@ -1,8 +1,22 @@
 <?php
 $base_url = '/proyek-1/';
+session_start();
+require_once '../../koneksi.php'; // pastikan koneksi DB udah siap
 
-$nama = isset($_SESSION['nama']) ? $_SESSION['nama'] : 'nama';
+$nama = 'User';
+if (isset($_SESSION['user_id'])) {
+    $id = $_SESSION['user_id'];
+    $stmt = $db->prepare("SELECT nama FROM users WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($row = $result->fetch_assoc()) {
+        $nama = $row['nama'];
+    }
+}
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -55,7 +69,7 @@ $nama = isset($_SESSION['nama']) ? $_SESSION['nama'] : 'nama';
           <li class="dropdown"><a href="#"><span>Akun</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="profile.php">Profile</a></li>
-              <li><a href="#">Status Blacklist</a></li>
+              <li><a href="blacklist.php">Status Blacklist</a></li>
               <li><a href="../Halaman_Register&Login/logout.php">LogOut</a></li>
             </ul>
           </li>
@@ -77,7 +91,7 @@ $nama = isset($_SESSION['nama']) ? $_SESSION['nama'] : 'nama';
             <div class="content">
 
               <div class="main-heading">
-                <h2><b>Selamat Datang Kembali,  <?= htmlspecialchars($nama, ENT_QUOTES, 'UTF-8') ?>!</b></h2>
+                <h2><b>Selamat Datang Kembali, <?= htmlspecialchars($nama, ENT_QUOTES, 'UTF-8') ?>!</b></h2>
               </div>
 
               <div class="divider"></div>

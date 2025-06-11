@@ -127,7 +127,7 @@ $base_url = '/proyek-1/';
           <li class="dropdown"><a href="#"><span>Akun</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="profile.php">Profile</a></li>
-              <li><a href="#">Status Blacklist</a></li>
+              <li><a href="blacklist.php">Status Blacklist</a></li>
               <li><a href="../Halaman_Register&Login/logout.php">LogOut</a></li>
             </ul>
           </li>
@@ -162,23 +162,23 @@ $base_url = '/proyek-1/';
           <div class="booking-info">
             <div>
               <span class="booking-label" id="booking1-id">Booking ID</span>
-              <span>#BK20240001</span>
+              <span></span>
             </div>
             <div>
               <span class="booking-label" id="booking1-unit">Unit Name</span>
-              <span>Executive Suite</span>
+              <span></span>
             </div>
             <div>
               <span class="booking-label">Date</span>
-              <time datetime="2024-04-21">April 21, 2024</time>
+              <time datetime="2024-04-21"></time>
             </div>
             <div>
               <span class="booking-label">Time</span>
-              <time datetime="2024-04-21T14:00">14:00</time>
+              <time datetime="2024-04-21T14:00"></time>
             </div>
             <div>
               <span class="booking-label">Total Cost</span>
-              <span>$450.00</span>
+              <span></span>
             </div>
             <div>
               <span class="booking-label">Status</span>
@@ -190,24 +190,24 @@ $base_url = '/proyek-1/';
         <article class="booking-card" tabindex="0" aria-labelledby="booking2-id booking2-unit">
           <div class="booking-info">
             <div>
-              <span class="booking-label" id="booking2-id">Booking ID</span>
-              <span>#BK20240002</span>
+              <span class="booking-label" id="booking2-id"></span>
+              <span></span>
             </div>
             <div>
               <span class="booking-label" id="booking2-unit">Unit Name</span>
-              <span>Deluxe Room</span>
+              <span></span>
             </div>
             <div>
               <span class="booking-label">Date</span>
-              <time datetime="2024-04-27">April 27, 2024</time>
+              <time datetime="2024-04-27"></time>
             </div>
             <div>
               <span class="booking-label">Time</span>
-              <time datetime="2024-04-27T18:30">18:30</time>
+              <time datetime="2024-04-27T18:30"></time>
             </div>
             <div>
               <span class="booking-label">Total Cost</span>
-              <span>$320.00</span>
+              <span></span>
             </div>
             <div>
               <span class="booking-label">Status</span>
@@ -220,23 +220,23 @@ $base_url = '/proyek-1/';
           <div class="booking-info">
             <div>
               <span class="booking-label" id="booking3-id">Booking ID</span>
-              <span>#BK20240003</span>
+              <span></span>
             </div>
             <div>
               <span class="booking-label" id="booking3-unit">Unit Name</span>
-              <span>Standard Suite</span>
+              <span></span>
             </div>
             <div>
               <span class="booking-label">Date</span>
-              <time datetime="2024-05-05">May 5, 2024</time>
+              <time datetime="2024-05-05"></time>
             </div>
             <div>
               <span class="booking-label">Time</span>
-              <time datetime="2024-05-05T12:45">12:45</time>
+              <time datetime="2024-05-05T12:45"></time>
             </div>
             <div>
               <span class="booking-label">Total Cost</span>
-              <span>$290.00</span>
+              <span></span>
             </div>
             <div>
               <span class="booking-label">Status</span>

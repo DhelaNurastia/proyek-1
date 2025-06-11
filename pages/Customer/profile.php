@@ -1,5 +1,26 @@
-<?php 
-$base_url = '/proyek-1/'
+<?php
+session_start();
+require_once '../../koneksi.php'; // pastikan path-nya sesuai
+
+$base_url = "http://localhost/proyek-1/";
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../auth/login.php");
+    exit;
+}
+
+$userId = $_SESSION['user_id'];
+$query = $db->prepare("SELECT u.nama_lengkap, u.nama, u.email, u.telepon, u.alamat, u.foto_profile, d.file_kk, d.file_ktp, d.file_sim
+                      FROM users u
+                      LEFT JOIN dokumen_user d ON u.id = d.id_user
+                      WHERE u.id = ?");
+$query->bind_param("i", $userId);
+$query->execute();
+$result = $query->get_result();
+$user = $result->fetch_assoc();
+$fotoPath = isset($user['foto_profile']) && $user['foto_profile']
+    ? "../../uploads/foto_profile/" . $user['foto_profile']
+    : "../../assets/image/default.png";
 ?>
 
 <!DOCTYPE html>
@@ -8,12 +29,12 @@ $base_url = '/proyek-1/'
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Starter Page - Strategy Bootstrap Template</title>
+  <title>Profile</title>
   <meta name="description" content="" />
   <meta name="keywords" content="" />
 
   <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon" />
+  <link href="<?= $base_url ?>assets/image/favicon.jpeg" rel="icon" />
   <link href="<?= $base_url ?>assets/template/home/Strategy/assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
 
   <!-- Fonts -->
@@ -67,7 +88,7 @@ $base_url = '/proyek-1/'
       margin-bottom: 1rem;
     }
 
-    /* Profile Hero with two buttons side by side */
+    /* Profile Hero with two buttons side by side, without profile image */
     .profile-hero {
       text-align: center;
       max-width: 600px;
@@ -98,7 +119,7 @@ $base_url = '/proyek-1/'
       font-size: 1.25rem;
       font-weight: 600;
       color: #ddd;
-      margin-bottom: 1.0rem;
+      margin-bottom: 1rem;
     }
 
     .profile-cta {
@@ -138,7 +159,6 @@ $base_url = '/proyek-1/'
       gap: 2rem;
       margin-top: 3rem;
       background: transparent;
-      /* Override text color to white inside cards */
       color: #fff;
     }
 
@@ -152,141 +172,66 @@ $base_url = '/proyek-1/'
       flex-direction: column;
       gap: 1rem;
       transition: box-shadow 0.3s ease;
-      color: #fff; /* Set white text for all text in these cards */
+      color: #fff;
     }
 
-    /* Override card text color to black */
+    /* Card text white for Personal Details and Documents */
     .card h3,
     .card label,
-    .card div.value,
-    .document-list,
-    .document-list li {
-      color: #fff !important;
-    }
-
-    /* But personal detail and document cards text white */
-    /* Since the user wants all text in Personal Details and Documents cards white */
-    /* We already set card text to white */
-
-    .card:hover {
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    .card label {
-      font-weight: 600;
-      font-size: 0.875rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .document-list {
-      list-style: none;
-      padding-left: 0;
-      margin: 0;
-      background: transparent;
-    }
-
-    .document-list li {
-      font-size: 1.125rem;
-      font-weight: 600;
-      padding: 0.35rem 0;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    }
-
-    .document-list li:last-child {
-      border-bottom: none;
-    }
-
-    .rental-history {
-      margin-top: 3rem;
-      color: #111827; /* rental history text dark */
-    }
-
-    .rental-history h2 {
-      font-family: 'Inter', sans-serif;
-      font-weight: 700;
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      color: #111827;
-    }
-
-    .rental-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-      background: transparent;
-    }
-
-    /* Rental history cards with background */
-    .rental-item {
-      background: #f9fafb;
-      border-radius: 0.75rem;
-      padding: 1.5rem 2rem;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: box-shadow 0.3s ease;
-      cursor: default;
-      color: #111827;
-    }
-
-    .rental-item:hover {
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    .rental-details {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-
-    .car-model {
-      font-weight: 700;
-      font-size: 1.125rem;
-    }
-
-    .rental-date {
-      font-size: 0.875rem;
-      color: #6b7280;
-    }
-
-    .rental-status {
-      font-weight: 600;
-      border-radius: 9999px;
-      padding: 0.25rem 0.75rem;
-      font-size: 0.875rem;
-      color: #fff;
-      background-color: #10b981;
-      user-select: none;
-    }
-
-    .rental-status.pending {
-      background-color: #f59e0b;
-    }
-
-    /* Contact form with transparent background, white text */
-    .contact-section {
-      background: transparent;
-      margin-top: 3rem;
+    .card div.value {
       color: #fff;
     }
 
-    .contact-section h2 {
-      color: #fff;
-    }
-
-    .contact-section form {
-      max-width: 400px;
-      margin: 0 auto;
+    /* Document card: interactive accordion style */
+    .documents-accordion {
       display: flex;
       flex-direction: column;
       gap: 1rem;
       background: transparent;
-      color: #fff;
+    }
+
+    .doc-item {
+      background: #1f2937; /* dark slate */
+      border-radius: 0.5rem;
+      cursor: pointer;
+      padding: 1rem 1.25rem;
+      box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
+      transition: box-shadow 0.3s ease;
+      color: #e5e7eb; /* light gray */
+      user-select: none;
+    }
+    .doc-item:hover {
+      box-shadow: 0 5px 15px rgb(0 0 0 / 0.2);
+      background: #374151;
+    }
+    .doc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      font-size: 1.125rem;
+      letter-spacing: 0.02em;
+    }
+
+    .doc-icon {
+      font-size: 1.25rem;
+      margin-right: 0.5rem;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .doc-content {
+      margin-top: 0.75rem;
+      font-weight: 400;
+      font-size: 0.95rem;
+      color: #d1d5db; /* lighter gray */
+      line-height: 1.4;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+    .doc-item.active .doc-content {
+      max-height: 10rem; /* enough for content */
     }
 
     .form-group {
@@ -352,15 +297,6 @@ $base_url = '/proyek-1/'
       .profile-section h1 {
         font-size: 2.25rem;
       }
-
-      .profile-avatar {
-        width: 100px;
-        height: 100px;
-      }
-
-      .profile-hero {
-        max-width: 100%;
-      }
     }
   </style>
 </head>
@@ -371,85 +307,42 @@ $base_url = '/proyek-1/'
       <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <!-- <img src="assets/img/logo.webp" alt=""> -->
-        <h1 class="sitename">Strategy</h1>
+        <h1 class="sitename">Sigma RentCar</h1>
       </a>
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="#hero">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#portfolio">Portfolio</a></li>
-          <li><a href="#team">Team</a></li>
-          <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+          <li><a href="index.php">Home</a></li>
+          <li><a href="listing.php">Daftar Mobil</a></li>
+          <li><a href="riwayat.php">Riwayat Booking</a></li>
+          <li class="dropdown"><a href="#"><span>Akun</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
-              <li><a href="#">Dropdown 1</a></li>
-              <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="#">Deep Dropdown 1</a></li>
-                  <li><a href="#">Deep Dropdown 2</a></li>
-                  <li><a href="#">Deep Dropdown 3</a></li>
-                  <li><a href="#">Deep Dropdown 4</a></li>
-                  <li><a href="#">Deep Dropdown 5</a></li>
-                </ul>
-              </li>
-              <li><a href="#">Dropdown 2</a></li>
-              <li><a href="#">Dropdown 3</a></li>
-              <li><a href="#">Dropdown 4</a></li>
+              <li><a href="profile.php" class="active">Profile</a></li>
+              <li><a href="#">Status Blacklist</a></li>
+              <li><a href="../Halaman_Register&Login/logout.php">LogOut</a></li>
             </ul>
           </li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="#contact">Kontak</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-      <a class="btn-getstarted" href="#about">Get Started</a>
     </div>
   </header>
 
   <main class="main">
-    <!-- Page Title -->
-    <div class="page-title dark-background" data-aos="fade">
-      <div class="container position-relative">
-        <h1>Starter Page</h1>
-        <p>Esse dolorum voluptatum ullam est sint nemo et est ipsa porro placeat quibusdam quia assumenda numquam molestias.</p>
-        <nav class="breadcrumbs">
-          <ol>
-            <li><a href="index.html">Home</a></li>
-            <li class="current">Starter Page</li>
-          </ol>
-        </nav>
-      </div>
-    </div>
-    <!-- End Page Title -->
-
-    <!-- Starter Section Section -->
-    <section id="starter-section" class="starter-section section">
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Starter Section</h2>
-        <div><span>Check Our</span> <span class="description-title">Starter Section</span></div>
-      </div>
-      <!-- End Section Title -->
-
-      <div class="container" data-aos="fade-up">
-        <p>Use this page as a starter for your own custom pages.</p>
-      </div>
-    </section>
-    <!-- /Starter Section Section -->
 
     <!-- Profile Section Inserted Below Starter Section -->
     <section class="profile-section container" aria-label="User Profile">
       <section class="profile-hero" aria-label="User Profile Introduction">
-        <img src="https://randomuser.me/api/portraits/men/56.jpg" alt="Profile Picture of John Doe" class="profile-avatar" />
-        <h1 class="profile-name">John Doe</h1>
-        <p class="profile-role">Premium Member</p>
+        <img src="<?= htmlspecialchars($fotoPath) ?>" alt="Foto Profil User" class="profile-avatar" style="width:150px; height:150px; object-fit:cover; border-radius:50%;" />
+        <h1 class="profile-name"><?= htmlspecialchars($user['nama_lengkap'] ?? $user['nama']) ?></h1>
         <p class="profile-bio">
-          Passionate about exploring new destinations and driving the best cars. Renting made easy and reliable with CarRental.
+          Menjelajah destinasi baru dan mengendarai mobil terbaik kini lebih mudah. Sigma RentCar, solusi sewa mobil yang terpercaya.
         </p>
         <div class="profile-cta">
-          <button class="btn-primary" aria-label="Edit Profile">Edit Profile</button>
-          <button class="btn-primary" aria-label="View Rental History" id="btnRentalHistory">Rental History</button>
+          <a href="<?= $base_url ?>pages/customer/edit_profile.php" class="btn-primary">Edit Profile</a>
+          <button class="btn-primary" aria-label="View Rental History" id="btnRentalHistory">Riwayat</button>
         </div>
       </section>
 
@@ -457,93 +350,111 @@ $base_url = '/proyek-1/'
         <div class="info-cards">
           <article class="card">
             <h3>Personal Details</h3>
-            <label>Full Name</label>
-            <div class="value">Johnathan Doe</div>
+            <label>Nama Lengkap</label>
+            <div class="value"><?= htmlspecialchars($user['nama_lengkap'] ?? $user['nama']) ?></div>
 
             <label>Email</label>
-            <div class="value">john.doe@example.com</div>
+            <div class="value"><?= htmlspecialchars($user['email']) ?></div>
 
-            <label>Phone</label>
-            <div class="value">+1 234 567 8901</div>
+            <label>Nomor Telepon</label>
+            <div class="value"><?= htmlspecialchars($user['telepon']) ?></div>
 
-            <label>Location</label>
-            <div class="value">San Francisco, CA, USA</div>
+            <label>Alamat</label>
+            <div class="value"><?= htmlspecialchars($user['alamat'] ?? '-') ?></div>
           </article>
 
           <article class="card">
-            <h3>Documents</h3>
-            <ul class="document-list" role="list">
-              <li>KK</li>
-              <li>KTP</li>
-              <li>SIM</li>
-            </ul>
+            <h3>Dokumen</h3>
+            <div class="documents-accordion">
+              <div class="doc-item" tabindex="0">
+                <div class="doc-header" aria-expanded="false" role="button" aria-controls="doc1-content" id="doc1-header">
+                  <span><i class="bi bi-file-earmark-text doc-icon" aria-hidden="true"></i> KK</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="doc-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 1.25rem; height: 1.25rem; transition: transform 0.3s;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+                <div class="doc-content" id="doc1-content" aria-labelledby="doc1-header" hidden>
+                  <img src="../../uploads/dokumen-user/<?= htmlspecialchars($user['file_kk']) ?>" alt="KK" style="width: 100%; border-radius: 8px;">
+                </div>
+                  <p>Dokumen Kartu Keluarga (KK) - Detail atau pratinjau gambar Kartu Keluarga dapat ditampilkan di sini.</p>
+              </div>
+              <div class="doc-item" tabindex="0">
+                <div class="doc-header" aria-expanded="false" role="button" aria-controls="doc2-content" id="doc2-header">
+                  <span><i class="bi bi-credit-card doc-icon" aria-hidden="true"></i> KTP</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="doc-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 1.25rem; height: 1.25rem; transition: transform 0.3s;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+                <div class="doc-content" id="doc2-content" aria-labelledby="doc2-header" hidden>
+                  <img src="../../uploads/dokumen-user/<?= htmlspecialchars($user['file_ktp']) ?>" alt="KTP">
+                </div>
+                  <p>Dokumen Kartu Tanda Penduduk (KTP) - Informasi atau pratinjau Kartu Tanda Penduduk akan ditampilkan di sini.</p>
+              </div>
+              <div class="doc-item" tabindex="0">
+                <div class="doc-header" aria-expanded="false" role="button" aria-controls="doc3-content" id="doc3-header">
+                  <span><i class="bi bi-clipboard-check doc-icon" aria-hidden="true"></i> SIM</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="doc-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 1.25rem; height: 1.25rem; transition: transform 0.3s;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+                <div class="doc-content" id="doc3-content" aria-labelledby="doc3-header" hidden>
+                  <img src="../../uploads/dokumen-user/<?= htmlspecialchars($user['file_sim']) ?>" alt="SIM">
+                </div>
+                  <p>Dokumen Surat Izin Mengemudi (SIM) - Detail SIM akan ditampilkan di sini, termasuk catatan dan pratinjau gambar jika tersedia.</p>
+              </div>
+            </div>
           </article>
         </div>
       </section>
-
-      <section class="contact-section" aria-label="Contact Form">
-        <h2>Contact Support</h2>
-        <form action="#" method="post" novalidate>
-          <div class="form-group">
-            <label for="contact-subject">Subject</label>
-            <input id="contact-subject" name="subject" type="text" placeholder="Subject" required />
-          </div>
-          <div class="form-group">
-            <label for="contact-message">Message</label>
-            <textarea id="contact-message" name="message" rows="4" placeholder="Write your message here..." required></textarea>
-          </div>
-          <button class="submit-btn" type="submit">Send Message</button>
-        </form>
-      </section>
-    </section>
   </main>
 
   <footer id="footer" class="footer">
+
     <div class="container footer-top">
       <div class="row gy-4">
         <div class="col-lg-5 col-md-12 footer-about">
           <a href="index.html" class="logo d-flex align-items-center">
-            <span class="sitename">Strategy</span>
+            <span class="sitename">Sigma RentCar</span>
           </a>
-          <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta donna mare fermentum iaculis eu non diam phasellus.</p>
+          <p>Sigma RentCar, solusi rental mobil terpercaya untuk berbagai kebutuhan anda. Kami hadir dengan komitmen menghadirkan layanan yang mudah, nyaman, dan dapat diandalkan</p>
           <div class="social-links d-flex mt-4">
-            <a href=""><i class="bi bi-twitter-x"></i></a>
-            <a href=""><i class="bi bi-facebook"></i></a>
-            <a href=""><i class="bi bi-instagram"></i></a>
-            <a href=""><i class="bi bi-linkedin"></i></a>
+            <a href="https://www.tiktok.com/@sigma_rentcar?_t=ZS-8wtmnFIOOvd&_r=1"><i class="bi bi-tiktok"></i></a>
+            <a href="https://www.facebook.com/share/16bwovUwpX/?mibextid=wwXIfr"><i class="bi bi-facebook"></i></a>
+            <a href="https://www.instagram.com/sigma_rentcar?igsh=dG1id2E2enRubGJj"><i class="bi bi-instagram"></i></a>
           </div>
         </div>
 
         <div class="col-lg-2 col-6 footer-links">
-          <h4>Useful Links</h4>
+          <h4>Tautan Penting</h4>
           <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About us</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">Terms of service</a></li>
-            <li><a href="#">Privacy policy</a></li>
+            <li><a href="index.php">Home</a></li>
+            <li><a href="about.php">Tentang Kami</a></li>
+            <li><a href="listing.php">Daftar Mobil</a></li>
+            <li><a href="#galeri">Galeri</a></li>
+            <li><a href="#faq">FAQ</a></li>
           </ul>
         </div>
 
         <div class="col-lg-2 col-6 footer-links">
-          <h4>Our Services</h4>
+          <h4>Layanan Kami</h4>
           <ul>
-            <li><a href="#">Web Design</a></li>
-            <li><a href="#">Web Development</a></li>
-            <li><a href="#">Product Management</a></li>
-            <li><a href="#">Marketing</a></li>
-            <li><a href="#">Graphic Design</a></li>
+            <li>Rental 24 Jam</a></li>
+            <li>Rental Harian</a></li>
+            <li>Rental Mingguan</a></li>
+            <li>Rental Mobil dengan Supir</a></li>
+            <li>Rental Mobil Lepas Kunci</a></li>
           </ul>
         </div>
 
         <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
-          <h4>Contact Us</h4>
-          <p>A108 Adam Street</p>
-          <p>New York, NY 535022</p>
-          <p>United States</p>
-          <p class="mt-4"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-          <p><strong>Email:</strong> <span>info@example.com</span></p>
+          <h4>Kontak Kami</h4>
+          <p>Jl.Letnan Jenderal S.Parman</p>
+          <p>Subang, Jawa Barat</p>
+          <p>Indonesia</p>
+          <p class="mt-4"><strong>Nomer Hp:</strong> <span>+62 8121 2280 564</span></p>
+          <p><strong>Email:</strong> <span>diki.a.gani@gmail.com</span></p>
         </div>
+
       </div>
     </div>
 
@@ -557,6 +468,7 @@ $base_url = '/proyek-1/'
         Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
       </div>
     </div>
+
   </footer>
 
   <!-- Scroll Top -->
@@ -582,7 +494,33 @@ $base_url = '/proyek-1/'
     document.getElementById('btnRentalHistory').addEventListener('click', function () {
       document.getElementById('rentalHistorySection').scrollIntoView({ behavior: 'smooth' });
     });
+
+    // Document accordion toggle
+    document.querySelectorAll('.doc-item .doc-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const docItem = header.parentElement;
+        const content = header.nextElementSibling;
+        const isActive = docItem.classList.contains('active');
+        if (isActive) {
+          docItem.classList.remove('active');
+          content.hidden = true;
+          header.setAttribute('aria-expanded', 'false');
+          header.querySelector('svg').style.transform = 'rotate(0deg)';
+        } else {
+          docItem.classList.add('active');
+          content.hidden = false;
+          header.setAttribute('aria-expanded', 'true');
+          header.querySelector('svg').style.transform = 'rotate(180deg)';
+        }
+      });
+      // Keyboard accessibility
+      header.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          header.click();
+        }
+      });
+    });
   </script>
 </body>
-
 </html>
