@@ -8,7 +8,7 @@ $base_url = '/proyek-1/'
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Starter Page - Strategy Bootstrap Template</title>
+  <title>Katalog</title>
   <meta name="description" content="" />
   <meta name="keywords" content="" />
 
@@ -323,72 +323,66 @@ $base_url = '/proyek-1/'
   </main>
 
   <footer id="footer" class="footer">
+
     <div class="container footer-top">
       <div class="row gy-4">
         <div class="col-lg-5 col-md-12 footer-about">
           <a href="index.html" class="logo d-flex align-items-center">
-            <span class="sitename">Strategy</span>
+            <span class="sitename">Sigma RentCar</span>
           </a>
-          <p>
-            Cras fermentum odio eu feugiat lide par naso tierra. Justo eget
-            nada terra videa magna derita valies darta donna mare fermentum
-            iaculis eu non diam phasellus.
-          </p>
+          <p>Sigma RentCar, solusi rental mobil terpercaya untuk berbagai kebutuhan anda. Kami hadir dengan komitmen menghadirkan layanan yang mudah, nyaman, dan dapat diandalkan</p>
           <div class="social-links d-flex mt-4">
-            <a href=""><i class="bi bi-twitter-x"></i></a>
-            <a href=""><i class="bi bi-facebook"></i></a>
-            <a href=""><i class="bi bi-instagram"></i></a>
-            <a href=""><i class="bi bi-linkedin"></i></a>
+            <a href="https://www.tiktok.com/@sigma_rentcar?_t=ZS-8wtmnFIOOvd&_r=1"><i class="bi bi-tiktok"></i></a>
+            <a href="https://www.facebook.com/share/16bwovUwpX/?mibextid=wwXIfr"><i class="bi bi-facebook"></i></a>
+            <a href="https://www.instagram.com/sigma_rentcar?igsh=dG1id2E2enRubGJj"><i class="bi bi-instagram"></i></a>
           </div>
         </div>
 
         <div class="col-lg-2 col-6 footer-links">
-          <h4>Useful Links</h4>
+          <h4>Tautan Penting</h4>
           <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About us</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">Terms of service</a></li>
-            <li><a href="#">Privacy policy</a></li>
+            <li><a href="index.php">Home</a></li>
+            <li><a href="about.php">Tentang Kami</a></li>
+            <li><a href="listing.php">Daftar Mobil</a></li>
+            <li><a href="#galeri">Galeri</a></li>
+            <li><a href="#faq">FAQ</a></li>
           </ul>
         </div>
 
         <div class="col-lg-2 col-6 footer-links">
-          <h4>Our Services</h4>
+          <h4>Layanan Kami</h4>
           <ul>
-            <li><a href="#">Web Design</a></li>
-            <li><a href="#">Web Development</a></li>
-            <li><a href="#">Product Management</a></li>
-            <li><a href="#">Marketing</a></li>
-            <li><a href="#">Graphic Design</a></li>
+            <li>Rental 24 Jam</a></li>
+            <li>Rental Harian</a></li>
+            <li>Rental Mingguan</a></li>
+            <li>Rental Mobil dengan Supir</a></li>
+            <li>Rental Mobil Lepas Kunci</a></li>
           </ul>
         </div>
 
         <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
-          <h4>Contact Us</h4>
-          <p>A108 Adam Street</p>
-          <p>New York, NY 535022</p>
-          <p>United States</p>
-          <p class="mt-4"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-          <p><strong>Email:</strong> <span>info@example.com</span></p>
+          <h4>Kontak Kami</h4>
+          <p>Jl.Letnan Jenderal S.Parman</p>
+          <p>Subang, Jawa Barat</p>
+          <p>Indonesia</p>
+          <p class="mt-4"><strong>Nomer Hp:</strong> <span>+62 8121 2280 564</span></p>
+          <p><strong>Email:</strong> <span>diki.a.gani@gmail.com</span></p>
         </div>
+
       </div>
     </div>
 
     <div class="container copyright text-center mt-4">
-      <p>
-        © <span>Copyright</span> <strong class="px-1 sitename">Strategy</strong>
-        <span>All Rights Reserved</span>
-      </p>
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">Strategy</strong> <span>All Rights Reserved</span></p>
       <div class="credits">
         <!-- All the links in the footer should remain intact. -->
         <!-- You can delete the links only if you've purchased the pro version. -->
         <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form:
-        [buy-url] -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
         Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
       </div>
     </div>
+
   </footer>
 
   <!-- Scroll Top -->
