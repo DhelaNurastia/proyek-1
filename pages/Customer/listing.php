@@ -1,12 +1,12 @@
 <?php
-$base_url = '/Sigma RentCar/';
-// Koneksi database langsung disini karena belum ada db_connect.php
-$host = 'localhost';
-$user = 'root';
-$pass = '';
-$db   = 'proyek-1';
+include '../../koneksi.php';
 
-$conn = new mysqli($host, $user, $pass, $db);
+$base_url = "http://localhost/proyek-1/"; // contoh definisi
+
+
+
+
+$db = mysqli_connect(HOSTNAME, USERNAME, PASSWORD, DATABASE);
 
 if ($db->connect_error) {
   die("Connection failed: " . $db->connect_error);

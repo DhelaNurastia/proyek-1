@@ -22,8 +22,6 @@ if ($data && password_verify($password, $data['password'])) {
     session_start();
     $_SESSION['user_id'] = $data['id'];
     $_SESSION['role']    = $data['role'];
-    $_SESSION['id_customer'] = $data['id_customer']; // $data dari hasil query SELECT
-
 
     // Redirect berdasarkan role
     switch ($data['role']) {
