@@ -360,7 +360,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
             <div class="value"><?= htmlspecialchars($user['telepon']) ?></div>
 
             <label>Alamat</label>
-            <div class="value"><?= htmlspecialchars($user['alamat'] ?? '-') ?></div>
+            <div class="value"><?= htmlspecialchars($user['alamat']) ?></div>
           </article>
 
           <article class="card">

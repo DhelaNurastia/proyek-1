@@ -147,6 +147,13 @@
                 </div>
 
                 <div class="form-group">
+                    <div class="input-box" style="width:100%">
+                        <input type="text" alamat="alamat" id="alamat" placeholder="Alamat Lengkap" />
+                        <small class="error" id="err-nama_lengkap"></small>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <div class="input-box">
                         <input type="email" name="email" id="email" placeholder="Email" />
                         <small class="error" id="err-email"></small>

@@ -8,6 +8,7 @@ require_once '../../koneksi.php';
 
 // Ambil data form
 $nama_lengkap = $_POST['nama_lengkap'] ?? '';
+$alamat       = $_POST['alamat'] ?? '';
 $telepon      = $_POST['telepon'] ?? '';
 $nama         = $_POST['nama'] ?? '';
 $email        = $_POST['email'] ?? '';
@@ -70,8 +71,8 @@ if (mysqli_num_rows($cek) > 0) {
 $hashed = password_hash($password, PASSWORD_DEFAULT);
 $status = "belum diverifikasi";
 
-$query = mysqli_query($db, "INSERT INTO users (nama_lengkap, telepon, nama, email, password, role, blacklist, status_verifikasi)
-    VALUES ('$nama_lengkap', '$telepon', '$nama', '$email', '$hashed', 'customer', 0, '$status')");
+$query = mysqli_query($db, "INSERT INTO users (nama_lengkap, alamat, telepon, nama, email, password, role, blacklist, status_verifikasi)
+    VALUES ('$nama_lengkap', '$alamat', '$telepon', '$nama', '$email', '$hashed', 'customer', 0, '$status')");
 
 if (!$query) {
     echo "<script>alert('Gagal menyimpan data user.'); window.location.href='register.php';</script>";

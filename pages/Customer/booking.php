@@ -1,27 +1,3 @@
-<?php
-include '../../koneksi.php';
-
-if (isset($_GET['unit_mobil_id'])) {
-    $id = $_GET['unit_mobil_id'];
-
-    // GANTI 'unit_mobil_id' sesuai kolom yang benar di tabel
-    $query = "SELECT * FROM unit_mobil WHERE unit_mobil_id = $id";
-    $result = mysqli_query($db, $query);
-
-    if ($result && mysqli_num_rows($result) > 0) {
-        $mobil = mysqli_fetch_assoc($result);
-        echo "Mobil ditemukan: " . $mobil['nama_unit']; // contoh tampilan
-    } else {
-        echo "Data mobil tidak ditemukan.";
-        exit;
-    }
-} else {
-    echo "ID mobil tidak ditemukan di URL.";
-    exit;
-}
-?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 

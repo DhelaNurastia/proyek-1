@@ -1,29 +1,5 @@
 <?php
-include '../../koneksi.php';
-
-$base_url = "http://localhost/proyek-1/"; // contoh definisi
-
-
-
-
-$db = mysqli_connect(HOSTNAME, USERNAME, PASSWORD, DATABASE);
-
-if ($db->connect_error) {
-  die("Connection failed: " . $db->connect_error);
-}
-
-$query = "SELECT u.id, j.nama AS unitName, j.harga_sewa AS pricePer12h,
-                 u.transmisi, j.jumlah_kursi AS seats, u.plat_nomor,
-                 u.warna, u.status, u.foto
-          FROM unit_mobil u
-          JOIN jenis_mobil j ON u.jenis_mobil_id = j.id
-          WHERE u.status = 'tersedia'";
-
-$result = $db->query($query);
-$cars = [];
-while ($row = $result->fetch_assoc()) {
-  $cars[] = $row;
-}
+$base_url = '/proyek-1/'
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +8,7 @@ while ($row = $result->fetch_assoc()) {
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Katalog</title>
+  <title>Starter Page - Strategy Bootstrap Template</title>
   <meta name="description" content="" />
   <meta name="keywords" content="" />
 
@@ -72,7 +48,7 @@ while ($row = $result->fetch_assoc()) {
       font-weight: 700;
       font-size: 2.5rem;
       margin-bottom: 1.75rem;
-      color: #00000; /* dark slate gray */
+      color: #1f2937; /* dark slate gray */
       user-select: none;
     }
 
@@ -128,15 +104,12 @@ while ($row = $result->fetch_assoc()) {
 
     /* Car cards with subtle shadow and rounded corners only */
     .car-card {
-      background-color: transparent !important;
-      box-shadow: none !important;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(6px);
+      background: #ffffff;
       border-radius: 0.75rem;
       box-shadow: 0 6px 16px rgb(0 0 0 / 0.1);
       padding: 1.75rem 2rem;
       font-family: 'Nunito Sans', sans-serif;
-      color: white !important;
+      color: #374151;
       transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
       cursor: pointer;
       user-select: none;
@@ -162,30 +135,34 @@ while ($row = $result->fetch_assoc()) {
       box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
     }
 
-    .car-info-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 0.75rem 1.25rem;
-      padding-top: 0.5rem;
-      border-top: 1px solid rgba(255,255,255,0.15);
-      margin-top: 0.75rem;
-      color: white !important;
-      font-size: 0.95rem;
+    .car-name {
+      font-weight: 700;
+      font-size: 1.375rem;
+      color: #1e293b;
+      margin-bottom: 0.6rem;
+      user-select: text;
     }
 
     /* Flex container for car info row */
-
+    .car-info-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem 2rem;
+      color: #6b7280;
+      font-size: 1rem;
+      user-select: text;
+    }
 
     .car-info-item {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      white-space: nowrap;
+      gap: 0.375rem;
     }
 
+    /* Simple monochrome icons using bootstrap icons */
     .car-info-item i {
-      font-size: 1rem;
-      color: #f3f4f6;
+      color: #9ca3af; /* lighter gray */
+      font-size: 1.1rem;
       flex-shrink: 0;
     }
 
@@ -263,10 +240,10 @@ while ($row = $result->fetch_assoc()) {
     <div
       class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between"
     >
-      <a href="index.php" class="logo d-flex align-items-center me-auto me-xl-0">
+      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <!-- <img src="assets/img/logo.webp" alt=""> -->
-        <h1 class="sitename">Sigma RentCar</h1>
+        <h1 class="sitename">Strategy</h1>
       </a>
 
       <nav id="navmenu" class="navmenu">
@@ -307,7 +284,7 @@ while ($row = $result->fetch_assoc()) {
       </div>
     </div>
     <!-- End Page Title -->
-
+     
         <!-- Car filter and listing start -->
         <section class="car-filter-section" aria-labelledby="carFilterTitle">
           <form id="car-filter-form" class="filter-form" aria-describedby="carFilterDesc" novalidate>
@@ -327,13 +304,14 @@ while ($row = $result->fetch_assoc()) {
               <label for="transmission">Transmission</label>
               <select id="transmission" name="transmission">
                 <option value="all">All</option>
-                <option value="Manual">Manual</option>
-                <option value="Matic">Matic</option>
+                <option value="manual">Manual</option>
+                <option value="automatic">Automatic</option>
               </select>
             </div>
           </form>
           <p id="carFilterDesc" class="visually-hidden">
-            Filter daftar mobil berdasarkan tanggal pengambilan & pengembalian, nama unit, dan jenis transmisi.
+            Filter the car listing by pickup &amp; return date, unit name, and
+            transmission type
           </p>
 
           <div id="car-list" class="car-list" aria-live="polite" aria-relevant="all"></div>
@@ -349,50 +327,57 @@ while ($row = $result->fetch_assoc()) {
       <div class="row gy-4">
         <div class="col-lg-5 col-md-12 footer-about">
           <a href="index.html" class="logo d-flex align-items-center">
-            <span class="sitename">Sigma RentCar</span>
+            <span class="sitename">Strategy</span>
           </a>
-          <p>Sigma RentCar, solusi rental mobil terpercaya untuk berbagai kebutuhan anda. Kami hadir dengan komitmen menghadirkan layanan yang mudah, nyaman, dan dapat diandalkan</p>
+          <p>
+            Cras fermentum odio eu feugiat lide par naso tierra. Justo eget
+            nada terra videa magna derita valies darta donna mare fermentum
+            iaculis eu non diam phasellus.
+          </p>
           <div class="social-links d-flex mt-4">
-            <a href="https://www.tiktok.com/@sigma_rentcar?_t=ZS-8wtmnFIOOvd&_r=1"><i class="bi bi-tiktok"></i></a>
-            <a href="https://www.facebook.com/share/16bwovUwpX/?mibextid=wwXIfr"><i class="bi bi-facebook"></i></a>
-            <a href="https://www.instagram.com/sigma_rentcar?igsh=dG1id2E2enRubGJj"><i class="bi bi-instagram"></i></a>
+            <a href=""><i class="bi bi-twitter-x"></i></a>
+            <a href=""><i class="bi bi-facebook"></i></a>
+            <a href=""><i class="bi bi-instagram"></i></a>
+            <a href=""><i class="bi bi-linkedin"></i></a>
           </div>
         </div>
 
         <div class="col-lg-2 col-6 footer-links">
-          <h4>Tautan Penting</h4>
+          <h4>Useful Links</h4>
           <ul>
-            <li><a href="index.php">Home</a></li>
-            <li><a href="about.php">Tentang Kami</a></li>
-            <li><a href="listing.php">Daftar Mobil</a></li>
-            <li><a href="#galeri">Galeri</a></li>
-            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About us</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Terms of service</a></li>
+            <li><a href="#">Privacy policy</a></li>
           </ul>
         </div>
 
-         <div class="col-lg-2 col-6 footer-links">
-          <h4>Layanan Kami</h4>
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Our Services</h4>
           <ul>
-            <li>Rental 24 Jam</a></li>
-            <li>Rental Harian</a></li>
-            <li>Rental Mingguan</a></li>
-            <li>Rental Mobil dengan Supir</a></li>
-            <li>Rental Mobil Lepas Kunci</a></li>
+            <li><a href="#">Web Design</a></li>
+            <li><a href="#">Web Development</a></li>
+            <li><a href="#">Product Management</a></li>
+            <li><a href="#">Marketing</a></li>
+            <li><a href="#">Graphic Design</a></li>
           </ul>
         </div>
 
         <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
-          <h4>Kontak Kami</h4>
-          <p>Jl.Letnan Jenderal S.Parman</p>
-          <p>Subang, Jawa Barat</p>
-          <p>Indonesia</p>
-          <p class="mt-4"><strong>Nomer Hp:</strong> <span>+62 8121 2280 564</span></p>
-          <p><strong>Email:</strong> <span>diki.a.gani@gmail.com</span></p>
+          <h4>Contact Us</h4>
+          <p>A108 Adam Street</p>
+          <p>New York, NY 535022</p>
+          <p>United States</p>
+          <p class="mt-4"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
+          <p><strong>Email:</strong> <span>info@example.com</span></p>
         </div>
+      </div>
+    </div>
 
     <div class="container copyright text-center mt-4">
       <p>
-        © <span>Copyright</span> <strong class="px-1 sitename">Sigma RenctCar</strong>
+        © <span>Copyright</span> <strong class="px-1 sitename">Strategy</strong>
         <span>All Rights Reserved</span>
       </p>
       <div class="credits">
@@ -430,120 +415,109 @@ while ($row = $result->fetch_assoc()) {
   <script src="<?= $base_url ?>assets/template/home/Strategy/assets/js/main.js"></script>
 
   <script>
-  const cars = <?= json_encode($cars) ?>;
-  const baseURL = <?= json_encode($base_url) ?>;
+    // Simulated car "database"
 
-  function formatCurrency(value) {
-    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(value);
-  }
-
-  const pickupInput = document.getElementById('pickup-date');
-  const returnInput = document.getElementById('return-date');
-  const unitNameInput = document.getElementById('unit-name');
-  const transmissionSelect = document.getElementById('transmission');
-  const carListContainer = document.getElementById('car-list');
-
-  const todayStr = new Date().toISOString().split('T')[0];
-  pickupInput.min = todayStr;
-  returnInput.min = todayStr;
-  pickupInput.value = todayStr;
-  returnInput.value = todayStr;
-
-  pickupInput.addEventListener('change', () => {
-    returnInput.min = pickupInput.value;
-    if (returnInput.value < pickupInput.value) {
-      returnInput.value = pickupInput.value;
+    // Utility: date format to ISO yyyy-mm-dd
+    function formatDateISO(date) {
+      return date.toISOString().split('T')[0];
     }
-  });
 
-  cars.forEach(car => {
-    const today = new Date();
-    const future = new Date();
-    future.setDate(today.getDate() + 60);
-    car.availableFrom = today.toISOString().split("T")[0];
-    car.availableTo = future.toISOString().split("T")[0];
-  });
+    // Format number as currency in IDR
+    function formatCurrency(value) {
+      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(value);
+    }
 
-function filterCars() {
-  const pickupDate = pickupInput.value;
-  const returnDate = returnInput.value;
-  const unitName = unitNameInput.value.trim().toLowerCase();
-  const transmission = transmissionSelect.value;
+    // Elements
+    const pickupInput = document.getElementById('pickup-date');
+    const returnInput = document.getElementById('return-date');
+    const unitNameInput = document.getElementById('unit-name');
+    const transmissionSelect = document.getElementById('transmission');
+    const carListContainer = document.getElementById('car-list');
 
-  let filtered = cars;
+    // Set min attributes for today to prevent backdating
+    const todayStr = formatDateISO(new Date());
+    pickupInput.min = todayStr;
+    returnInput.min = todayStr;
 
-  // ❌ Jangan izinkan tanggal pengembalian sebelum pengambilan
-  if (pickupDate && returnDate && pickupDate >= returnDate) {
-    carListContainer.innerHTML = `<p class="no-results">Tanggal pengembalian harus setelah tanggal pengambilan.</p>`;
-    return;
-  }
+    // Filter logic
+    function filterCars() {
+      const pickupDate = pickupInput.value;
+      const returnDate = returnInput.value;
+      const unitName = unitNameInput.value.trim().toLowerCase();
+      const transmission = transmissionSelect.value;
 
-  // ✅ Hanya filter tanggal jika user mengisi kedua tanggal
-  if (pickupDate && returnDate) {
-    filtered = filtered.filter(car => {
-      const carStart = new Date(car.availableFrom);
-      const carEnd = new Date(car.availableTo);
-      const pick = new Date(pickupDate);
-      const ret = new Date(returnDate);
+      // Validate dates presence
+      if (!pickupDate || !returnDate) {
+        carListContainer.innerHTML = `<p class="no-results">Please select both Pickup and Return dates.</p>`;
+        return;
+      }
 
-      return carStart <= pick && carEnd >= ret;
+      // Validate date order
+      if (pickupDate > returnDate) {
+        carListContainer.innerHTML = `<p class="no-results">Return date must be on or after Pickup date.</p>`;
+        return;
+      }
+
+      // Filter cars
+      const filtered = cars.filter((car) => {
+        // Check availability date range covers requested period
+        if (car.availableFrom > pickupDate || car.availableTo < returnDate) {
+          return false;
+        }
+
+        // Unit name search (case insensitive substring match)
+        if (unitName && !car.unitName.toLowerCase().includes(unitName)) {
+          return false;
+        }
+
+        // Transmission filter except when "all"
+        if (transmission !== 'all' && car.transmission !== transmission) {
+          return false;
+        }
+
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        carListContainer.innerHTML = `<p class="no-results">No cars match your search criteria.</p>`;
+        return;
+      }
+
+      // Render results
+      carListContainer.innerHTML = filtered
+        .map((car) => {
+          const statusClass = Date.now() >= new Date(car.availableFrom).getTime() && Date.now() <= new Date(car.availableTo).getTime() ? 'available' : 'unavailable';
+          const statusText = statusClass === 'available' ? 'Available' : 'Unavailable';
+          return `
+            <article class="car-card" tabindex="0" aria-labelledby="car-name-${car.id}" aria-describedby="car-desc-${car.id}">
+              <img src="${fotoUrl}" alt="${car.unitName}" style="width:100%; border-radius: 0.5rem; margin-bottom: 1rem; object-fit: cover; height: 180px;">
+              <h4 id="car-name-${car.id}" class="car-name">${car.unitName}</h4>
+              <div class="car-info-row" id="car-desc-${car.id}">
+                <div class="car-info-item" title="Harga per 12 jam"><i class="bi bi-cash-coin"></i> ${formatCurrency(car.pricePer12h)}</div>
+                <div class="car-info-item" title="Transmisi"><i class="bi bi-gear"></i> ${car.transmission.charAt(0).toUpperCase() + car.transmission.slice(1)}</div>
+                <div class="car-info-item" title="Jumlah kursi"><i class="bi bi-people"></i> ${car.seats} seats</div>
+                <div class="car-info-item" title="Plat nomor"><i class="bi bi-card-text"></i> ${car.plateNumber}</div>
+                <div class="car-info-item" title="Warna"><i class="bi bi-palette"></i> ${car.color}</div>
+                <div class="car-info-item" title="Status"><span class="car-status ${statusClass}">${statusText}</span></div>
+              </div>
+            </article>
+          `;
+        })
+        .join('');
+    }
+
+    // Attach events to inputs for dynamic filtering
+    [pickupInput, returnInput, unitNameInput, transmissionSelect].forEach((el) => {
+      el.addEventListener('input', filterCars);
     });
-  }
 
-  // ✅ Filter nama unit
-  if (unitName) {
-    filtered = filtered.filter(car => car.unitName.toLowerCase().includes(unitName));
-  }
+    // Initialize date inputs with today for usability
+    pickupInput.value = todayStr;
+    returnInput.value = todayStr;
 
-  // ✅ Filter transmisi
-  if (transmission !== 'all') {
-    filtered = filtered.filter(car => car.transmisi === transmission);
-  }
-
-  // ✅ Tampilkan hasil
-  if (filtered.length === 0) {
-    carListContainer.innerHTML = `<p class="no-results">Mobil tidak ditemukan.</p>`;
-    return;
-  }
-
-  carListContainer.innerHTML = filtered.map(car => {
-    const statusClass = 'available';
-    const statusText = 'Available';
-    const foto = car.foto && car.foto.trim() !== ''
-      ? `${baseURL}uploads/dokumen-user/foto-mobil/${car.foto}`
-      : 'https://via.placeholder.com/320x180?text=No+Image';
-
-    console.log("BaseURL:", baseURL);
-    console.log("car.foto:", car.foto);
-    console.log("Full path:", baseURL + 'uploads/dokumen-user/foto-mobil/' + car.foto);
-
-    return `
-      <article class="car-card" tabindex="0">
-<img src="${car.foto && car.foto.trim() !== '' ? baseURL + 'uploads/dokumen-user/foto-mobil/' + car.foto.trim() : 'https://via.placeholder.com/320x180?text=No+Image'}"
-     onerror="this.onerror=null; this.src='https://via.placeholder.com/320x180?text=No+Image';"
-     alt="${car.unitName}" 
-     style="width:100%; border-radius: 0.5rem; margin-bottom: 1rem; object-fit: cover; height: 180px;">
-          <h4 class="car-name">${car.unitName}</h4>
-        <div class="car-info-row">
-          <div class="car-info-item"><i class="bi bi-cash-coin"></i><span>${formatCurrency(car.pricePer12h)}</span></div>
-          <div class="car-info-item"><i class="bi bi-gear"></i><span>${car.transmisi}</span></div>
-          <div class="car-info-item"><i class="bi bi-people"></i><span>${car.seats} seats</span></div>
-          <div class="car-info-item"><i class="bi bi-card-text"></i><span>${car.plat_nomor}</span></div>
-          <div class="car-info-item"><i class="bi bi-palette"></i><span>${car.warna}</span></div>
-          <div class="car-info-item"><span class="car-status ${statusClass}">${statusText}</span></div>
-        </div>
-        <a href="booking.php?id_unit=<?= $mobil['id_unit'] ?>">Rental Sekarang</a>
-      </article>
-    `;
-  }).join('');
-}
-
-  [pickupInput, returnInput, unitNameInput, transmissionSelect].forEach(el => {
-    el.addEventListener('input', filterCars);
-  });
-
-  filterCars();
-</script>
+    // Initial filter invocation
+    filterCars();
+  </script>
 </body>
 
 </html>
