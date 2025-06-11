@@ -538,7 +538,6 @@ function filterCars() {
                     <div class="car-info-item"><i class="bi bi-palette"></i><span>${car.warna}</span></div>
                     <div class="car-info-item"><span class="car-status available">Available</span></div>
                 </div>
-                <a href="unit_mobil_id=<?= $mobil['unit_mobil_id'] ?>">Rental Sekarang</a>
             </article>
         `;
     }).join('');
