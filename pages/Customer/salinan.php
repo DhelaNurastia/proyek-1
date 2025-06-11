@@ -10,6 +10,7 @@ if ($db->connect_error) {
   die("Connection failed: " . $db->connect_error);
 }
 
+$id_mobil = $_GET['id_mobil']; // jika method="GET"
 $tanggal = $_POST['tanggal'] ?? '';
 $tanggalValid = true;
 $pesanError = '';
@@ -549,7 +550,13 @@ function filterCars() {
                     <div class="car-info-item"><i class="bi bi-palette"></i><span>${car.warna}</span></div>
                     <div class="car-info-item"><span class="car-status available">Available</span></div>
                 </div>
-                <button class="btn-rent" type="button" aria-label="Rental sekarang Ertiga">Rental Sekarang <i class="bi bi-arrow-right"></i></button>
+                <form action="../pages/customer/booking.php" method="GET">
+                  <input type="hidden" name="id_mobil" value="123">
+                  <button class="btn-rent" type="submit">
+                    Rental Sekarang <i class="bi bi-arrow-right"></i>
+                  </button>
+                </form>
+
             </article>
         `;
     }).join('');
