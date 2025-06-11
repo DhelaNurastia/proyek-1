@@ -429,6 +429,11 @@ if ($result) {
     const pickupDateInput = document.getElementById('pickup-date');
     const returnDateInput = document.getElementById('return-date');
 
+    // Set min date for pickup and return to today
+    const today = new Date().toISOString().split('T')[0];
+    pickupDateInput.setAttribute('min', today);
+    returnDateInput.setAttribute('min', today);
+
     // Car details elements
     const carPhoto = document.getElementById('car-photo');
     const detailName = document.getElementById('detail-name');
