@@ -245,21 +245,32 @@ while ($row = $result->fetch_assoc()) {
       padding: 0;
       margin: -1px;
     }
-
-    .rent-button {
-      margin-top: 1rem;
-      padding: 0.5rem 1.2rem;
+    .btn-rent {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
       background-color: #2563eb;
-      color: white;
-      font-weight: 600;
+      color: #ffffff;
       border: none;
+      padding: 0.6rem 1rem;
       border-radius: 0.5rem;
       cursor: pointer;
+      align-self: flex-start;
       transition: background-color 0.3s ease;
+      user-select: none;
+      text-decoration: none;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.4rem;
     }
 
-    .rent-button:hover {
-      background-color: #1d4ed8;
+    .btn-rent:hover,
+    .btn-rent:focus {
+      background-color: #1e40af;
+      outline: none;
+      text-decoration: none;
+      color: #ffffff;
     }
   </style>
 
@@ -538,6 +549,7 @@ function filterCars() {
                     <div class="car-info-item"><i class="bi bi-palette"></i><span>${car.warna}</span></div>
                     <div class="car-info-item"><span class="car-status available">Available</span></div>
                 </div>
+                <button class="btn-rent" type="button" aria-label="Rental sekarang Ertiga">Rental Sekarang <i class="bi bi-arrow-right"></i></button>
             </article>
         `;
     }).join('');
