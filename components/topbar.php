@@ -1,4 +1,18 @@
-<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">                    <!-- Sidebar Toggle (Topbar) -->
+<style>
+    .dropdown-menu {
+        background-color: #ffffff !important;
+    }
+
+    .dropdown-item {
+        color: #000000 !important;
+    }
+
+    .bg-dark-custom {
+        background-color: #1e293b !important;
+    }
+</style>
+
+<nav class="navbar navbar-expand navbar-dark bg-gradient-primary topbar mb-4 static-top shadow"> <!-- Sidebar Toggle (Topbar) -->
     <form class="form-inline">
         <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
             <i class="fa fa-bars"></i>

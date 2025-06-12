@@ -20,7 +20,13 @@ $isChecker         = strpos($current_uri, 'checker/index.php') !== false;
 $isPages           = strpos($current_uri, 'login.php') !== false || strpos($current_uri, 'register.php') !== false || strpos($current_uri, 'forgot-password.php') !== false;
 ?>
 
-<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<style>
+    .custom-sidebar-bg {
+        background-color: #1e293b !important;
+    }
+</style>
+<ul class="navbar-nav sidebar sidebar-dark accordion custom-sidebar-bg" id="accordionSidebar">
+
 
     <!-- Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= BASE_URL ?>/admin/index.php">
