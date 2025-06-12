@@ -5,27 +5,31 @@ session_start();
 // Include your database connection file
 include('../../koneksi.php');
 
-// Check if the user is logged in (assuming user_id is stored in session)
-if(isset($_SESSION['user_id'])){
-    $user_id = $_SESSION['user_id']; // Get the logged-in user's ID
-} else {
+// Check if the user is logged in
+if (!isset($_SESSION['user_id'])) {
     // Redirect to login page if the user is not logged in
     header("Location: login.php");
     exit();
 }
 
+$user_id = $_SESSION['user_id']; // Get the logged-in user's ID
+
 // SQL query to fetch user data, including documents
 $query = "SELECT nama_lengkap, alamat, telepon, email, file_ktp, file_kk 
           FROM users 
           LEFT JOIN dokumen_user ON users.id = dokumen_user.id_user
-          WHERE users.id = $user_id";
-$result = mysqli_query($db, $query);
+          WHERE users.id = ?";
+$stmt = $db->prepare($query);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
 
 // Check if the query was successful
 if ($result) {
-    $user = mysqli_fetch_assoc($result);
+    $user = $result->fetch_assoc();
 } else {
     echo "Error fetching data.";
+    exit();
 }
 ?>
 
@@ -33,615 +37,591 @@ if ($result) {
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Rental Mobil Form</title>
-  <meta name="description" content="Rental Mobil Form" />
-  <meta name="keywords" content="mobil, rental, form, booking" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Rental Mobil Form</title>
+    <meta name="description" content="Rental Mobil Form" />
+    <meta name="keywords" content="mobil, rental, form, booking" />
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect" />
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Raleway:wght@600;700&amp;family=Nunito+Sans:wght@400;600&amp;display=swap"
-    rel="stylesheet" />
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@600;700&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet" />
 
-  <style>
-    /* Base Reset and typography */
-    body {
-      margin: 0;
-      font-family: 'Nunito Sans', sans-serif;
-      background-color: #ffffff;
-      color: #6b7280;
-      line-height: 1.6;
-      font-size: 17px;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 4rem 1rem 5rem;
-    }
+    <style>
+        /* Base Reset and typography */
+        body {
+            margin: 0;
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: #ffffff;
+            color: #6b7280;
+            line-height: 1.6;
+            font-size: 17px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 4rem 1rem 5rem;
+        }
 
-    /* Container */
-    .container {
-      max-width: 1200px;
-      width: 100%;
-      background: #fff;
-      border-radius: 0.75rem;
-      box-shadow: 0 10px 25px rgb(0 0 0 / 0.08);
-      padding: 3.5rem 3rem 3.5rem;
-      box-sizing: border-box;
-      display: flex;
-      gap: 3rem;
-      flex-wrap: wrap;
-    }
+        /* Container */
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: #fff;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgb(0 0 0 / 0.08);
+            padding: 3.5rem 3rem 3.5rem;
+            box-sizing: border-box;
+            display: flex;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
 
-    /* Form container */
-    .form-container {
-      flex: 1 1 480px;
-      min-width: 320px;
-    }
+        /* Form container */
+        .form-container {
+            flex: 1 1 480px;
+            min-width: 320px;
+        }
 
-    /* Car details container */
-    .car-details-container {
-      flex: 1 1 380px;
-      min-width: 280px;
-      background-color: #f9fafb;
-      border-radius: 0.75rem;
-      box-shadow: 0 6px 16px rgb(0 0 0 / 0.1);
-      padding: 1.5rem 2rem;
-      color: #374151;
-      font-family: 'Nunito Sans', sans-serif;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      user-select: none;
-    }
+        /* Car details container */
+        .car-details-container {
+            flex: 1 1 380px;
+            min-width: 280px;
+            background-color: #f9fafb;
+            border-radius: 0.75rem;
+            box-shadow: 0 6px 16px rgb(0 0 0 / 0.1);
+            padding: 1.5rem 2rem;
+            color: #374151;
+            font-family: 'Nunito Sans', sans-serif;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            user-select: none;
+        }
 
-    /* Car image */
-    .car-image {
-      width: 100%;
-      height: auto;
-      border-radius: 0.5rem;
-      object-fit: cover;
-      aspect-ratio: 4 / 3;
-      box-shadow: 0 4px 12px rgb(0 0 0 / 0.08);
-    }
+        /* Car image */
+        .car-image {
+            width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+            object-fit: cover;
+            aspect-ratio: 4 / 3;
+            box-shadow: 0 4px 12px rgb(0 0 0 / 0.08);
+        }
 
-    /* Car detail item */
-    .car-detail-item {
-      display: flex;
-      justify-content: space-between;
-      font-size: 1rem;
-      line-height: 1.4;
-      font-weight: 600;
-      color: #4b5563;
-    }
+        /* Car detail item */
+        .car-detail-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1rem;
+            line-height: 1.4;
+            font-weight: 600;
+            color: #4b5563;
+        }
 
-    .car-detail-label {
-      color: #6b7280;
-    }
+        .car-detail-label {
+            color: #6b7280;
+        }
 
-    /* Headline */
-    h1 {
-      font-family: 'Raleway', sans-serif;
-      font-weight: 700;
-      font-size: 3rem;
-      margin-bottom: 0.6rem;
-      color: #111827;
-      /* almost black */
-      user-select: none;
-    }
+        /* Headline */
+        h1 {
+            font-family: 'Raleway', sans-serif;
+            font-weight: 700;
+            font-size: 3rem;
+            margin-bottom: 0.6rem;
+            color: #111827;
+            user-select: none;
+        }
 
-    /* Subtitle / description */
-    .description {
-      font-size: 1.125rem;
-      margin-bottom: 2.5rem;
-      user-select: none;
-      color: #4b5563;
-    }
+        /* Subtitle / description */
+        .description {
+            font-size: 1.125rem;
+            margin-bottom: 2.5rem;
+            user-select: none;
+            color: #4b5563;
+        }
 
-    /* Display horizontal flex for grouped inputs */
-    .grouped-inputs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      margin-bottom: 1rem;
-    }
+        /* Display horizontal flex for grouped inputs */
+        .grouped-inputs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
 
-    .grouped-inputs .form-group {
-      flex: 1 1 45%;
-      min-width: 180px;
-    }
+        .grouped-inputs .form-group {
+            flex: 1 1 45%;
+            min-width: 180px;
+        }
 
-    /* Group for time inputs side by side */
-    .grouped-time-inputs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      margin-bottom: 1rem;
-    }
+        /* Group for time inputs side by side */
+        .grouped-time-inputs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
 
-    .grouped-time-inputs .form-group {
-      flex: 1 1 45%;
-      min-width: 180px;
-    }
+        .grouped-time-inputs .form-group {
+            flex: 1 1 45%;
+            min-width: 180px;
+        }
 
-    /* Field wrapper for inputs and labels */
-    .form-group {
-      display: flex;
-      flex-direction: column;
-    }
+        /* Field wrapper for inputs and labels */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
 
-    label {
-      font-weight: 600;
-      margin-bottom: 0.3rem;
-      color: #374151;
-      user-select: none;
-      font-size: 1rem;
-    }
+        label {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            color: #374151;
+            user-select: none;
+            font-size: 1rem;
+        }
 
-    /* Inputs and selects */
-    input[type="text"],
-    input[type="email"],
-    input[type="tel"],
-    input[type="date"],
-    input[type="time"],
-    input[type="file"],
-    select,
-    textarea {
-      font-family: 'Nunito Sans', sans-serif;
-      font-size: 1rem;
-      padding: 0.65rem 1rem;
-      border: 1.5px solid #d1d5db;
-      border-radius: 0.625rem;
-      background-color: #ffffff;
-      color: #111827;
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
-      resize: vertical;
-    }
+        /* Inputs and selects */
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        input[type="time"],
+        input[type="file"],
+        select,
+        textarea {
+            font-family: 'Nunito Sans', sans-serif;
+            font-size: 1rem;
+            padding: 0.65rem 1rem;
+            border: 1.5px solid #d1d5db;
+            border-radius: 0.625rem;
+            background-color: #ffffff;
+            color: #111827;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            resize: vertical;
+        }
 
-    input[type="text"]:focus,
-    input[type="email"]:focus,
-    input[type="tel"]:focus,
-    input[type="date"]:focus,
-    input[type="time"]:focus,
-    input[type="file"]:focus,
-    select:focus,
-    textarea:focus {
-      outline: none;
-      border-color: #2563eb;
-      box-shadow: 0 0 8px 3px rgba(37, 99, 235, 0.3);
-      background-color: #fff;
-    }
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="date"]:focus,
+        input[type="time"]:focus,
+        input[type="file"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 8px 3px rgba(37, 99, 235, 0.3);
+            background-color: #fff;
+        }
 
-    /* Submit button */
-    button[type="submit"] {
-      font-family: 'Raleway', sans-serif;
-      font-weight: 700;
-      font-size: 1.25rem;
-      padding: 0.8rem 2rem;
-      background-color: #111827;
-      color: white;
-      border: none;
-      border-radius: 0.75rem;
-      cursor: not-allowed;
-      transition: background-color 0.3s ease;
-      user-select: none;
-      margin-top: 1.5rem;
-      justify-self: start;
-      width: 150px;
-    }
+        /* Submit button */
+        button[type="submit"] {
+            font-family: 'Raleway', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            padding: 0.8rem 2rem;
+            background-color: #111827;
+            color: white;
+            border: none;
+            border-radius: 0.75rem;
+            cursor: not-allowed;
+            transition: background-color 0.3s ease;
+            user-select: none;
+            margin-top: 1.5rem;
+            justify-self: start;
+            width: 150px;
+        }
 
-    button[type="submit"]:enabled {
-      cursor: pointer;
-      background-color: #111827;
-    }
+        button[type="submit"]:enabled {
+            cursor: pointer;
+            background-color: #111827;
+        }
 
-    button[type="submit"]:enabled:hover,
-    button[type="submit"]:enabled:focus {
-      background-color: #2563eb;
-      outline: none;
-    }
+        button[type="submit"]:enabled:hover,
+        button[type="submit"]:enabled:focus {
+            background-color: #2563eb;
+            outline: none;
+        }
 
-    /* Responsive */
-    @media (min-width: 900px) {
-      form {
-        grid-template-columns: 1fr 1fr;
-        gap: 2rem;
-      }
+        /* Responsive */
+        @media (min-width: 900px) {
+            form {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
 
-      /* Make some inputs full width */
-      .full-width {
-        grid-column: 1 / -1;
-      }
+            /* Make some inputs full width */
+            .full-width {
+                grid-column: 1 / -1;
+            }
 
-      button[type="submit"] {
-        grid-column: 1 / -1;
-        width: 200px;
-      }
-    }
+            button[type="submit"] {
+                grid-column: 1 / -1;
+                width: 200px;
+            }
+        }
 
-    /* Accessibility & UX improvements */
-    input::placeholder,
-    textarea::placeholder {
-      color: #9ca3af;
-    }
-  </style>
+        /* Accessibility & UX improvements */
+        input::placeholder,
+        textarea::placeholder {
+            color: #9ca3af;
+        }
+    </style>
 </head>
 
 <body>
-  <main>
-    <section class="container" aria-labelledby="formTitle">
-      <div class="form-container">
-        <h1 id="formTitle">Form Rental Mobil</h1>
-        <p class="description">Silakan isi formulir di bawah untuk menyewa mobil pilihan Anda dengan mudah dan cepat.</p>
+    <main>
+        <section class="container" aria-labelledby="formTitle">
+            <div class="form-container">
+                <h1 id="formTitle">Form Rental Mobil</h1>
+                <p class="description">Silakan isi formulir di bawah untuk menyewa mobil pilihan Anda dengan mudah dan cepat.</p>
 
-        <!-- Nama Lengkap & Alamat side by side -->
-        <div class="grouped-inputs">
-          <div class="form-group">
-            <label for="full-name">Nama Lengkap</label>
-            <input type="text" id="nama_lengkap" name="nama_lengkap" value="<?php echo $user['nama_lengkap']; ?>" required>
-          </div>
+                <!-- Durasi Sewa -->
+                <div class="form-group">
+                    <label for="rental-duration">Durasi Sewa</label>
+                    <select id="rental-duration" name="rental-duration" required>
+                        <option value="" disabled selected>Pilih durasi sewa</option>
+                        <option value="12">12 Jam</option>
+                        <option value="24">Harian</option>
+                    </select>
+                </div>
 
-          <div class="form-group">
-            <label for="address">Alamat</label>
-            <textarea id="alamat" name="alamat" required><?php echo $user['alamat']; ?></textarea>
-          </div>
-        </div>
+                <!-- Jam Pengambilan & Jam Pengembalian side by side -->
+                <div class="grouped-time-inputs" id="time-inputs" style="display: none;">
+                    <div class="form-group">
+                        <label for="pickup-time">Jam Pengambilan</label>
+                        <input type="time" id="pickup-time" name="pickup-time" required />
+                    </div>
 
-        <!-- Nomor Telepon & Email side by side -->
-        <div class="grouped-inputs">
-          <div class="form-group">
-            <label for="phone-number">Nomor Telepon</label>
-            <input type="tel" id="nomor_telepon" name="nomor_telepon" value="<?php echo $user['telepon']; ?>" required>
-          </div>
+                    <div class="form-group">
+                        <label for="return-time">Jam Pengembalian</label>
+                        <input type="time" id="return-time" name="return-time" required />
+                    </div>
+                </div>
 
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" value="<?php echo $user['email']; ?>" required>
-          </div>
-        </div>
+                <!-- Tanggal Pengambilan & Tanggal Pengembalian side by side -->
+                <div class="grouped-inputs" id="date-inputs" style="display: none;">
+                    <div class="form-group">
+                        <label for="pickup-date">Tanggal Pengambilan</label>
+                        <input type="date" id="pickup-date" name="pickup-date" required />
+                    </div>
 
-        <!-- Jam Pengambilan & Jam Pengembalian side by side -->
-        <div class="grouped-time-inputs">
-          <div class="form-group">
-            <label for="pickup-time">Jam Pengambilan</label>
-            <input type="time" id="pickup-time" name="pickup-time" required />
-          </div>
+                    <div class="form-group">
+                        <label for="return-date">Tanggal Pengembalian</label>
+                        <input type="date" id="return-date" name="return-date" required />
+                    </div>
+                </div>
 
-          <div class="form-group">
-            <label for="return-time">Jam Pengembalian</label>
-            <input type="time" id="return-time" name="return-time" required />
-          </div>
-        </div>
+                <!-- Nama Lengkap & Alamat side by side -->
+                <div class="grouped-inputs">
+                    <div class="form-group">
+                        <label for="full-name">Nama Lengkap</label>
+                        <input type="text" id="nama_lengkap" name="nama_lengkap" value="<?php echo htmlspecialchars($user['nama_lengkap']); ?>" required>
+                    </div>
 
-        <!-- Tanggal Pengambilan & Tanggal Pengembalian side by side -->
-        <div class="grouped-inputs">
-          <div class="form-group">
-            <label for="pickup-date">Tanggal Pengambilan</label>
-            <input type="date" id="pickup-date" name="pickup-date" required />
-          </div>
+                    <div class="form-group">
+                        <label for="address">Alamat</label>
+                        <textarea id="alamat" name="alamat" required><?php echo htmlspecialchars($user['alamat']); ?></textarea>
+                    </div>
+                </div>
 
-          <div class="form-group">
-            <label for="return-date">Tanggal Pengembalian</label>
-            <input type="date" id="return-date" name="return-date" required />
-          </div>
-        </div>
+                <!-- Nomor Telepon & Email side by side -->
+                <div class="grouped-inputs">
+                    <div class="form-group">
+                        <label for="phone-number">Nomor Telepon</label>
+                        <input type="tel" id="nomor_telepon" name="nomor_telepon" value="<?php echo htmlspecialchars($user['telepon']); ?>" required>
+                    </div>
 
-        <!-- KK and KTP Document inputs side by side -->
-        <div class="grouped-inputs">
-          <div class="form-group">
-            <label for="document-kk">Upload Dokumen KK<span aria-hidden="true" style="color: #e11d48;"> *</span></label>
-            <input type="file" id="document-kk" name="document-kk" accept=".jpg,.jpeg,.png,.pdf" required aria-describedby="docKKHelp" />
-            <small id="docKKHelp" style="color: #6b7280; font-size: 0.875rem;">Format: JPG, PNG, atau PDF</small>
-          </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+                    </div>
+                </div>
 
-          <div class="form-group">
-            <label for="document-ktp">Upload Dokumen KTP<span aria-hidden="true" style="color: #e11d48;"> *</span></label>
-            <input type="file" id="document-ktp" name="document-ktp" accept=".jpg,.jpeg,.png,.pdf" required aria-describedby="docKTPHelp" />
-            <small id="docKTPHelp" style="color: #6b7280; font-size: 0.875rem;">Format: JPG, PNG, atau PDF</small>
-          </div>
-        </div>
+                <!-- KK and KTP Document inputs side by side -->
+                <div class="grouped-inputs">
+                    <div class="form-group">
+                        <label for="document-kk">Upload Dokumen KK<span aria-hidden="true" style="color: #e11d48;"> *</span></label>
+                        <input type="file" id="document-kk" name="document-kk" accept=".jpg,.jpeg,.png,.pdf" required aria-describedby="docKKHelp" />
+                        <small id="docKKHelp" style="color: #6b7280; font-size: 0.875rem;">Format: JPG, PNG, atau PDF</small>
+                    </div>
 
-        <div class="form-group full-width">
-          <label>Fasilitas</label>
-          <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
-            <label><input type="checkbox" name="facilities" value="Supir" /> Supir</label>
-            <label><input type="checkbox" name="facilities" value="Lepas Kunci" /> Lepas Kunci</label>
-          </div>
-        </div>
+                    <div class="form-group">
+                        <label for="document-ktp">Upload Dokumen KTP<span aria-hidden="true" style="color: #e11d48;"> *</span></label>
+                        <input type="file" id="document-ktp" name="document-ktp" accept=".jpg,.jpeg,.png,.pdf" required aria-describedby="docKTPHelp" />
+                        <small id="docKTPHelp" style="color: #6b7280; font-size: 0.875rem;">Format: JPG, PNG, atau PDF</small>
+                    </div>
+                </div>
 
-        <div class="form-group full-width">
-          <label>Jaminan</label>
-          <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
-            <label><input type="checkbox" name="guarantee" value="Uang" /> Uang</label>
-            <label><input type="checkbox" name="guarantee" value="Motor" /> Motor</label>
-          </div>
-        </div>
+                <div class="form-group full-width">
+                    <label>Fasilitas</label>
+                    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                        <label><input type="checkbox" name="facilities" value="Supir" /> Supir</label>
+                        <label><input type="checkbox" name="facilities" value="Lepas Kunci" /> Lepas Kunci</label>
+                    </div>
+                </div>
 
-        <div class="form-group full-width">
-          <label for="payment-method">Cara Pembayaran</label>
-          <select id="payment-method" name="payment-method" required>
-            <option value="" disabled selected>Pilih cara pembayaran</option>
-            <option value="Transfer">Transfer</option>
-            <option value="Cash">Cash</option>
-          </select>
-        </div>
+                <div class="form-group full-width">
+                    <label>Jaminan</label>
+                    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                        <label><input type="checkbox" name="guarantee" value="Uang" /> Uang</label>
+                        <label><input type="checkbox" name="guarantee" value="Motor" /> Motor</label>
+                    </div>
+                </div>
 
-        <div class="form-group full-width">
-          <label for="rental-cost">Biaya Sewa</label>
-          <input type="text" id="rental-cost" name="rental-cost" readonly />
-        </div>
+                <div class="form-group full-width">
+                    <label for="payment-method">Cara Pembayaran</label>
+                    <select id="payment-method" name="payment-method" required>
+                        <option value="" disabled selected>Pilih cara pembayaran</option>
+                        <option value="Transfer">Transfer</option>
+                        <option value="Cash">Cash</option>
+                    </select>
+                </div>
 
-        <button type="submit" id="submit-button" disabled>Sewa Sekarang</button>
-      </div>
+                <div class="form-group full-width">
+                    <label for="rental-cost">Biaya Sewa</label>
+                    <input type="text" id="rental-cost" name="rental-cost" readonly />
+                </div>
 
-      <aside class="car-details-container" aria-label="Detail mobil yang dipilih">
-        <img src="" alt="Foto mobil" id="car-photo" class="car-image" />
-        <div class="car-detail-item"><span class="car-detail-label">Nama Unit:</span> <span id="detail-name">-</span></div>
-        <div class="car-detail-item"><span class="car-detail-label">Harga/12 jam:</span> <span id="detail-price">-</span></div>
-        <div class="car-detail-item"><span class="car-detail-label">Transmisi:</span> <span id="detail-transmission">-</span></div>
-        <div class="car-detail-item"><span class="car-detail-label">Jumlah Kursi:</span> <span id="detail-seats">-</span></div>
-        <div class="car-detail-item"><span class="car-detail-label">Plat Nomor:</span> <span id="detail-plate">-</span></div>
-        <div class="car-detail-item"><span class="car-detail-label">Warna:</span> <span id="detail-color">-</span></div>
-      </aside>
-    </section>
-  </main>
+                <button type="submit" id="submit-button" disabled>Sewa Sekarang</button>
+            </div>
 
-  <script>
-    // Utility: format number as IDR currency
-    function formatCurrency(value) {
-      return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0
-      }).format(value);
-    }
+            <aside class="car-details-container" aria-label="Detail mobil yang dipilih">
+                <img src="" alt="Foto mobil" id="car-photo" class="car-image" />
+                <div class="car-detail-item"><span class="car-detail-label">Nama Unit:</span> <span id="detail-name">-</span></div>
+                <div class="car-detail-item"><span class="car-detail-label">Harga/12 jam:</span> <span id="detail-price">-</span></div>
+                <div class="car-detail-item"><span class="car-detail-label">Transmisi:</span> <span id="detail-transmission">-</span></div>
+                <div class="car-detail-item"><span class="car-detail-label">Jumlah Kursi:</span> <span id="detail-seats">-</span></div>
+                <div class="car-detail-item"><span class="car-detail-label">Plat Nomor:</span> <span id="detail-plate">-</span></div>
+                <div class="car-detail-item"><span class="car-detail-label">Warna:</span> <span id="detail-color">-</span></div>
+            </aside>
+        </section>
+    </main>
 
-    // Calculate difference in days (inclusive)
-    function daysBetween(date1, date2) {
-      const oneDay = 24 * 60 * 60 * 1000;
-      const diffTime = date2.getTime() - date1.getTime();
-      return Math.max(0, Math.floor(diffTime / oneDay) + 1);
-    }
-
-    // Get form fields for validation and event handling
-    const form = document.getElementById('rental-car-form') || document.querySelector('form');
-    const submitButton = document.getElementById('submit-button');
-
-    // Inputs IDs to validate for completeness - exclude rental-cost because it's readonly and calculated
-    const requiredInputsSelectors = [
-      '#full-name',
-      '#address',
-      '#phone-number',
-      '#email',
-      '#pickup-time',
-      '#return-time',
-      '#pickup-date',
-      '#return-date',
-      '#document-kk',
-      '#document-ktp',
-      '#payment-method'
-    ];
-
-    // Date inputs for min date logic
-    const pickupDateInput = document.getElementById('pickup-date');
-    const returnDateInput = document.getElementById('return-date');
-
-    // Set min date for pickup and return to today
-    const today = new Date().toISOString().split('T')[0];
-    pickupDateInput.setAttribute('min', today);
-    returnDateInput.setAttribute('min', today);
-
-    // Car details elements
-    const carPhoto = document.getElementById('car-photo');
-    const detailName = document.getElementById('detail-name');
-    const detailPrice = document.getElementById('detail-price');
-    const detailTransmission = document.getElementById('detail-transmission');
-    const detailSeats = document.getElementById('detail-seats');
-    const detailPlate = document.getElementById('detail-plate');
-    const detailColor = document.getElementById('detail-color');
-
-    const rentalCostInput = document.getElementById('rental-cost');
-
-    // Example default selected car
-    let selectedCar = carData[0];
-
-    function showCarDetails(car) {
-      selectedCar = car;
-      carPhoto.src = car.photo;
-      carPhoto.alt = `Foto mobil ${car.name}`;
-
-      detailName.textContent = car.name;
-      detailPrice.textContent = formatCurrency(car.pricePer12h);
-      detailTransmission.textContent = car.transmission;
-      detailSeats.textContent = car.seats + ' Kursi';
-      detailPlate.textContent = car.plate;
-      detailColor.textContent = car.color;
-
-      updateRentalCost();
-    }
-
-    // Set min date for pickup and return to today
-    const today = new Date().toISOString().split('T')[0];
-    pickupDateInput.setAttribute('min', today);
-    returnDateInput.setAttribute('min', today);
-
-    // Ensure return date can't be before pickup date
-    pickupDateInput.addEventListener('change', () => {
-      if (pickupDateInput.value) {
-        returnDateInput.min = pickupDateInput.value;
-        if (returnDateInput.value && returnDateInput.value < pickupDateInput.value) {
-          returnDateInput.value = pickupDateInput.value;
+    <script>
+        // Utility: format number as IDR currency
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(value);
         }
-      } else {
-        returnDateInput.min = today;
-      }
-      updateRentalCost();
-      validateForm();
-    });
 
-    returnDateInput.addEventListener('change', () => {
-      updateRentalCost();
-      validateForm();
-    });
-
-    // Compute rental cost based on selected car and days between dates
-    function updateRentalCost() {
-      if (!selectedCar || !pickupDateInput.value || !returnDateInput.value) {
-        rentalCostInput.value = 'Rp0';
-        return;
-      }
-      const start = new Date(pickupDateInput.value);
-      const end = new Date(returnDateInput.value);
-      if (end < start) {
-        rentalCostInput.value = 'Rp0';
-        return;
-      }
-      const days = daysBetween(start, end);
-      const rentalSegments = days * 2; // per 12 hours
-      const totalCost = selectedCar.pricePer12h * rentalSegments;
-      rentalCostInput.value = formatCurrency(totalCost);
-    }
-
-    // Initial render of car details
-    showCarDetails(selectedCar);
-
-    // Form validation function to enable/disable submit button
-    function validateForm() {
-      let allFilled = true;
-      for (const selector of requiredInputsSelectors) {
-        const element = document.querySelector(selector);
-        if (!element) {
-          allFilled = false;
-          break;
+        // Calculate difference in days (inclusive)
+        function daysBetween(date1, date2) {
+            const oneDay = 24 * 60 * 60 * 1000;
+            const diffTime = date2.getTime() - date1.getTime();
+            return Math.max(0, Math.floor(diffTime / oneDay) + 1);
         }
-        // File inputs check for file presence
-        if (element.type === 'file') {
-          if (!element.files || element.files.length === 0) {
-            allFilled = false;
-            break;
-          }
-        } else {
-          if (!element.value.trim() || !element.checkValidity()) {
-            allFilled = false;
-            break;
-          }
+
+        // Get form fields for validation and event handling
+        const form = document.querySelector('form');
+        const submitButton = document.getElementById('submit-button');
+
+        // Inputs IDs to validate for completeness
+        const requiredInputsSelectors = [
+            '#nama_lengkap',
+            '#alamat',
+            '#nomor_telepon',
+            '#email',
+            '#document-kk',
+            '#document-ktp',
+            '#payment-method'
+        ];
+
+        // Date and time inputs
+        const pickupDateInput = document.getElementById('pickup-date');
+        const returnDateInput = document.getElementById('return-date');
+        const pickupTimeInput = document.getElementById('pickup-time');
+        const returnTimeInput = document.getElementById('return-time');
+
+        // Rental duration selector
+        const rentalDurationSelect = document.getElementById('rental-duration');
+
+        // Show/hide date and time inputs based on rental duration
+        rentalDurationSelect.addEventListener('change', function () {
+            const duration = this.value;
+            if (duration === "12") {
+                document.getElementById('time-inputs').style.display = 'flex';
+                document.getElementById('date-inputs').style.display = 'none';
+            } else if (duration === "24") {
+                document.getElementById('time-inputs').style.display = 'none';
+                document.getElementById('date-inputs').style.display = 'flex';
+            }
+        });
+
+        // Set min date for pickup and return to today
+        const today = new Date().toISOString().split('T')[0];
+        pickupDateInput.setAttribute('min', today);
+        returnDateInput.setAttribute('min', today);
+
+        // Car details elements
+        const carPhoto = document.getElementById('car-photo');
+        const detailName = document.getElementById('detail-name');
+        const detailPrice = document.getElementById('detail-price');
+        const detailTransmission = document.getElementById('detail-transmission');
+        const detailSeats = document.getElementById('detail-seats');
+        const detailPlate = document.getElementById('detail-plate');
+        const detailColor = document.getElementById('detail-color');
+
+        const rentalCostInput = document.getElementById('rental-cost');
+
+        // Example default selected car
+        let selectedCar = carData[0];
+
+        function showCarDetails(car) {
+            selectedCar = car;
+            carPhoto.src = car.photo;
+            carPhoto.alt = `Foto mobil ${car.name}`;
+
+            detailName.textContent = car.name;
+            detailPrice.textContent = formatCurrency(car.pricePer12h);
+            detailTransmission.textContent = car.transmission;
+            detailSeats.textContent = car.seats + ' Kursi';
+            detailPlate.textContent = car.plate;
+            detailColor.textContent = car.color;
+
+            updateRentalCost();
         }
-      }
-      submitButton.disabled = !allFilled;
-    }
 
-    // Attach event listeners for validation on all required inputs
-    requiredInputsSelectors.forEach(selector => {
-      const input = document.querySelector(selector);
-      if (input) {
-        input.addEventListener('input', validateForm);
-        input.addEventListener('change', validateForm);
-      }
-    });
+        // Ensure return date can't be before pickup date
+        pickupDateInput.addEventListener('change', () => {
+            if (pickupDateInput.value) {
+                returnDateInput.min = pickupDateInput.value;
+                if (returnDateInput.value && returnDateInput.value < pickupDateInput.value) {
+                    returnDateInput.value = pickupDateInput.value;
+                }
+            } else {
+                returnDateInput.min = today;
+            }
+            updateRentalCost();
+            validateForm();
+        });
 
-    // Initial validate on page load
-    validateForm();
+        returnDateInput.addEventListener('change', () => {
+            updateRentalCost();
+            validateForm();
+        });
 
-    // Form submission handler (placeholder)
-    form.addEventListener('submit', event => {
-      event.preventDefault();
-      if (submitButton.disabled) return;
-      alert('Form submitted successfully!');
-      // Real submission logic goes here
-    });
-  </script>
+        // Compute rental cost based on selected car and days between dates
+        function updateRentalCost() {
+            if (!selectedCar || (!pickupDateInput.value && !pickupTimeInput.value) || (!returnDateInput.value && !returnTimeInput.value)) {
+                rentalCostInput.value = 'Rp0';
+                return;
+            }
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const userId = <?php echo $_SESSION['user_id']; ?>;
-  const unitMobilId = <?php echo $_GET['unit_mobil_id']; ?>;
-  let hargaSewa = 0;
+            let totalCost = 0;
 
-  // Load info user
-  $.get('booking_backend.php', { id_user: userId }, function (data) {
-    const user = JSON.parse(data);
-    $('#infoUser').html(`
-      <p>Nama: ${user.nama}</p>
-      <p>Alamat: ${user.alamat}</p>
-      <p>No. Telepon: ${user.telepon}</p>
-      <p>Email: ${user.email}</p>
-      <p>KK: <a href="uploads/dokumen-user/${user.file_kk}" target="_blank">Lihat</a></p>
-      <p>KTP: <a href="uploads/dokumen-user/${user.file_ktp}" target="_blank">Lihat</a></p>
-    `);
-  });
+            if (rentalDurationSelect.value === "12") {
+                const startTime = new Date(`${today}T${pickupTimeInput.value}`);
+                const endTime = new Date(`${today}T${returnTimeInput.value}`);
+                if (endTime < startTime) {
+                    rentalCostInput.value = 'Rp0';
+                    return;
+                }
+                const hours = Math.ceil((endTime - startTime) / (1000 * 60 * 60));
+                const rentalSegments = Math.ceil(hours / 12);
+                totalCost = selectedCar.pricePer12h * rentalSegments;
+            } else if (rentalDurationSelect.value === "24") {
+                const startDate = new Date(pickupDateInput.value);
+                const endDate = new Date(returnDateInput.value);
+                if (endDate < startDate) {
+                    rentalCostInput.value = 'Rp0';
+                    return;
+                }
+                const days = daysBetween(startDate, endDate);
+                totalCost = selectedCar.pricePer12h * days * 2; // Assuming 2 segments of 12 hours per day
+            }
 
-  // Load info mobil dan simpan harga sewa
-  $.get('booking_backend.php', { unit_mobil_id: unitMobilId }, function (data) {
-    const mobil = JSON.parse(data);
-    hargaSewa = mobil.harga_sewa;
-    $('#infoMobil').html(`
-      <p>Nama Mobil: ${mobil.nama}</p>
-      <p>Harga Sewa per 12 jam: Rp${mobil.harga_sewa}</p>
-      <p>Plat Nomor: ${mobil.plat_nomor}</p>
-      <p>Warna: ${mobil.warna}</p>
-      <p>Transmisi: ${mobil.transmisi}</p>
-      <p>Tahun Beli: ${mobil.tahun_beli}</p>
-    `);
-  });
+            rentalCostInput.value = formatCurrency(totalCost);
+        }
 
-  // Fungsi untuk hitung total biaya dan validasi waktu
-  async function hitungBiaya() {
-    const tglAwal = document.getElementById('tanggal_pengambilan').value;
-    const jamAwal = document.getElementById('jam_pengambilan').value;
-    const tglAkhir = document.getElementById('tanggal_pengembalian').value;
-    const jamAkhir = document.getElementById('jam_pengembalian').value;
-    const fasilitas = document.getElementById('fasilitas').value;
-    const unitMobilId = document.getElementById('unit_mobil_id').value;
+        // Form validation function to enable/disable submit button
+        function validateForm() {
+            let allFilled = true;
+            for (const selector of requiredInputsSelectors) {
+                const element = document.querySelector(selector);
+                if (!element) {
+                    allFilled = false;
+                    break;
+                }
+                // File inputs check for file presence
+                if (element.type === 'file') {
+                    if (!element.files || element.files.length === 0) {
+                        allFilled = false;
+                        break;
+                    }
+                } else {
+                    if (!element.value.trim() || !element.checkValidity()) {
+                        allFilled = false;
+                        break;
+                    }
+                }
+            }
+            submitButton.disabled = !allFilled;
+        }
 
-    if (tglAwal && jamAwal && tglAkhir && jamAkhir && unitMobilId) {
-      const start = new Date(`${tglAwal}T${jamAwal}`);
-      const end = new Date(`${tglAkhir}T${jamAkhir}`);
+        // Attach event listeners for validation on all required inputs
+        requiredInputsSelectors.forEach(selector => {
+            const input = document.querySelector(selector);
+            if (input) {
+                input.addEventListener('input', validateForm);
+                input.addEventListener('change', validateForm);
+            }
+        });
 
-      if (end <= start) {
-        alert("Tanggal atau jam pengembalian harus setelah pengambilan.");
-        return;
-      }
+        // Initial validate on page load
+        validateForm();
 
-      const durasiJam = Math.ceil((end - start) / (1000 * 60 * 60));
-      const periode12Jam = Math.ceil(durasiJam / 12);
+        // Form submission handler
+        form.addEventListener('submit', event => {
+            event.preventDefault();
+            if (submitButton.disabled) return;
+            alert('Form submitted successfully!');
+            // Real submission logic goes here
+        });
 
-      // Ambil harga sewa dari server
-      const response = await fetch(`get_harga.php?unit_id=${unitMobilId}`);
-      const data = await response.json();
-      const hargaPer12Jam = parseInt(data.harga);
+        // Initial render of car details
+        showCarDetails(selectedCar);
+    </script>
 
-      let totalBiaya = hargaPer12Jam * periode12Jam;
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const userId = <?php echo json_encode($_SESSION['user_id']); ?>;
+            const unitMobilId = <?php echo json_encode($_GET['unit_mobil_id']); ?>;
+            let hargaSewa = 0;
 
-      if (fasilitas === "dengan supir") {
-        totalBiaya += 250000;
-      }
+            // Load info user
+            $.get('booking_backend.php', { id_user: userId }, function (data) {
+                const user = JSON.parse(data);
+                $('#infoUser ').html(`
+                    <p>Nama: ${user.nama}</p>
+                    <p>Alamat: ${user.alamat}</p>
+                    <p>No. Telepon: ${user.telepon}</p>
+                    <p>Email: ${user.email}</p>
+                    <p>KK: <a href="uploads/dokumen-user/${user.file_kk}" target="_blank">Lihat</a></p>
+                    <p>KTP: <a href="uploads/dokumen-user/${user.file_ktp}" target="_blank">Lihat</a></p>
+                `);
+            });
 
-      document.getElementById('total_biaya').value = totalBiaya;
-    }
-  }
-
-  document.getElementById('tanggal_pengambilan').addEventListener('change', hitungBiaya);
-  document.getElementById('jam_pengambilan').addEventListener('change', hitungBiaya);
-  document.getElementById('tanggal_pengembalian').addEventListener('change', hitungBiaya);
-  document.getElementById('jam_pengembalian').addEventListener('change', hitungBiaya);
-  document.getElementById('fasilitas').addEventListener('change', hitungBiaya);
-
-  const form = document.getElementById('bookingForm');
-  const submitButton = form.querySelector('button[type="submit"]');
-
-  if (form && submitButton) {
-    form.addEventListener('submit', event => {
-      event.preventDefault();
-      if (submitButton.disabled) return;
-      alert('Form submitted successfully!');
-      form.submit();
-    });
-  }
-});
-</script>
+            // Load info mobil dan simpan harga sewa
+            $.get('booking_backend.php', { unit_mobil_id: unitMobilId }, function (data) {
+                const mobil = JSON.parse(data);
+                hargaSewa = mobil.harga_sewa;
+                $('#infoMobil').html(`
+                    <p>Nama Mobil: ${mobil.nama}</p>
+                    <p>Harga Sewa per 12 jam: Rp${mobil.harga_sewa}</p>
+                    <p>Plat Nomor: ${mobil.plat_nomor}</p>
+                    <p>Warna: ${mobil.warna}</p>
+                    <p>Transmisi: ${mobil.transmisi}</p>
+                    <p>Tahun Beli: ${mobil.tahun_beli}</p>
+                `);
+            });
+        });
+    </script>
 </body>
 
 </html>
