@@ -173,7 +173,7 @@ $base_url = '/proyek-1/';
               <time datetime="2024-04-21"></time>
             </div>
             <div>
-              <span class="booking-label">Time</span>
+              <span class="booking-label">Fasilitas</span>
               <time datetime="2024-04-21T14:00"></time>
             </div>
             <div>
@@ -190,7 +190,7 @@ $base_url = '/proyek-1/';
         <article class="booking-card" tabindex="0" aria-labelledby="booking2-id booking2-unit">
           <div class="booking-info">
             <div>
-              <span class="booking-label" id="booking2-id"></span>
+              <span class="booking-label" id="booking2-id">Booking ID</span>
               <span></span>
             </div>
             <div>
@@ -202,7 +202,7 @@ $base_url = '/proyek-1/';
               <time datetime="2024-04-27"></time>
             </div>
             <div>
-              <span class="booking-label">Time</span>
+              <span class="booking-label">Fasilitas</span>
               <time datetime="2024-04-27T18:30"></time>
             </div>
             <div>
@@ -231,7 +231,7 @@ $base_url = '/proyek-1/';
               <time datetime="2024-05-05"></time>
             </div>
             <div>
-              <span class="booking-label">Time</span>
+              <span class="booking-label">Fasilitas</span>
               <time datetime="2024-05-05T12:45"></time>
             </div>
             <div>

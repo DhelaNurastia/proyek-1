@@ -341,8 +341,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
           Menjelajah destinasi baru dan mengendarai mobil terbaik kini lebih mudah. Sigma RentCar, solusi sewa mobil yang terpercaya.
         </p>
         <div class="profile-cta">
-          <a href="<?= $base_url ?>pages/customer/edit_profile.php" class="btn-primary">Edit Profile</a>
-          <button class="btn-primary" aria-label="View Rental History" id="btnRentalHistory">Riwayat</button>
+          <a href="<?= $base_url ?>pages/customer/riwayat.php" class="btn-primary">Riwayat Booking</a>
         </div>
       </section>
 
