@@ -24,6 +24,7 @@ endforeach;
 \Midtrans\Config::$isProduction = false; // Sandbox dulu
 \Midtrans\Config::$isSanitized = true;
 \Midtrans\Config::$is3ds = true;
+$statusPembayaran = 'berhasil';
 
 // Ambil data customer
 $stmt = mysqli_prepare($db, "SELECT nama, telepon, email, status_verifikasi FROM users WHERE id = ?");
@@ -53,7 +54,7 @@ $orderId = 'booking-' . rand();
 
 // Membuat data pembayaran
 $stmt = mysqli_prepare($db, "INSERT INTO pembayaran (booking_id, jumlah, status, order_id) VALUES (?, ?, ?, ?);");
-mysqli_stmt_bind_param($stmt, "iiss", $bookingId, $data['total_biaya'], $data['status'], $orderId);
+mysqli_stmt_bind_param($stmt, "iiss", $bookingId, $data['total_biaya'], $statusPembayaran, $orderId);
 mysqli_stmt_execute($stmt);
 mysqli_stmt_close($stmt);
 mysqli_close($db);
