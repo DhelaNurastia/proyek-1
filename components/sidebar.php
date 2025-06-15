@@ -20,7 +20,13 @@ $isChecker         = strpos($current_uri, 'checker/index.php') !== false;
 $isPages           = strpos($current_uri, 'login.php') !== false || strpos($current_uri, 'register.php') !== false || strpos($current_uri, 'forgot-password.php') !== false;
 ?>
 
-<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<style>
+    .custom-sidebar-bg {
+        background-color: #111827 !important;
+    }
+</style>
+<ul class="navbar-nav sidebar sidebar-dark accordion custom-sidebar-bg" id="accordionSidebar">
+
 
     <!-- Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= BASE_URL ?>/admin/index.php">
@@ -113,19 +119,6 @@ $isPages           = strpos($current_uri, 'login.php') !== false || strpos($curr
         </div>
     </li>
 
-    <!-- Optional Tambahan -->
-    <li class="nav-item">
-        <a class="nav-link" href="<?= BASE_URL ?>/admin/charts.php">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Charts</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="<?= BASE_URL ?>/admin/tables.php">
-            <i class="fas fa-fw fa-table"></i>
-            <span>Tables</span>
-        </a>
-    </li>
 
     <hr class="sidebar-divider d-none d-md-block">
     <div class="text-center d-none d-md-inline">

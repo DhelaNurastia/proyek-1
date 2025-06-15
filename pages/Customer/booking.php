@@ -6,26 +6,44 @@ session_start();
 include('../../koneksi.php');
 
 // Check if the user is logged in (assuming user_id is stored in session)
-if(isset($_SESSION['user_id'])){
-    $user_id = $_SESSION['user_id']; // Get the logged-in user's ID
+if (isset($_SESSION['user_id'])) {
+  $user_id = $_SESSION['user_id']; // Get the logged-in user's ID
 } else {
-    // Redirect to login page if the user is not logged in
-    header("Location: login.php");
-    exit();
+  // Redirect to login page if the user is not logged in
+  header("Location: login.php");
+  exit();
 }
 
 // SQL query to fetch user data, including documents
-$query = "SELECT nama_lengkap, alamat, telepon, email, file_ktp, file_kk 
+$query = "SELECT nama_lengkap, alamat, telepon, email, status_verifikasi,file_ktp, file_kk 
           FROM users 
           LEFT JOIN dokumen_user ON users.id = dokumen_user.id_user
           WHERE users.id = $user_id";
 $result = mysqli_query($db, $query);
 
+if (isset($_GET['unit_id'])) {
+  $unit_id = $_GET['unit_id'];
+  $query = mysqli_query($db, "SELECT * FROM unit_mobil WHERE id = '$unit_id'");
+  $mobil = mysqli_fetch_assoc($query);
+} else {
+  echo "ID mobil tidak ditemukan.";
+  exit;
+}
+
+// Ambil detail mobil
+$query_mobil = "
+SELECT um.*, jm.nama AS nama_mobil, jm.harga_sewa, jm.id, jm.nama, jm.harga_sewa, jm.jumlah_kursi
+FROM unit_mobil um 
+JOIN jenis_mobil jm ON um.jenis_mobil_id = jm.id 
+WHERE um.id = $unit_id
+";
+$mobil = mysqli_fetch_assoc(mysqli_query($db, $query_mobil));
+
 // Check if the query was successful
 if ($result) {
-    $user = mysqli_fetch_assoc($result);
+  $user = mysqli_fetch_assoc($result);
 } else {
-    echo "Error fetching data.";
+  echo "Error fetching data.";
 }
 ?>
 
@@ -51,24 +69,24 @@ if ($result) {
     body {
       margin: 0;
       font-family: 'Nunito Sans', sans-serif;
-      background-color: #ffffff;
+      background-color: #1e293b;
       color: #6b7280;
       line-height: 1.6;
       font-size: 17px;
       min-height: 100vh;
       display: flex;
-      justify-content: center;
+      /* justify-content: center; */
       align-items: flex-start;
-      padding: 4rem 1rem 5rem;
+      padding: 2rem;
     }
 
     /* Container */
     .container {
-      max-width: 1200px;
+      /* max-width: 1200px; */
       width: 100%;
       background: #fff;
       border-radius: 0.75rem;
-      box-shadow: 0 10px 25px rgb(0 0 0 / 0.08);
+      box-shadow: 0 10px 32px 8px rgba(0 0 0 / 0.08);
       padding: 3.5rem 3rem 3.5rem;
       box-sizing: border-box;
       display: flex;
@@ -86,11 +104,11 @@ if ($result) {
     .car-details-container {
       flex: 1 1 380px;
       min-width: 280px;
-      background-color: #f9fafb;
+      background-color: #1e293b;
       border-radius: 0.75rem;
-      box-shadow: 0 6px 16px rgb(0 0 0 / 0.1);
+      box-shadow: 0 6px 24px rgb(0 0 0 / 0.1);
       padding: 1.5rem 2rem;
-      color: #374151;
+      color: #ffffff;
       font-family: 'Nunito Sans', sans-serif;
       display: flex;
       flex-direction: column;
@@ -103,6 +121,7 @@ if ($result) {
       width: 100%;
       height: auto;
       border-radius: 0.5rem;
+      overflow: hidden;
       object-fit: cover;
       aspect-ratio: 4 / 3;
       box-shadow: 0 4px 12px rgb(0 0 0 / 0.08);
@@ -273,7 +292,7 @@ if ($result) {
 <body>
   <main>
     <section class="container" aria-labelledby="formTitle">
-      <div class="form-container">
+      <form class="form-container form">
         <h1 id="formTitle">Form Rental Mobil</h1>
         <p class="description">Silakan isi formulir di bawah untuk menyewa mobil pilihan Anda dengan mudah dan cepat.</p>
 
@@ -307,12 +326,12 @@ if ($result) {
         <div class="grouped-time-inputs">
           <div class="form-group">
             <label for="pickup-time">Jam Pengambilan</label>
-            <input type="time" id="pickup-time" name="pickup-time" required />
+            <input type="time" id="jam_pengambilan" name="pickup-time" required />
           </div>
 
           <div class="form-group">
             <label for="return-time">Jam Pengembalian</label>
-            <input type="time" id="return-time" name="return-time" required />
+            <input type="time" id="jam_pengembalian" name="return-time" required />
           </div>
         </div>
 
@@ -320,50 +339,62 @@ if ($result) {
         <div class="grouped-inputs">
           <div class="form-group">
             <label for="pickup-date">Tanggal Pengambilan</label>
-            <input type="date" id="pickup-date" name="pickup-date" required />
+            <input type="date" id="tanggal_pengambilan" name="pickup-date" required />
           </div>
 
           <div class="form-group">
             <label for="return-date">Tanggal Pengembalian</label>
-            <input type="date" id="return-date" name="return-date" required />
+            <input type="date" id="tanggal_pengembalian" name="return-date" required />
           </div>
         </div>
 
         <!-- KK and KTP Document inputs side by side -->
         <div class="grouped-inputs">
           <div class="form-group">
-            <label for="document-kk">Upload Dokumen KK<span aria-hidden="true" style="color: #e11d48;"> *</span></label>
-            <input type="file" id="document-kk" name="document-kk" accept=".jpg,.jpeg,.png,.pdf" required aria-describedby="docKKHelp" />
-            <small id="docKKHelp" style="color: #6b7280; font-size: 0.875rem;">Format: JPG, PNG, atau PDF</small>
+            <label>File KTP</label>
+            <?php if (!empty($user['file_ktp'])): ?>
+              <p><a href="../../uploads/dokumen-user/<?php echo $user['file_ktp']; ?>" target="_blank">Lihat File KTP</a></p>
+            <?php else: ?>
+              <p>Tidak ada file KTP</p>
+            <?php endif; ?>
           </div>
 
           <div class="form-group">
-            <label for="document-ktp">Upload Dokumen KTP<span aria-hidden="true" style="color: #e11d48;"> *</span></label>
-            <input type="file" id="document-ktp" name="document-ktp" accept=".jpg,.jpeg,.png,.pdf" required aria-describedby="docKTPHelp" />
-            <small id="docKTPHelp" style="color: #6b7280; font-size: 0.875rem;">Format: JPG, PNG, atau PDF</small>
+            <label>File KK</label>
+            <?php if (!empty($user['file_kk'])): ?>
+              <p><a href="../../uploads/dokumen-user/<?php echo $user['file_kk']; ?>" target="_blank">Lihat File KK</a></p>
+            <?php else: ?>
+              <p>Tidak ada file KK</p>
+            <?php endif; ?>
           </div>
+
         </div>
 
         <div class="form-group full-width">
           <label>Fasilitas</label>
           <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
-            <label><input type="checkbox" name="facilities" value="Supir" /> Supir</label>
-            <label><input type="checkbox" name="facilities" value="Lepas Kunci" /> Lepas Kunci</label>
+            <!-- <label><input type="checkbox"  name="facilities" value="Supir" /> Supir</label>
+            <label><input type="checkbox" name="facilities" value="Lepas Kunci" /> Lepas Kunci</label> -->
+            <select name="facilities" id="fasilitas">
+              <option value="dengan supir">Supir</option>
+              <option value="lepas kunci">Lepas Kunci</option>
+            </select>
           </div>
         </div>
 
         <div class="form-group full-width">
           <label>Jaminan</label>
-          <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
-            <label><input type="checkbox" name="guarantee" value="Uang" /> Uang</label>
-            <label><input type="checkbox" name="guarantee" value="Motor" /> Motor</label>
-          </div>
+          <select id="jaminan" name="jaminan" required>
+            <option disabled selected>Pilih Jaminan</option>
+            <option value="uang">Uang</option>
+            <option value="motor">Motor</option>
+          </select>
         </div>
 
         <div class="form-group full-width">
           <label for="payment-method">Cara Pembayaran</label>
           <select id="payment-method" name="payment-method" required>
-            <option value="" disabled selected>Pilih cara pembayaran</option>
+            <option disabled selected>Pilih cara pembayaran</option>
             <option value="Transfer">Transfer</option>
             <option value="Cash">Cash</option>
           </select>
@@ -371,272 +402,175 @@ if ($result) {
 
         <div class="form-group full-width">
           <label for="rental-cost">Biaya Sewa</label>
-          <input type="text" id="rental-cost" name="rental-cost" readonly />
+          <input type="text" id="total_biaya" name="rental-cost" readonly />
         </div>
 
-        <button type="submit" id="submit-button" disabled>Sewa Sekarang</button>
-      </div>
+        <button type="submit" id="proses-booking">Sewa Sekarang</button>
+      </form>
+
 
       <aside class="car-details-container" aria-label="Detail mobil yang dipilih">
-        <img src="" alt="Foto mobil" id="car-photo" class="car-image" />
-        <div class="car-detail-item"><span class="car-detail-label">Nama Unit:</span> <span id="detail-name">-</span></div>
-        <div class="car-detail-item"><span class="car-detail-label">Harga/12 jam:</span> <span id="detail-price">-</span></div>
-        <div class="car-detail-item"><span class="car-detail-label">Transmisi:</span> <span id="detail-transmission">-</span></div>
-        <div class="car-detail-item"><span class="car-detail-label">Jumlah Kursi:</span> <span id="detail-seats">-</span></div>
-        <div class="car-detail-item"><span class="car-detail-label">Plat Nomor:</span> <span id="detail-plate">-</span></div>
-        <div class="car-detail-item"><span class="car-detail-label">Warna:</span> <span id="detail-color">-</span></div>
+        <div class="car-details">
+          <h3>Mobil yang Anda Pilih</h3>
+          <img src="../../uploads/foto-mobil/<?= $mobil['foto']; ?>" alt="foto mobil" class="car-image" style="width: 450px; height: auto;">
+          <table>
+            <tr>
+              <td><b>Nama Mobil</b></td>
+              <td>: <?= $mobil['nama_mobil']; ?></td>
+            </tr>
+            <tr>
+              <td><b>Tahun</b></td>
+              <td>: <?= $mobil['tahun_beli']; ?></td>
+            </tr>
+            <tr>
+              <td><b>Harga per Hari</b></td>
+              <td>: Rp <?= number_format($mobil['harga_sewa'], 0, ',', '.'); ?></td>
+            </tr>
+            <tr>
+              <td><b>Transmisi</b></td>
+              <td>: <?= $mobil['transmisi']; ?></td>
+            </tr>
+            <tr>
+              <td><b>Jumlah Kursi</b></td>
+              <td>: <?= $mobil['jumlah_kursi']; ?></td>
+            </tr>
+            <tr>
+              <td><b>Plat Nomor</b></td>
+              <td>: <?= $mobil['plat_nomor']; ?></td>
+            </tr>
+            <tr>
+              <td><b>Warna</b></td>
+              <td>: <?= $mobil['warna']; ?></td>
+            </tr>
+          </table>
+        </div>
       </aside>
     </section>
   </main>
 
+  <!-- Midtrans client key -->
+  <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-G-mHIBdE0tG4avXY"></script>
   <script>
-    // Utility: format number as IDR currency
-    function formatCurrency(value) {
-      return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0
-      }).format(value);
-    }
+    document.addEventListener('DOMContentLoaded', function() {
+      const userId = <?php echo $_SESSION['user_id']; ?>;
+      const isVerifiedUser = "<?= $user['status_verifikasi'] ?>"
+      let hargaSewa = 0;
+      let totalBiaya = 0;
+      let tglAwal;
+      let tglAkhir;
+      let jamAwal;
+      let jamAkhir;
+      let durasiJam;
 
-    // Calculate difference in days (inclusive)
-    function daysBetween(date1, date2) {
-      const oneDay = 24 * 60 * 60 * 1000;
-      const diffTime = date2.getTime() - date1.getTime();
-      return Math.max(0, Math.floor(diffTime / oneDay) + 1);
-    }
+      async function hitungBiaya() {
+        tglAwal = document.getElementById('tanggal_pengambilan').value;
+        jamAwal = document.getElementById('jam_pengambilan').value;
+        tglAkhir = document.getElementById('tanggal_pengembalian').value;
+        jamAkhir = document.getElementById('jam_pengembalian').value;
+        let fasilitas = document.getElementById('fasilitas').value;
+        let unitMobilId = <?php echo $_GET['unit_id']; ?>;
 
-    // Get form fields for validation and event handling
-    const form = document.getElementById('rental-car-form') || document.querySelector('form');
-    const submitButton = document.getElementById('submit-button');
+        if (tglAwal && jamAwal && tglAkhir && jamAkhir && unitMobilId) {
+          const start = new Date(`${tglAwal}T${jamAwal}`);
+          const end = new Date(`${tglAkhir}T${jamAkhir}`);
 
-    // Inputs IDs to validate for completeness - exclude rental-cost because it's readonly and calculated
-    const requiredInputsSelectors = [
-      '#full-name',
-      '#address',
-      '#phone-number',
-      '#email',
-      '#pickup-time',
-      '#return-time',
-      '#pickup-date',
-      '#return-date',
-      '#document-kk',
-      '#document-ktp',
-      '#payment-method'
-    ];
-
-    // Date inputs for min date logic
-    const pickupDateInput = document.getElementById('pickup-date');
-    const returnDateInput = document.getElementById('return-date');
-
-    // Car details elements
-    const carPhoto = document.getElementById('car-photo');
-    const detailName = document.getElementById('detail-name');
-    const detailPrice = document.getElementById('detail-price');
-    const detailTransmission = document.getElementById('detail-transmission');
-    const detailSeats = document.getElementById('detail-seats');
-    const detailPlate = document.getElementById('detail-plate');
-    const detailColor = document.getElementById('detail-color');
-
-    const rentalCostInput = document.getElementById('rental-cost');
-
-    // Example default selected car
-    let selectedCar = carData[0];
-
-    function showCarDetails(car) {
-      selectedCar = car;
-      carPhoto.src = car.photo;
-      carPhoto.alt = `Foto mobil ${car.name}`;
-
-      detailName.textContent = car.name;
-      detailPrice.textContent = formatCurrency(car.pricePer12h);
-      detailTransmission.textContent = car.transmission;
-      detailSeats.textContent = car.seats + ' Kursi';
-      detailPlate.textContent = car.plate;
-      detailColor.textContent = car.color;
-
-      updateRentalCost();
-    }
-
-    // Set min date for pickup and return to today
-    const today = new Date().toISOString().split('T')[0];
-    pickupDateInput.setAttribute('min', today);
-    returnDateInput.setAttribute('min', today);
-
-    // Ensure return date can't be before pickup date
-    pickupDateInput.addEventListener('change', () => {
-      if (pickupDateInput.value) {
-        returnDateInput.min = pickupDateInput.value;
-        if (returnDateInput.value && returnDateInput.value < pickupDateInput.value) {
-          returnDateInput.value = pickupDateInput.value;
-        }
-      } else {
-        returnDateInput.min = today;
-      }
-      updateRentalCost();
-      validateForm();
-    });
-
-    returnDateInput.addEventListener('change', () => {
-      updateRentalCost();
-      validateForm();
-    });
-
-    // Compute rental cost based on selected car and days between dates
-    function updateRentalCost() {
-      if (!selectedCar || !pickupDateInput.value || !returnDateInput.value) {
-        rentalCostInput.value = 'Rp0';
-        return;
-      }
-      const start = new Date(pickupDateInput.value);
-      const end = new Date(returnDateInput.value);
-      if (end < start) {
-        rentalCostInput.value = 'Rp0';
-        return;
-      }
-      const days = daysBetween(start, end);
-      const rentalSegments = days * 2; // per 12 hours
-      const totalCost = selectedCar.pricePer12h * rentalSegments;
-      rentalCostInput.value = formatCurrency(totalCost);
-    }
-
-    // Initial render of car details
-    showCarDetails(selectedCar);
-
-    // Form validation function to enable/disable submit button
-    function validateForm() {
-      let allFilled = true;
-      for (const selector of requiredInputsSelectors) {
-        const element = document.querySelector(selector);
-        if (!element) {
-          allFilled = false;
-          break;
-        }
-        // File inputs check for file presence
-        if (element.type === 'file') {
-          if (!element.files || element.files.length === 0) {
-            allFilled = false;
-            break;
+          if (end <= start) {
+            alert("Tanggal atau jam pengembalian harus setelah pengambilan.");
+            return;
           }
-        } else {
-          if (!element.value.trim() || !element.checkValidity()) {
-            allFilled = false;
-            break;
+
+          durasiJam = Math.ceil((end - start) / (1000 * 60 * 60));
+          const periode12Jam = Math.ceil(durasiJam / 12);
+
+          // Ambil harga sewa dari server
+          const response = await fetch(`get_harga.php?unit_id=${unitMobilId}`);
+          const data = await response.json();
+          const hargaPer12Jam = parseInt(data.harga);
+
+
+          totalBiaya = hargaPer12Jam * periode12Jam;
+
+          if (fasilitas === "dengan supir") {
+            totalBiaya += 250000;
           }
+
+          console.log("Harga per 12 jam:", hargaPer12Jam);
+          console.log("Durasi jam:", durasiJam);
+          console.log("Total biaya:", totalBiaya);
+
+          // document.getElementById('total_biaya').value = totalBiaya;
+          document.getElementById('total_biaya').value = totalBiaya.toLocaleString("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            maximumFractionDigits: 0,
+          });
         }
       }
-      submitButton.disabled = !allFilled;
-    }
 
-    // Attach event listeners for validation on all required inputs
-    requiredInputsSelectors.forEach(selector => {
-      const input = document.querySelector(selector);
-      if (input) {
-        input.addEventListener('input', validateForm);
-        input.addEventListener('change', validateForm);
-      }
-    });
+      document.getElementById('tanggal_pengambilan').addEventListener('change', hitungBiaya);
+      document.getElementById('jam_pengambilan').addEventListener('change', hitungBiaya);
+      document.getElementById('tanggal_pengembalian').addEventListener('change', hitungBiaya);
+      document.getElementById('jam_pengembalian').addEventListener('change', hitungBiaya);
+      document.getElementById('fasilitas').addEventListener('change', hitungBiaya);
 
-    // Initial validate on page load
-    validateForm();
+      const form = document.querySelector('form');
+      const submitButton = form.querySelector('button[type="submit"]');
 
-    // Form submission handler (placeholder)
-    form.addEventListener('submit', event => {
-      event.preventDefault();
-      if (submitButton.disabled) return;
-      alert('Form submitted successfully!');
-      // Real submission logic goes here
+      // Melakukan proses booking
+      document.getElementById("proses-booking").addEventListener("click", async function(e) {
+        e.preventDefault();
+
+        if (this.disabled) return;
+
+        // Data yang dikirim ke proses-booking.php
+        const data = {
+          unit_mobil_id: <?= $unit_id; ?>,
+          customer_id: <?= $user_id; ?>,
+          metode_pembayaran: document.getElementById("payment-method").value,
+          total_biaya: totalBiaya,
+          jaminan: document.getElementById("jaminan").value,
+          tgl_booking: tglAwal,
+          tgl_kembali: tglAkhir,
+          jam_booking: jamAwal,
+          jam_kembali: jamAkhir,
+          durasi: durasiJam,
+          fasilitas: document.getElementById("fasilitas").value,
+        };
+
+        const json = JSON.stringify(data);
+        const res = await fetch("actions/proses-booking.php", {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: json,
+        });
+        const result = await res.json();
+
+        let message = await result.message;
+        if (message) return alert(message);
+
+        let snapToken = await result.snapToken;
+        if (snapToken) {
+          window.snap.pay(snapToken, {
+            onSuccess: function(result) {
+              console.log('success', result);
+              window.location.href = "./riwayat.php";
+            },
+            onPending: function(result) {
+              console.log('pending', result);
+            },
+            onError: function(result) {
+              console.log('error', result);
+            },
+            onClose: function() {
+              alert('Transaksi belum selesai');
+            }
+          });
+        }
+      });
     });
   </script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const userId = <?php echo $_SESSION['user_id']; ?>;
-  const unitMobilId = <?php echo $_GET['unit_mobil_id']; ?>;
-  let hargaSewa = 0;
-
-  // Load info user
-  $.get('booking_backend.php', { id_user: userId }, function (data) {
-    const user = JSON.parse(data);
-    $('#infoUser').html(`
-      <p>Nama: ${user.nama}</p>
-      <p>Alamat: ${user.alamat}</p>
-      <p>No. Telepon: ${user.telepon}</p>
-      <p>Email: ${user.email}</p>
-      <p>KK: <a href="uploads/dokumen-user/${user.file_kk}" target="_blank">Lihat</a></p>
-      <p>KTP: <a href="uploads/dokumen-user/${user.file_ktp}" target="_blank">Lihat</a></p>
-    `);
-  });
-
-  // Load info mobil dan simpan harga sewa
-  $.get('booking_backend.php', { unit_mobil_id: unitMobilId }, function (data) {
-    const mobil = JSON.parse(data);
-    hargaSewa = mobil.harga_sewa;
-    $('#infoMobil').html(`
-      <p>Nama Mobil: ${mobil.nama}</p>
-      <p>Harga Sewa per 12 jam: Rp${mobil.harga_sewa}</p>
-      <p>Plat Nomor: ${mobil.plat_nomor}</p>
-      <p>Warna: ${mobil.warna}</p>
-      <p>Transmisi: ${mobil.transmisi}</p>
-      <p>Tahun Beli: ${mobil.tahun_beli}</p>
-    `);
-  });
-
-  // Fungsi untuk hitung total biaya dan validasi waktu
-  async function hitungBiaya() {
-    const tglAwal = document.getElementById('tanggal_pengambilan').value;
-    const jamAwal = document.getElementById('jam_pengambilan').value;
-    const tglAkhir = document.getElementById('tanggal_pengembalian').value;
-    const jamAkhir = document.getElementById('jam_pengembalian').value;
-    const fasilitas = document.getElementById('fasilitas').value;
-    const unitMobilId = document.getElementById('unit_mobil_id').value;
-
-    if (tglAwal && jamAwal && tglAkhir && jamAkhir && unitMobilId) {
-      const start = new Date(`${tglAwal}T${jamAwal}`);
-      const end = new Date(`${tglAkhir}T${jamAkhir}`);
-
-      if (end <= start) {
-        alert("Tanggal atau jam pengembalian harus setelah pengambilan.");
-        return;
-      }
-
-      const durasiJam = Math.ceil((end - start) / (1000 * 60 * 60));
-      const periode12Jam = Math.ceil(durasiJam / 12);
-
-      // Ambil harga sewa dari server
-      const response = await fetch(`get_harga.php?unit_id=${unitMobilId}`);
-      const data = await response.json();
-      const hargaPer12Jam = parseInt(data.harga);
-
-      let totalBiaya = hargaPer12Jam * periode12Jam;
-
-      if (fasilitas === "dengan supir") {
-        totalBiaya += 250000;
-      }
-
-      document.getElementById('total_biaya').value = totalBiaya;
-    }
-  }
-
-  document.getElementById('tanggal_pengambilan').addEventListener('change', hitungBiaya);
-  document.getElementById('jam_pengambilan').addEventListener('change', hitungBiaya);
-  document.getElementById('tanggal_pengembalian').addEventListener('change', hitungBiaya);
-  document.getElementById('jam_pengembalian').addEventListener('change', hitungBiaya);
-  document.getElementById('fasilitas').addEventListener('change', hitungBiaya);
-
-  const form = document.getElementById('bookingForm');
-  const submitButton = form.querySelector('button[type="submit"]');
-
-  if (form && submitButton) {
-    form.addEventListener('submit', event => {
-      event.preventDefault();
-      if (submitButton.disabled) return;
-      alert('Form submitted successfully!');
-      form.submit();
-    });
-  }
-});
-</script>
 </body>
 
 </html>

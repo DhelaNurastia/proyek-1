@@ -1,5 +1,5 @@
 <?php
-include 'koneksi.php';
+include '../../koneksi.php';
 
 $tipe = $_POST['tipe'] ?? '';
 $checklist = $_POST['checklist'] ?? '';
@@ -17,4 +17,3 @@ $sql = "INSERT INTO dokumentasi (tipe, checklist, foto) VALUES ('$tipe', '$check
 $result = $conn->query($sql);
 
 echo $result ? "sukses" : "gagal";
-?>
