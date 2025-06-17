@@ -158,7 +158,7 @@
       Jika Anda merasa ini adalah kesalahan, silakan hubungi tim dukungan kami untuk informasi lebih lanjut.
     </p>
     <div class="actions">
-      <a href="mailto:support@tradingplatform.com" class="button-link" aria-label="Hubungi Dukungan melalui email">
+      <a href="https://wa.me/6281212280564" class="button-link" target="_blank" rel="noopener noreferrer" aria-label="Hubungi Dukungan melalui WhatsApp">
         <span class="material-icons button-icon" aria-hidden="true">support_agent</span>
         Hubungi Dukungan
       </a>
@@ -173,7 +173,7 @@
     function handleLogout() {
       // Placeholder logout function - redirect to login or homepage
       // In real application, clear auth tokens and session here
-      window.location.href = '/login';
+      window.location.href = 'index.php';
     }
   </script>
 </body>
