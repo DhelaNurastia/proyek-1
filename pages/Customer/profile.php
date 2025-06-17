@@ -28,7 +28,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Starter Page - Strategy Bootstrap Template</title>
+  <title>Profile</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
 
@@ -79,7 +79,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
       font-weight: 700;
       font-size: clamp(1.8rem, 2vw, 2.5rem);
       margin-bottom: 1.2rem;
-      color: #000000;
+      color: #00000;
     }
 
     #profile-section .status-badge {
@@ -116,7 +116,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1.6rem 3rem;
-      color: #000000;
+      color: #00000;
       font-family: 'Nunito Sans', sans-serif;
     }
 
@@ -140,7 +140,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
     #profile-section .documents h3 {
       font-weight: 600;
       margin-bottom: 1rem;
-      color: #000000;
+      color: #00000;
       font-size: clamp(1.4rem, 1.8vw, 1.6rem);
     }
 
@@ -187,7 +187,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
     #profile-section .doc-card .doc-label {
       font-weight: 600;
       font-size: 1rem;
-      color: #000000;
+      color: #00000;
     }
 
     /* Responsive adjustments */
@@ -325,21 +325,20 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="index.php" class="active">Home</a></li>
+          <li><a href="index.php" >Home</a></li>
           <li><a href="listing.php">Daftar Mobil</a></li>
           <li class="dropdown"><a href="#"><span>Riwayat</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="riwayat.php" class="active">Riwayat Booking</a></li>
               <li><a href="denda.php">Riwayat Denda</a></li>
             </ul>
-          <li class="dropdown"><a href="#"><span>Akun</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+          <li class="dropdown"><a href="#"class="active"><span>Akun</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="profile.php">Profile</a></li>
-              <li><a href="blacklist.php">Status Blacklist</a></li>
               <li><a href="../Halaman_Register&Login/logout.php">LogOut</a></li>
             </ul>
           </li>
-          <li><a href="#contact">Kontak</a></li>
+          <li><a href="../customer/index.php/#contact">Kontak</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
@@ -352,7 +351,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
     <!-- Page Title -->
     <div class="page-title dark-background" data-aos="fade">
       <div class="container position-relative">
-        <h1>Starter Page</h1>
+        <h1>Profile</h1>
         <p>Esse dolorum voluptatum ullam est sint nemo et est ipsa porro placeat quibusdam quia assumenda numquam molestias.</p>
         <nav class="breadcrumbs">
           <ol>

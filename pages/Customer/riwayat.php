@@ -37,12 +37,12 @@ $result = $koneksi->query($sql);
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Starter Page - Strategy Bootstrap Template</title>
+  <title>Riwayat Booking</title>
   <meta name="description" content="" />
   <meta name="keywords" content="" />
 
   <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon" />
+  <link href="<?= $base_url ?>assets/image/favicon.jpeg" rel="icon" />
   <link href="<?= $base_url ?>assets/template/home/Strategy/assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
 
   <!-- Fonts -->
@@ -177,26 +177,25 @@ $result = $koneksi->query($sql);
       <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <!-- <img src="assets/img/logo.webp" alt=""> -->
-        <h1 class="sitename">Strategy</h1>
+        <h1 class="sitename">Sigma RentCar<h1>
       </a>
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="index.php" class="active">Home</a></li>
+          <li><a href="index.php">Home</a></li>
           <li><a href="listing.php">Daftar Mobil</a></li>
-          <li class="dropdown"><a href="#"><span>Riwayat</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+          <li class="dropdown"><a href="#" class="active"><span>Riwayat</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
-              <li><a href="riwayat.php" class="active">Riwayat Booking</a></li>
+              <li><a href="riwayat.php">Riwayat Booking</a></li>
               <li><a href="denda.php">Riwayat Denda</a></li>
             </ul>
           <li class="dropdown"><a href="#"><span>Akun</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="profile.php">Profile</a></li>
-              <li><a href="blacklist.php">Status Blacklist</a></li>
               <li><a href="../Halaman_Register&Login/logout.php">LogOut</a></li>
             </ul>
           </li>
-          <li><a href="#contact">Kontak</a></li>
+          <li><a href="pages/customer/index.php/#contact">Kontak</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>

@@ -285,15 +285,14 @@ $result = $koneksi->query($sql);
         <ul>
           <li><a href="index.php">Home</a></li>
           <li><a href="listing.php" >Daftar Mobil</a></li>
-          <li class="dropdown"><a href="#"><span>Riwayat</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+          <li class="dropdown"><a href="#" class="active"><span>Riwayat</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="riwayat.php">Riwayat Booking</a></li>
-              <li><a href="denda.php" class="active">Riwayat Denda</a></li>
+              <li><a href="denda.php">Riwayat Denda</a></li>
             </ul>
           <li class="dropdown"><a href="#"><span>Akun</span><i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="profile.php">Profile</a></li>
-              <li><a href="#">Status Blacklist</a></li>
               <li><a href="../Halaman_Register&Login/logout.php">LogOut</a></li>
             </ul>
           </li>

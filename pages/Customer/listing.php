@@ -309,7 +309,6 @@ while ($row = $result->fetch_assoc()) {
           <li class="dropdown"><a href="#"><span>Akun</span><i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="profile.php">Profile</a></li>
-              <li><a href="blacklist.php">Status Blacklist</a></li>
               <li><a href="../Halaman_Register&Login/logout.php">LogOut</a></li>
             </ul>
           </li>
