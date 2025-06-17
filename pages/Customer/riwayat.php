@@ -1,6 +1,35 @@
 <?php
-$base_url = '/proyek-1/'
+session_start();
+$base_url = '/proyek-1/';
+$koneksi = new mysqli("localhost", "root", "", "proyek-1");
+
+if ($koneksi->connect_error) {
+    die("Koneksi gagal: " . $koneksi->connect_error);
+}
+
+// Ambil id customer dari session
+$id_customer = $_SESSION['user_id'];
+
+// Query dengan filter sesuai id_customer
+$sql = "
+    SELECT 
+        booking.id,
+        jenis_mobil.nama AS nama_mobil,
+        booking.tgl_booking,
+        booking.jam_booking,
+        booking.total_biaya,
+        pembayaran.status AS status_pembayaran
+    FROM booking
+    JOIN unit_mobil ON booking.unit_mobil_id = unit_mobil.id
+    JOIN jenis_mobil ON unit_mobil.jenis_mobil_id = jenis_mobil.id
+    LEFT JOIN pembayaran ON booking.id = pembayaran.booking_id
+    WHERE booking.customer_id = $id_customer
+    ORDER BY booking.tgl_booking DESC
+";
+
+$result = $koneksi->query($sql);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,12 +37,12 @@ $base_url = '/proyek-1/'
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Riwayat Booking</title>
+  <title>Starter Page - Strategy Bootstrap Template</title>
   <meta name="description" content="" />
   <meta name="keywords" content="" />
 
   <!-- Favicons -->
-  <link href="<?= $base_url ?>assets/image/favicon.jpeg" rel="icon" />
+  <link href="assets/img/favicon.png" rel="icon" />
   <link href="<?= $base_url ?>assets/template/home/Strategy/assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
 
   <!-- Fonts -->
@@ -155,11 +184,7 @@ $base_url = '/proyek-1/'
         <ul>
           <li><a href="index.php" class="active">Home</a></li>
           <li><a href="listing.php">Daftar Mobil</a></li>
-          <li class="dropdown"><a href="#"><span>Riwayat</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li><a href="riwayat.php" class="active">Riwayat Booking</a></li>
-              <li><a href="denda.php">Riwayat Denda</a></li>
-            </ul>
+          <li><a href="riwayat.php">Riwayat Booking</a></li>
           <li class="dropdown"><a href="#"><span>Akun</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="profile.php">Profile</a></li>
@@ -172,6 +197,7 @@ $base_url = '/proyek-1/'
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
+      <a class="btn-getstarted" href="#about">Get Started</a>
     </div>
   </header>
 
@@ -179,17 +205,37 @@ $base_url = '/proyek-1/'
     <!-- Page Title -->
     <div class="page-title dark-background" data-aos="fade">
       <div class="container position-relative">
-        <h1>Riwayat Booking</h1>
-        <p>Lihat riwayat pemesanan mobil Anda secara lengkap dan terperinci di halaman ini.</p>
+        <h1>Starter Page</h1>
+        <p>
+          Esse dolorum voluptatum ullam est sint nemo et est ipsa porro placeat
+          quibusdam quia assumenda numquam molestias.
+        </p>
         <nav class="breadcrumbs">
           <ol>
             <li><a href="index.html">Home</a></li>
-            <li class="current">Riwayat Booking</li>
+            <li class="current">Starter Page</li>
           </ol>
         </nav>
       </div>
     </div>
     <!-- End Page Title -->
+
+    <!-- Starter Section Section -->
+    <section id="starter-section" class="starter-section section">
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Starter Section</h2>
+        <div>
+          <span>Check Our</span> <span class="description-title">Starter Section</span>
+        </div>
+      </div>
+      <!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up">
+        <p>Use this page as a starter for your own custom pages.</p>
+      </div>
+    </section>
+    <!-- /Starter Section Section -->
 
     <!-- Booking History Section -->
     <section
@@ -198,6 +244,7 @@ $base_url = '/proyek-1/'
       aria-label="Booking History section"
     >
       <div class="container">
+        <h2>Booking History</h2>
         <table
           class="booking-table"
           aria-describedby="bookingHistoryDesc"
@@ -208,14 +255,35 @@ $base_url = '/proyek-1/'
           >
           <thead>
             <tr>
-              <th scope="col">ID Booking</th>
-              <th scope="col">Nama Unit</th>
-              <th scope="col">Tanggal</th>
-              <th scope="col">Total Biaya</th>
+              <th scope="col">Booking ID</th>
+              <th scope="col">Unit Name</th>
+              <th scope="col">Date</th>
+              <th scope="col">Time</th>
+              <th scope="col">Total Cost</th>
               <th scope="col">Status</th>
             </tr>
           </thead>
           <tbody id="booking-table-body">
+            <?php
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>#BK" . str_pad($row['id'], 8, '0', STR_PAD_LEFT) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['nama_mobil']) . "</td>";
+                    echo "<td><time datetime='" . date('Y-m-d', strtotime($row['tgl_booking'])) . "'>" . date('F d, Y', strtotime($row['tgl_booking'])) . "</time></td>";
+                    echo "<td><time datetime='" . date('Y-m-d\TH:i', strtotime($row['tgl_booking'] . ' ' . $row['jam_booking'])) . "'>" . date('H:i', strtotime($row['jam_booking'])) . "</time></td>";
+                    echo "<td>Rp " . number_format($row['total_biaya'], 0, ',', '.') . "</td>";
+
+                    $status = $row['status_pembayaran'] == 'berhasil' ? 'Confirmed' : 'Pending';
+                    $statusClass = $row['status_pembayaran'] == 'berhasil' ? 'status-confirmed' : 'status-pending';
+                    echo "<td><span class='booking-status $statusClass'>$status</span></td>";
+
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='6'>Tidak ada data booking</td></tr>";
+            }
+            ?>
           </tbody>
         </table>
       </div>
