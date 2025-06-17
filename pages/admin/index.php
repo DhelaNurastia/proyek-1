@@ -261,9 +261,9 @@ $permintaan_sewa = mysqli_fetch_assoc(mysqli_query($db, "SELECT COUNT(*) AS tota
                                             label: "Sewa",
                                             data: <?= json_encode($weekly['data']) ?>,
                                             backgroundColor: 'rgba(78, 115, 223, 0.1)',
-                                            borderColor: 'rgb(255, 255, 255)',
+                                            borderColor: ' #111827',
                                             pointRadius: 3,
-                                            pointBackgroundColor: ' rgb(245, 15, 15)',
+                                            pointBackgroundColor: ' #111827',
                                             tension: 0.3,
                                         }]
                                     },

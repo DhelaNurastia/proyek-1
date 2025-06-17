@@ -108,6 +108,12 @@ require_once "../../../koneksi.php";
         .custom-card .btn-action:hover {
             background-color: #1e293b;
         }
+
+        .btn-primary {
+            background-color: #1e293b;
+            /* biru navy misalnya */
+            border-color: #1e293b;
+        }
     </style>
 </head>
 
@@ -120,6 +126,9 @@ require_once "../../../koneksi.php";
                 <div class="container-fluid">
                     <h1 class="h3 mb-2 text-gray-800">Data Unit Mobil</h1>
                     <p class="mb-4">Berikut adalah daftar unit mobil yang tersedia di sistem.</p>
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <a href="./create.php" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Unit Mobil</a>
+                    </div>
 
                     <div class="row">
                         <?php

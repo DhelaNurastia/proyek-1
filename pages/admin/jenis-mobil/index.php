@@ -19,18 +19,29 @@ require_once "../../../koneksi.php"; ?>
 
     <style>
         .table {
-            background-color:rgb(255, 255, 255);
+            background-color: rgb(255, 255, 255);
             color: #111827;
         }
 
         .table th .table td {
             border-color: #111827;
         }
+
+        .btn-primary {
+            background-color: #1e293b;
+            /* biru navy misalnya */
+            border-color: #1e293b;
+        }
+
+        .btn-primary:hover {
+            background-color: #1c3faa;
+            border-color: #1a3aa1;
+        }
     </style>
 </head>
 
 <body id="page-top">
-    <div id="wrapper"> 
+    <div id="wrapper">
         <!-- Sidebar -->
         <?php include '../../../components/sidebar.php'; ?>
         <div id="content-wrapper" class="d-flex flex-column">

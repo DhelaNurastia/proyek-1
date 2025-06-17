@@ -14,8 +14,6 @@ if (isset($_SESSION['user_id'])) {
   exit();
 }
 
-$user_id = $_SESSION['user_id']; // Get the logged-in user's ID
-
 // SQL query to fetch user data, including documents
 $query = "SELECT nama_lengkap, alamat, telepon, email, status_verifikasi,file_ktp, file_kk 
           FROM users 
@@ -53,16 +51,18 @@ if ($result) {
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Rental Mobil Form</title>
-    <meta name="description" content="Rental Mobil Form" />
-    <meta name="keywords" content="mobil, rental, form, booking" />
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Rental Mobil Form</title>
+  <meta name="description" content="Rental Mobil Form" />
+  <meta name="keywords" content="mobil, rental, form, booking" />
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@600;700&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet" />
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Raleway:wght@600;700&amp;family=Nunito+Sans:wght@400;600&amp;display=swap"
+    rel="stylesheet" />
 
   <style>
     /* Base Reset and typography */
@@ -94,11 +94,11 @@ if ($result) {
       flex-wrap: wrap;
     }
 
-        /* Form container */
-        .form-container {
-            flex: 1 1 480px;
-            min-width: 320px;
-        }
+    /* Form container */
+    .form-container {
+      flex: 1 1 480px;
+      min-width: 320px;
+    }
 
     /* Car details container */
     .car-details-container {
@@ -127,165 +127,166 @@ if ($result) {
       box-shadow: 0 4px 12px rgb(0 0 0 / 0.08);
     }
 
-        /* Car detail item */
-        .car-detail-item {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1rem;
-            line-height: 1.4;
-            font-weight: 600;
-            color: #4b5563;
-        }
+    /* Car detail item */
+    .car-detail-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1rem;
+      line-height: 1.4;
+      font-weight: 600;
+      color: #4b5563;
+    }
 
-        .car-detail-label {
-            color: #6b7280;
-        }
+    .car-detail-label {
+      color: #6b7280;
+    }
 
-        /* Headline */
-        h1 {
-            font-family: 'Raleway', sans-serif;
-            font-weight: 700;
-            font-size: 3rem;
-            margin-bottom: 0.6rem;
-            color: #111827;
-            user-select: none;
-        }
+    /* Headline */
+    h1 {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 700;
+      font-size: 3rem;
+      margin-bottom: 0.6rem;
+      color: #111827;
+      /* almost black */
+      user-select: none;
+    }
 
-        /* Subtitle / description */
-        .description {
-            font-size: 1.125rem;
-            margin-bottom: 2.5rem;
-            user-select: none;
-            color: #4b5563;
-        }
+    /* Subtitle / description */
+    .description {
+      font-size: 1.125rem;
+      margin-bottom: 2.5rem;
+      user-select: none;
+      color: #4b5563;
+    }
 
-        /* Display horizontal flex for grouped inputs */
-        .grouped-inputs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            margin-bottom: 1rem;
-        }
+    /* Display horizontal flex for grouped inputs */
+    .grouped-inputs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+    }
 
-        .grouped-inputs .form-group {
-            flex: 1 1 45%;
-            min-width: 180px;
-        }
+    .grouped-inputs .form-group {
+      flex: 1 1 45%;
+      min-width: 180px;
+    }
 
-        /* Group for time inputs side by side */
-        .grouped-time-inputs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            margin-bottom: 1rem;
-        }
+    /* Group for time inputs side by side */
+    .grouped-time-inputs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+    }
 
-        .grouped-time-inputs .form-group {
-            flex: 1 1 45%;
-            min-width: 180px;
-        }
+    .grouped-time-inputs .form-group {
+      flex: 1 1 45%;
+      min-width: 180px;
+    }
 
-        /* Field wrapper for inputs and labels */
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
+    /* Field wrapper for inputs and labels */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
 
-        label {
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-            color: #374151;
-            user-select: none;
-            font-size: 1rem;
-        }
+    label {
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      color: #374151;
+      user-select: none;
+      font-size: 1rem;
+    }
 
-        /* Inputs and selects */
-        input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        input[type="date"],
-        input[type="time"],
-        input[type="file"],
-        select,
-        textarea {
-            font-family: 'Nunito Sans', sans-serif;
-            font-size: 1rem;
-            padding: 0.65rem 1rem;
-            border: 1.5px solid #d1d5db;
-            border-radius: 0.625rem;
-            background-color: #ffffff;
-            color: #111827;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            resize: vertical;
-        }
+    /* Inputs and selects */
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    input[type="time"],
+    input[type="file"],
+    select,
+    textarea {
+      font-family: 'Nunito Sans', sans-serif;
+      font-size: 1rem;
+      padding: 0.65rem 1rem;
+      border: 1.5px solid #d1d5db;
+      border-radius: 0.625rem;
+      background-color: #ffffff;
+      color: #111827;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      resize: vertical;
+    }
 
-        input[type="text"]:focus,
-        input[type="email"]:focus,
-        input[type="tel"]:focus,
-        input[type="date"]:focus,
-        input[type="time"]:focus,
-        input[type="file"]:focus,
-        select:focus,
-        textarea:focus {
-            outline: none;
-            border-color: #2563eb;
-            box-shadow: 0 0 8px 3px rgba(37, 99, 235, 0.3);
-            background-color: #fff;
-        }
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="tel"]:focus,
+    input[type="date"]:focus,
+    input[type="time"]:focus,
+    input[type="file"]:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 8px 3px rgba(37, 99, 235, 0.3);
+      background-color: #fff;
+    }
 
-        /* Submit button */
-        button[type="submit"] {
-            font-family: 'Raleway', sans-serif;
-            font-weight: 700;
-            font-size: 1.25rem;
-            padding: 0.8rem 2rem;
-            background-color: #111827;
-            color: white;
-            border: none;
-            border-radius: 0.75rem;
-            cursor: not-allowed;
-            transition: background-color 0.3s ease;
-            user-select: none;
-            margin-top: 1.5rem;
-            justify-self: start;
-            width: 150px;
-        }
+    /* Submit button */
+    button[type="submit"] {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      padding: 0.8rem 2rem;
+      background-color: #111827;
+      color: white;
+      border: none;
+      border-radius: 0.75rem;
+      cursor: not-allowed;
+      transition: background-color 0.3s ease;
+      user-select: none;
+      margin-top: 1.5rem;
+      justify-self: start;
+      width: 150px;
+    }
 
-        button[type="submit"]:enabled {
-            cursor: pointer;
-            background-color: #111827;
-        }
+    button[type="submit"]:enabled {
+      cursor: pointer;
+      background-color: #111827;
+    }
 
-        button[type="submit"]:enabled:hover,
-        button[type="submit"]:enabled:focus {
-            background-color: #2563eb;
-            outline: none;
-        }
+    button[type="submit"]:enabled:hover,
+    button[type="submit"]:enabled:focus {
+      background-color: #2563eb;
+      outline: none;
+    }
 
-        /* Responsive */
-        @media (min-width: 900px) {
-            form {
-                grid-template-columns: 1fr 1fr;
-                gap: 2rem;
-            }
+    /* Responsive */
+    @media (min-width: 900px) {
+      form {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+      }
 
-            /* Make some inputs full width */
-            .full-width {
-                grid-column: 1 / -1;
-            }
+      /* Make some inputs full width */
+      .full-width {
+        grid-column: 1 / -1;
+      }
 
-            button[type="submit"] {
-                grid-column: 1 / -1;
-                width: 200px;
-            }
-        }
+      button[type="submit"] {
+        grid-column: 1 / -1;
+        width: 200px;
+      }
+    }
 
-        /* Accessibility & UX improvements */
-        input::placeholder,
-        textarea::placeholder {
-            color: #9ca3af;
-        }
-    </style>
+    /* Accessibility & UX improvements */
+    input::placeholder,
+    textarea::placeholder {
+      color: #9ca3af;
+    }
+  </style>
 </head>
 
 <body>
@@ -295,15 +296,31 @@ if ($result) {
         <h1 id="formTitle">Form Rental Mobil</h1>
         <p class="description">Silakan isi formulir di bawah untuk menyewa mobil pilihan Anda dengan mudah dan cepat.</p>
 
-                <!-- Durasi Sewa -->
-                <div class="form-group">
-                    <label for="rental-duration">Durasi Sewa</label>
-                    <select id="rental-duration" name="rental-duration" required>
-                        <option value="" disabled selected>Pilih durasi sewa</option>
-                        <option value="12">12 Jam</option>
-                        <option value="24">Harian</option>
-                    </select>
-                </div>
+        <!-- Nama Lengkap & Alamat side by side -->
+        <div class="grouped-inputs">
+          <div class="form-group">
+            <label for="full-name">Nama Lengkap</label>
+            <input type="text" id="nama_lengkap" name="nama_lengkap" value="<?php echo $user['nama_lengkap']; ?>" required>
+          </div>
+
+          <div class="form-group">
+            <label for="address">Alamat</label>
+            <textarea id="alamat" name="alamat" required><?php echo $user['alamat']; ?></textarea>
+          </div>
+        </div>
+
+        <!-- Nomor Telepon & Email side by side -->
+        <div class="grouped-inputs">
+          <div class="form-group">
+            <label for="phone-number">Nomor Telepon</label>
+            <input type="tel" id="nomor_telepon" name="nomor_telepon" value="<?php echo $user['telepon']; ?>" required>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" value="<?php echo $user['email']; ?>" required>
+          </div>
+        </div>
 
         <!-- Jam Pengambilan & Jam Pengembalian side by side -->
         <div class="grouped-time-inputs">
