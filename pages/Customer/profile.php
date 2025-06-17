@@ -1,340 +1,298 @@
 <?php
-session_start();
-require_once '../../koneksi.php'; // pastikan path-nya sesuai
-
-$base_url = "http://localhost/proyek-1/";
-
-if (!isset($_SESSION['user_id'])) {
-  header("Location: ../auth/login.php");
-  exit;
-}
-
-$userId = $_SESSION['user_id'];
-$query = $db->prepare("SELECT u.nama_lengkap, u.nama, u.email, u.telepon, u.alamat, u.foto_profile, d.file_kk, d.file_ktp, d.file_sim
-                      FROM users u
-                      LEFT JOIN dokumen_user d ON u.id = d.id_user
-                      WHERE u.id = ?");
-$query->bind_param("i", $userId);
-$query->execute();
-$result = $query->get_result();
-$user = $result->fetch_assoc();
-$fotoPath = isset($user['foto_profile']) && $user['foto_profile']
-  ? "../../uploads/foto_profile/" . $user['foto_profile']
-  : "../../assets/image/default.png";
+$base_url = '/proyek-1/'
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Profile</title>
-  <meta name="description" content="" />
-  <meta name="keywords" content="" />
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Starter Page - Strategy Bootstrap Template</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
 
   <!-- Favicons -->
-  <link href="<?= $base_url ?>assets/image/favicon.jpeg" rel="icon" />
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
+  <link href="<?= $base_url ?>assets/image/favicon.jpeg" rel="icon">
+  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect" />
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&family=Inter:wght@600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <!-- Material Icons for consistent iconography -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/aos/aos.css" rel="stylesheet" />
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
 
   <!-- Main CSS File -->
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/css/main.css" rel="stylesheet" />
+  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/css/main.css" rel="stylesheet">
 
   <style>
-    /* Profile Section Styles Scoped */
-    .profile-section {
-      padding-top: 4rem;
-      padding-bottom: 5rem;
-      background: transparent;
-      font-family: 'Roboto', sans-serif;
-      color: #fff;
+    /* Profile Section Styling */
+    #profile-section {
+      padding: 40px 0 60px;
+      max-width: 1080px;
+      margin: 0 auto;
     }
 
-    .profile-section h1,
-    .profile-section h2,
-    .profile-section h3 {
-      font-family: 'Inter', sans-serif;
-      color: #fff;
+    #profile-section .profile-card {
+      background: rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(20px);
+      border-radius: 1rem;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.12);
+      padding: 2rem;
+      transition: box-shadow 0.3s ease;
+    }
+
+    #profile-section .profile-card:hover,
+    #profile-section .profile-card:focus-within {
+      box-shadow: 0 16px 48px 0 rgba(0, 0, 0, 0.25);
+    }
+
+    #profile-section h2 {
       font-weight: 700;
-      margin-top: 0;
+      font-size: clamp(1.8rem, 2vw, 2.5rem);
+      margin-bottom: 1.2rem;
+      color: #00000;
     }
 
-    .profile-section h1 {
-      font-size: 3rem;
-      font-weight: 800;
-      line-height: 1.1;
-      margin-bottom: 0.5rem;
+    #profile-section .status-badge {
+      display: flex; /* ubah dari inline-flex agar bisa full width */
+      align-items: center;
+      justify-content: center; /* agar teks tetap di tengah */
+      gap: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 10px 16px;
+      border-radius: 12px;
+      color: white;
+      user-select: none;
+      width: 100%; /* ini membuat elemen memenuhi seluruh lebar parent */
     }
 
-    .profile-section h2 {
-      font-size: 2rem;
+    #profile-section .status-active {
+      background: #22c55e;
+      /* Green */
+      box-shadow: 0 0 8px #22c55e;
+    }
+
+    #profile-section .status-inactive {
+      background: #ef4444;
+      /* Red */
+      box-shadow: 0 0 8px #ef4444;
+    }
+
+    #profile-section .profile-info {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.6rem 3rem;
+      color: #00000;
+      font-family: 'Nunito Sans', sans-serif;
+    }
+
+    #profile-section .profile-info-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: clamp(1rem, 1vw, 1.1rem);
+    }
+
+    #profile-section .profile-info-item .material-icons {
+      font-size: 24px;
+      color: #6366f1;
+      /* Indigo-500 */
+    }
+
+    #profile-section .documents {
+      margin-top: 2.5rem;
+    }
+
+    #profile-section .documents h3 {
+      font-weight: 600;
       margin-bottom: 1rem;
+      color: #00000;
+      font-size: clamp(1.4rem, 1.8vw, 1.6rem);
     }
 
-    .profile-section h3 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
+    #profile-section .doc-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.6rem;
     }
 
-    /* Profile Hero with two buttons side by side, without profile image */
-    .profile-hero {
+    #profile-section .doc-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+      box-shadow: 0 6px 18px rgb(0 0 0 / 0.1);
+      width: 160px;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.3s ease;
       text-align: center;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-      padding-bottom: 3rem;
-      border-bottom: 1px solid rgba(255 255 255 / 0.15);
-      background: transparent;
-      box-shadow: none;
+      padding: 1rem;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1.5rem;
-    }
-
-    .profile-avatar {
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      object-fit: cover;
-      box-shadow: 0 8px 20px rgba(255 255 255 / 0.3);
-      margin-bottom: 0;
-      background: transparent;
-      border: 2px solid #fff;
-    }
-
-    .profile-role {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: #ddd;
-      margin-bottom: 1rem;
-    }
-
-    .profile-cta {
-      margin-top: 0;
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      width: 100%;
-      max-width: 300px;
-    }
-
-    .btn-primary {
-      background-color: #111827;
-      color: #fff;
-      font-weight: 700;
-      font-size: 1rem;
-      border: none;
-      border-radius: 0.75rem;
-      padding: 0.75rem 1.5rem;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      text-align: center;
-      flex: 1 1 auto;
-      min-width: 120px;
-    }
-
-    .btn-primary:hover,
-    .btn-primary:focus {
-      background-color: #374151;
-      outline: none;
-    }
-
-    .info-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-      margin-top: 3rem;
-      background: transparent;
-      color: #fff;
-    }
-
-    /* Cards with background and shadow */
-    .card {
-      background: #374151;
-      border-radius: 0.75rem;
-      padding: 2rem;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      transition: box-shadow 0.3s ease;
-      color: #fff;
-    }
-
-    /* Card text white for Personal Details and Documents */
-    .card h3,
-    .card label,
-    .card div.value {
-      color: #fff;
-    }
-
-    /* Document card: interactive accordion style */
-    .documents-accordion {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      background: transparent;
-    }
-
-    .doc-item {
-      background: #1f2937;
-      /* dark slate */
-      border-radius: 0.5rem;
-      cursor: pointer;
-      padding: 1rem 1.25rem;
-      box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
-      transition: box-shadow 0.3s ease;
-      color: #e5e7eb;
-      /* light gray */
       user-select: none;
     }
 
-    .doc-item:hover {
-      box-shadow: 0 5px 15px rgb(0 0 0 / 0.2);
-      background: #374151;
+    #profile-section .doc-card:hover,
+    #profile-section .doc-card:focus-visible {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.22);
+      outline: none;
     }
 
-    .doc-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: 700;
-      font-size: 1.125rem;
-      letter-spacing: 0.02em;
+    #profile-section .doc-card img {
+      max-width: 100%;
+      border-radius: 0.75rem;
+      margin-bottom: 0.8rem;
+      user-select: none;
+      pointer-events: none;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      box-shadow: 0 3px 8px rgb(0 0 0 / 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.12);
     }
 
-    .doc-icon {
-      font-size: 1.25rem;
-      margin-right: 0.5rem;
-      display: inline-flex;
-      align-items: center;
-    }
-
-    .doc-content {
-      margin-top: 0.75rem;
-      font-weight: 400;
-      font-size: 0.95rem;
-      color: #d1d5db;
-      /* lighter gray */
-      line-height: 1.4;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.35s ease;
-    }
-
-    .doc-item.active .doc-content {
-      max-height: 10rem;
-      /* enough for content */
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-      background: transparent;
-      color: #fff;
-    }
-
-    .profile-section label {
+    #profile-section .doc-card .doc-label {
       font-weight: 600;
-      font-size: 0.875rem;
-      color: #ddd;
-    }
-
-    .profile-section input,
-    .profile-section textarea {
-      padding: 0.75rem 1rem;
-      border-radius: 0.75rem;
-      border: 1px solid #555;
       font-size: 1rem;
-      font-family: inherit;
-      transition: border-color 0.3s ease;
-      resize: vertical;
-      background: #222;
-      color: #fff;
+      color: #00000;
     }
 
-    .profile-section input::placeholder,
-    .profile-section textarea::placeholder {
-      color: #aaa;
-    }
+    /* Responsive adjustments */
+    @media (max-width: 767px) {
+      #profile-section .profile-info {
+        grid-template-columns: 1fr;
+        gap: 1.2rem 0;
+      }
 
-    .profile-section input:focus,
-    .profile-section textarea:focus {
-      outline: none;
-      border-color: #fff;
-      box-shadow: 0 0 0 3px rgba(255 255 255 / 0.3);
-      background: #111;
-      color: #fff;
-    }
-
-    .submit-btn {
-      background-color: #111827;
-      color: #fff;
-      border: none;
-      border-radius: 0.75rem;
-      font-weight: 700;
-      font-size: 1rem;
-      padding: 0.75rem 1.5rem;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .submit-btn:hover,
-    .submit-btn:focus {
-      background-color: #374151;
-      outline: none;
-    }
-
-    @media (max-width: 600px) {
-      .profile-section h1 {
-        font-size: 2.25rem;
+      #profile-section .doc-list {
+        justify-content: center;
       }
     }
+
+    /* Modal Styles */
+    #doc-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100dvh;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(30, 41, 59, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 1050;
+      padding: 1rem;
+      overflow-y: auto;
+      will-change: opacity;
+      transition: opacity 0.3s ease;
+    }
+
+    #doc-modal.show {
+      display: flex;
+      opacity: 1;
+    }
+
+    #doc-modal .modal-content {
+      position: relative;
+      width: 100%;
+      max-width: 720px; /* atau sesuaikan dengan keinginanmu */
+      max-height: 90vh;
+      background: rgba(255 255 255 / 0.15);
+      border-radius: 1rem;
+      backdrop-filter: blur(24px);
+      box-shadow: 0 24px 48px rgb(0 0 0 / 0.3);
+      padding: 1.5rem;
+      cursor: default;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+
+    #doc-modal .modal-image {
+      max-width: 100%;
+      max-height: 80vh;
+      border-radius: 1rem;
+      object-fit: contain;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      user-select: none;
+    }
+
+    #doc-modal .modal-close-button {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(0, 0, 0, 0.3);
+      border: none;
+      border-radius: 50%;
+      color: white;
+      width: 36px;
+      height: 36px;
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s ease;
+    }
+
+    #doc-modal .modal-close-button:hover,
+    #doc-modal .modal-close-button:focus {
+      background: rgba(0, 0, 0, 0.6);
+      outline: none;
+    }
+
+    /* Prevent background scroll when modal is open */
+    body.modal-open {
+      overflow: hidden;
+    }
   </style>
+
+  <!-- =======================================================
+  * Template Name: Strategy
+  * Template URL: https://bootstrapmade.com/strategy-bootstrap-agency-template/
+  * Updated: May 09 2025 with Bootstrap v5.3.6
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
 </head>
 
 <body class="starter-page-page">
+
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+
       <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <!-- <img src="assets/img/logo.webp" alt=""> -->
-        <h1 class="sitename">Sigma RentCar</h1>
+        <h1 class="sitename">Strategy</h1>
       </a>
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="index.php">Home</a></li>
+          <li><a href="index.php" class="active">Home</a></li>
           <li><a href="listing.php">Daftar Mobil</a></li>
-          <li class="dropdown"><a href="#"><span>Riwayat</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li><a href="riwayat.php" class="active">Riwayat Booking</a></li>
-              <li><a href="denda.php">Riwayat Denda</a></li>
-            </ul>
-          </li>
+          <li><a href="riwayat.php">Riwayat Booking</a></li>
           <li class="dropdown"><a href="#"><span>Akun</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
-              <li><a href="profile.php" class="active">Profile</a></li>
-              <li><a href="#">Status Blacklist</a></li>
+              <li><a href="profile.php">Profile</a></li>
+              <li><a href="blacklist.php">Status Blacklist</a></li>
               <li><a href="../Halaman_Register&Login/logout.php">LogOut</a></li>
             </ul>
           </li>
-          <li><a href="../customer/index.php/#contact">Kontak</a></li>
+          <li><a href="#contact">Kontak</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
@@ -344,79 +302,78 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
 
   <main class="main">
 
-    <!-- Profile Section Inserted Below Starter Section -->
-    <section class="profile-section container" aria-label="User Profile">
-      <section class="profile-hero" aria-label="User Profile Introduction">
-        <img src="<?= htmlspecialchars($fotoPath) ?>" alt="Foto Profil User" class="profile-avatar" style="width:150px; height:150px; object-fit:cover; border-radius:50%;" />
-        <h1 class="profile-name"><?= htmlspecialchars($user['nama_lengkap'] ?? $user['nama']) ?></h1>
-        <p class="profile-bio">
-          Menjelajah destinasi baru dan mengendarai mobil terbaik kini lebih mudah. Sigma RentCar, solusi sewa mobil yang terpercaya.
-        </p>
-        <div class="profile-cta">
-          <a href="<?= $base_url ?>pages/customer/riwayat.php" class="btn-primary">Riwayat Booking</a>
+    <!-- Page Title -->
+    <div class="page-title dark-background" data-aos="fade">
+      <div class="container position-relative">
+        <h1>Starter Page</h1>
+        <p>Esse dolorum voluptatum ullam est sint nemo et est ipsa porro placeat quibusdam quia assumenda numquam molestias.</p>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li class="current">Starter Page</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Profile Section -->
+    <section id="profile-section" class="section" aria-label="User profile information">
+      <div class="profile-card" tabindex="0" data-aos="fade-up" aria-live="polite" aria-atomic="true" aria-relevant="additions">
+            <h3>Detail Profile</h3>
+        <div class="profile-info" role="list">
+          <div class="profile-info-item" role="listitem">
+            <span class="material-icons" aria-hidden="true">person</span>
+            <span id="full-name" class="profile-text">Loading name...</span>
+          </div>
+          <div class="profile-info-item" role="listitem">
+            <span class="material-icons" aria-hidden="true">email</span>
+            <a href="" id="email" class="profile-text" aria-describedby="email-desc" target="_blank" rel="noopener noreferrer">Loading email...</a>
+          </div>
+          <div class="profile-info-item" role="listitem">
+            <span class="material-icons" aria-hidden="true">phone</span>
+            <a href="" id="phone" class="profile-text" aria-describedby="phone-desc">Loading phone...</a>
+          </div>
+          <div class="profile-info-item" role="listitem">
+            <span class="material-icons" aria-hidden="true">location_on</span>
+            <span id="address" class="profile-text">Loading address...</span>
+          </div>
+          <div>
+            <span id="account-status" class="status-badge status-active" aria-label="Account status active">
+              <span class="material-icons" aria-hidden="true">check_circle</span> Active
+            </span>
+          </div>
         </div>
-      </section>
 
-      <section class="profile-info" aria-label="User Personal Information">
-        <div class="info-cards">
-          <article class="card">
-            <h3>Personal Details</h3>
-            <label>Nama Lengkap</label>
-            <div class="value"><?= htmlspecialchars($user['nama_lengkap'] ?? $user['nama']) ?></div>
-
-            <label>Email</label>
-            <div class="value"><?= htmlspecialchars($user['email']) ?></div>
-
-            <label>Nomor Telepon</label>
-            <div class="value"><?= htmlspecialchars($user['telepon']) ?></div>
-
-            <label>Alamat</label>
-            <div class="value"><?= htmlspecialchars($user['alamat']) ?></div>
-          </article>
-
-          <article class="card">
-            <h3>Dokumen</h3>
-            <div class="documents-accordion">
-              <div class="doc-item" tabindex="0">
-                <div class="doc-header" aria-expanded="false" role="button" aria-controls="doc1-content" id="doc1-header">
-                  <span><i class="bi bi-file-earmark-text doc-icon" aria-hidden="true"></i> KK</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" class="doc-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 1.25rem; height: 1.25rem; transition: transform 0.3s;">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
-                <div class="doc-content" id="doc1-content" aria-labelledby="doc1-header" hidden>
-                  <img src="../../uploads/dokumen-user/<?= htmlspecialchars($user['file_kk']) ?>" alt="KK" style="width: 100%; border-radius: 8px;">
-                </div>
-                <p>Dokumen Kartu Keluarga (KK) - Detail atau pratinjau gambar Kartu Keluarga dapat ditampilkan di sini.</p>
-              </div>
-              <div class="doc-item" tabindex="0">
-                <div class="doc-header" aria-expanded="false" role="button" aria-controls="doc2-content" id="doc2-header">
-                  <span><i class="bi bi-credit-card doc-icon" aria-hidden="true"></i> KTP</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" class="doc-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 1.25rem; height: 1.25rem; transition: transform 0.3s;">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
-                <div class="doc-content" id="doc2-content" aria-labelledby="doc2-header" hidden>
-                  <img src="../../uploads/dokumen-user/<?= htmlspecialchars($user['file_ktp']) ?>" alt="KTP">
-                </div>
-                <p>Dokumen Kartu Tanda Penduduk (KTP) - Informasi atau pratinjau Kartu Tanda Penduduk akan ditampilkan di sini.</p>
-              </div>
-              <div class="doc-item" tabindex="0">
-                <div class="doc-header" aria-expanded="false" role="button" aria-controls="doc3-content" id="doc3-header">
-                  <span><i class="bi bi-clipboard-check doc-icon" aria-hidden="true"></i> SIM</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" class="doc-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 1.25rem; height: 1.25rem; transition: transform 0.3s;">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
-                <div class="doc-content" id="doc3-content" aria-labelledby="doc3-header" hidden>
-                  <img src="../../uploads/dokumen-user/<?= htmlspecialchars($user['file_sim']) ?>" alt="SIM">
-                </div>
-                <p>Dokumen Surat Izin Mengemudi (SIM) - Detail SIM akan ditampilkan di sini, termasuk catatan dan pratinjau gambar jika tersedia.</p>
-              </div>
-            </div>
-          </article>
+        <div class="documents" aria-label="User documents">
+          <h3>Documents</h3>
+          <div class="doc-list" role="list" aria-live="polite" aria-atomic="false" aria-relevant="additions removals">
+            <a href="#" target="_blank" class="doc-card" role="listitem" aria-label="View document Kartu Keluarga" tabindex="0">
+              <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/fc8a14ad-a87f-4e60-9d69-1e468b76f5bd.png" alt="Kartu Keluarga document preview, blue background with white text" loading="lazy" />
+              <span class="doc-label">Kartu Keluarga (KK)</span>
+            </a>
+            <a href="#" target="_blank" class="doc-card" role="listitem" aria-label="View document Kartu Tanda Penduduk" tabindex="0">
+              <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/00ea9d1b-d9b4-48ea-8ca2-d016d4f1842d.png" alt="Kartu Tanda Penduduk document preview, blue background with white text" loading="lazy" />
+              <span class="doc-label">Kartu Tanda Penduduk (KTP)</span>
+            </a>
+            <a href="#" target="_blank" class="doc-card" role="listitem" aria-label="View document Surat Izin Mengemudi" tabindex="0">
+              <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/835fe170-251c-4f1d-9487-be7a005d2944.png" alt="Surat Izin Mengemudi document preview, blue background with white text" loading="lazy" />
+              <span class="doc-label">Surat Izin Mengemudi (SIM)</span>
+            </a>
+          </div>
         </div>
-      </section>
+      </div>
+    </section>
+
+    <!-- Document Modal -->
+    <div id="doc-modal" role="dialog" aria-modal="true" aria-labelledby="doc-modal-title" aria-describedby="doc-modal-desc" tabindex="-1">
+      <div class="modal-content">
+        <button class="modal-close-button" aria-label="Close document preview" title="Close document preview">
+          <span class="material-icons" aria-hidden="true">close</span>
+        </button>
+        <img src="" alt="" class="modal-image" />
+      </div>
+    </div>
+
   </main>
 
   <footer id="footer" class="footer">
@@ -425,45 +382,46 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
       <div class="row gy-4">
         <div class="col-lg-5 col-md-12 footer-about">
           <a href="index.html" class="logo d-flex align-items-center">
-            <span class="sitename">Sigma RentCar</span>
+            <span class="sitename">Strategy</span>
           </a>
-          <p>Sigma RentCar, solusi rental mobil terpercaya untuk berbagai kebutuhan anda. Kami hadir dengan komitmen menghadirkan layanan yang mudah, nyaman, dan dapat diandalkan</p>
+          <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta donna mare fermentum iaculis eu non diam phasellus.</p>
           <div class="social-links d-flex mt-4">
-            <a href="https://www.tiktok.com/@sigma_rentcar?_t=ZS-8wtmnFIOOvd&_r=1"><i class="bi bi-tiktok"></i></a>
-            <a href="https://www.facebook.com/share/16bwovUwpX/?mibextid=wwXIfr"><i class="bi bi-facebook"></i></a>
-            <a href="https://www.instagram.com/sigma_rentcar?igsh=dG1id2E2enRubGJj"><i class="bi bi-instagram"></i></a>
+            <a href=""><i class="bi bi-twitter-x"></i></a>
+            <a href=""><i class="bi bi-facebook"></i></a>
+            <a href=""><i class="bi bi-instagram"></i></a>
+            <a href=""><i class="bi bi-linkedin"></i></a>
           </div>
         </div>
 
         <div class="col-lg-2 col-6 footer-links">
-          <h4>Tautan Penting</h4>
+          <h4>Useful Links</h4>
           <ul>
-            <li><a href="index.php">Home</a></li>
-            <li><a href="about.php">Tentang Kami</a></li>
-            <li><a href="listing.php">Daftar Mobil</a></li>
-            <li><a href="#galeri">Galeri</a></li>
-            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About us</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Terms of service</a></li>
+            <li><a href="#">Privacy policy</a></li>
           </ul>
         </div>
 
         <div class="col-lg-2 col-6 footer-links">
-          <h4>Layanan Kami</h4>
+          <h4>Our Services</h4>
           <ul>
-            <li>Rental 24 Jam</a></li>
-            <li>Rental Harian</a></li>
-            <li>Rental Mingguan</a></li>
-            <li>Rental Mobil dengan Supir</a></li>
-            <li>Rental Mobil Lepas Kunci</a></li>
+            <li><a href="#">Web Design</a></li>
+            <li><a href="#">Web Development</a></li>
+            <li><a href="#">Product Management</a></li>
+            <li><a href="#">Marketing</a></li>
+            <li><a href="#">Graphic Design</a></li>
           </ul>
         </div>
 
         <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
-          <h4>Kontak Kami</h4>
-          <p>Jl.Letnan Jenderal S.Parman</p>
-          <p>Subang, Jawa Barat</p>
-          <p>Indonesia</p>
-          <p class="mt-4"><strong>Nomer Hp:</strong> <span>+62 8121 2280 564</span></p>
-          <p><strong>Email:</strong> <span>diki.a.gani@gmail.com</span></p>
+          <h4>Contact Us</h4>
+          <p>A108 Adam Street</p>
+          <p>New York, NY 535022</p>
+          <p>United States</p>
+          <p class="mt-4"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
+          <p><strong>Email:</strong> <span>info@example.com</span></p>
         </div>
 
       </div>
@@ -501,40 +459,118 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
   <script src="<?= $base_url ?>assets/template/home/Strategy/assets/js/main.js"></script>
 
   <script>
-    // Smooth scroll to rental history
-    document.getElementById('btnRentalHistory').addEventListener('click', function() {
-      document.getElementById('rentalHistorySection').scrollIntoView({
-        behavior: 'smooth'
-      });
-    });
+    // Simulate fetching user profile data from a database
+    document.addEventListener('DOMContentLoaded', () => {
+      const userProfile = {
+        status: 'active', // or 'inactive'
+        fullName: 'Ahmad Faisal',
+        email: 'ahmad.faisal@example.com',
+        phone: '+62 812 3456 7890',
+        address: 'Jl. Merpati No. 45, Jakarta, Indonesia',
+        documents: {
+          KK: 'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/269ed8a3-a5af-4653-a333-96fd2dedc968.png',
+          KTP: 'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f9e90db5-73fd-40e4-b96c-a1faf4d77f3f.png',
+          SIM: 'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b42e2eed-a9c5-4a03-b840-18eedab1f881.png'
+        }
+      };
 
-    // Document accordion toggle
-    document.querySelectorAll('.doc-item .doc-header').forEach(header => {
-      header.addEventListener('click', () => {
-        const docItem = header.parentElement;
-        const content = header.nextElementSibling;
-        const isActive = docItem.classList.contains('active');
-        if (isActive) {
-          docItem.classList.remove('active');
-          content.hidden = true;
-          header.setAttribute('aria-expanded', 'false');
-          header.querySelector('svg').style.transform = 'rotate(0deg)';
-        } else {
-          docItem.classList.add('active');
-          content.hidden = false;
-          header.setAttribute('aria-expanded', 'true');
-          header.querySelector('svg').style.transform = 'rotate(180deg)';
+      // Update account status
+      const statusBadge = document.getElementById('account-status');
+      if (userProfile.status === 'active') {
+        statusBadge.classList.remove('status-inactive');
+        statusBadge.classList.add('status-active');
+        statusBadge.innerHTML = '<span class="material-icons" aria-hidden="true">check_circle</span> Active';
+        statusBadge.setAttribute('aria-label', 'Account status active');
+      } else {
+        statusBadge.classList.remove('status-active');
+        statusBadge.classList.add('status-inactive');
+        statusBadge.innerHTML = '<span class="material-icons" aria-hidden="true">error</span> Inactive';
+        statusBadge.setAttribute('aria-label', 'Account status inactive');
+      }
+
+      // Update profile info
+      document.getElementById('full-name').textContent = userProfile.fullName;
+      const emailLink = document.getElementById('email');
+      emailLink.textContent = userProfile.email;
+      emailLink.href = 'mailto:' + userProfile.email;
+      emailLink.setAttribute('aria-describedby', 'email-desc');
+
+      const phoneLink = document.getElementById('phone');
+      phoneLink.textContent = userProfile.phone;
+      phoneLink.href = 'tel:' + userProfile.phone.replace(/[^\d+]/g, '');
+      phoneLink.setAttribute('aria-describedby', 'phone-desc');
+
+      document.getElementById('address').textContent = userProfile.address;
+
+      // Update document links and images
+      const docList = document.querySelector('#profile-section .doc-list');
+      const docs = docList.querySelectorAll('a.doc-card');
+      docs.forEach(doc => {
+        const label = doc.querySelector('.doc-label').textContent;
+        let docKey = '';
+        if (label.includes('Kartu Keluarga')) docKey = 'KK';
+        else if (label.includes('Kartu Tanda Penduduk')) docKey = 'KTP';
+        else if (label.includes('Surat Izin Mengemudi')) docKey = 'SIM';
+
+        if (docKey && userProfile.documents[docKey]) {
+          doc.href = '#';
+          doc.dataset.imgSrc = userProfile.documents[docKey];
+          const img = doc.querySelector('img');
+          if (img) {
+            img.src = userProfile.documents[docKey];
+            img.alt = label + ' document preview in blue background with white text';
+          }
         }
       });
-      // Keyboard accessibility
-      header.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          header.click();
+
+      // Modal functionality
+      const modal = document.getElementById('doc-modal');
+      const modalImage = modal.querySelector('.modal-image');
+      const closeBtn = modal.querySelector('.modal-close-button');
+
+      // Open modal on document click
+      docList.addEventListener('click', (e) => {
+        const anchor = e.target.closest('a.doc-card');
+        if (!anchor) return;
+        e.preventDefault();
+        const imgSrc = anchor.dataset.imgSrc;
+        const imgAlt = anchor.querySelector('.doc-label').textContent + ' enlarged document preview';
+        if (imgSrc) {
+          modalImage.src = imgSrc;
+          modalImage.alt = imgAlt;
+          modal.classList.add('show');
+          document.body.classList.add('modal-open');
+          modal.focus();
+        }
+      });
+
+      // Close modal function
+      function closeModal() {
+        modal.classList.remove('show');
+        document.body.classList.remove('modal-open');
+        modalImage.src = '';
+        modalImage.alt = '';
+      }
+
+      // Close modal on close button click
+      closeBtn.addEventListener('click', closeModal);
+
+      // Close modal on overlay click (outside modal content)
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeModal();
+        }
+      });
+
+      // Close modal on ESC key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('show')) {
+          closeModal();
         }
       });
     });
   </script>
+
 </body>
 
 </html>

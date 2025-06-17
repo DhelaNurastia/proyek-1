@@ -265,9 +265,6 @@
 </style>
 </head>
 <body>
-<header role="banner">
-  <div class="logo" aria-label="Strategic Rental">Sigma RentCar</div>
-</header>
 <main role="main" aria-labelledby="transaction-title">
   <h1 id="transaction-title">Detail Transaksi Rental Mobil</h1>
   <p class="subtitle">Terima kasih atas kepercayaan Anda. Berikut adalah detail transaksi rental mobil Anda.</p>
