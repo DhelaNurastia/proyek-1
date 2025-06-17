@@ -1,324 +1,899 @@
+<?php
+require_once '../../koneksi.php';
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard Checker - Sigma RentCar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Checker Inspeksi Mobil - Detail Kerusakan & Dokumentasi</title>
   <style>
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
+    }
     body {
-      display: flex; font-family: Arial, sans-serif;
-      margin: 0; height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: #f5f7fa;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px;
     }
-    nav.sidebar {
-      background: #222; color: white;
-      width: 200px; padding: 1rem;
-      display: flex; flex-direction: column;
+    h1, h2 {
+      text-align: center;
+      color: #1e293b;
+      font-weight: 700;
+      margin-bottom: 24px;
     }
-    nav.sidebar a {
-      color: white; text-decoration: none;
-      margin-bottom: 1rem;
+
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: 960px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgb(0 0 0 / 0.1);
+      padding: 32px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      margin-bottom: 48px;
     }
-    nav.sidebar a.active {
-      font-weight: bold;
-      text-decoration: underline;
+
+    /* Form groups */
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: #475569;
     }
-    main {
-      flex: 1; padding: 2rem;
-      background: #f0f0f0;
-      overflow-y: auto;
+
+    select, input[type=text], input[type=number], textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1.5px solid #cbd5e1;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+      resize: vertical;
+      font-family: inherit;
     }
-    .content-section { display: none; }
-    .content-section.active { display: block; }
-    #upload-preview img, .doc-photo {
-      max-width: 100px; margin: 5px; border: 1px solid #ccc;
+    select:focus, input[type=text]:focus, input[type=number]:focus, textarea:focus {
+      outline: none;
+      border-color: #4f46e5;
+      box-shadow: 0 0 8px rgba(79, 70, 229, 0.25);
     }
-    .success { color: green; }
-    .error { color: red; }
-    table {
-      width: 100%; border-collapse: collapse; margin-top: 1rem;
+
+    /* Radio group */
+    .radio-group {
+      display: flex;
+      gap: 24px;
+      margin-top: 8px;
     }
-    th, td {
-      border: 1px solid #ccc; padding: 0.5rem;
+    .radio-group label {
+      font-weight: 500;
+      font-size: 16px;
+      color: #334155;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    input[type=radio] {
+      accent-color: #4f46e5;
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    /* File upload */
+    .file-upload {
+      border: 2px dashed #a3bffa;
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      color: #64748b;
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+      transition: background-color 0.3s ease;
+    }
+    .file-upload:hover {
+      background-color: #e0e7ff;
+    }
+    .file-upload input[type="file"] {
+      position: absolute;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      top: 0; left: 0;
+      cursor: pointer;
+    }
+    .uploaded-preview {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+    .img-preview {
+      width: 120px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    /* Buttons */
+    button.submit-btn {
+      background-color: #4f46e5;
+      color: white;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      align-self: flex-start;
+      margin-right: 12px;
+    }
+    button.submit-btn:hover {
+      background-color: #4338ca;
+    }
+    button.delete-btn {
+      background-color: #dc2626;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+    button.delete-btn:hover {
+      background-color: #b91c1c;
+    }
+    button.cancel-btn {
+      background-color: #6b7280;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      padding: 14px 24px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+      align-self: flex-start;
+    }
+    button.cancel-btn:hover {
+      background-color: #4b5563;
+    }
+
+    /* Status message */
+    .status-message {
+      font-weight: 600;
+      font-size: 15px;
+      margin-top: 4px;
+      color: #059669;
+    }
+    .status-error {
+      color: #dc2626;
+    }
+
+    /* Checklist detail section */
+    fieldset.checklist-section {
+      border: 1.5px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+      background: #f9fafb;
+    }
+    fieldset.checklist-section legend {
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 16px;
+      color: #334155;
+    }
+    .checklist-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .checklist-group label {
+      font-weight: 500;
+      font-size: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #475569;
+    }
+    input[type=checkbox] {
+      accent-color: #4f46e5;
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    /* Inspections list table */
+    .inspection-list-section {
+      width: 100%;
+      max-width: 960px;
+      margin-bottom: 80px;
+      overflow-x: auto;
+    }
+    table.inspection-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      min-width: 720px;
+    }
+    table.inspection-table th,
+    table.inspection-table td {
+      padding: 12px 10px;
+      text-align: left;
+      border-bottom: 1px solid #dde3e8;
+      vertical-align: top;
+      max-width: 250px;
+    }
+    table.inspection-table thead {
+      background: #4f46e5;
+      color: white;
+    }
+    table.inspection-table tbody tr:hover {
+      background: #f0f4ff;
+    }
+    .small-text {
+      font-size: 12px;
+      color: #64748b;
+    }
+    .photo-count {
+      font-weight: 600;
+      color: #475569;
+    }
+    .checklist-summary {
+      max-width: 220px;
+      word-wrap: break-word;
+      white-space: normal;
+    }
+    .inspection-photos-container {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      max-width: 250px;
+    }
+    .inspection-photo-thumb {
+      width: 60px;
+      height: 45px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .inspection-photo-thumb:hover {
+      transform: scale(1.2);
+      z-index: 10;
+      position: relative;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .container {
+        padding: 24px 16px;
+        gap: 24px;
+        max-width: 100%;
+      }
+      .radio-group {
+        flex-direction: column;
+        gap: 12px;
+      }
+      .file-upload {
+        padding: 18px;
+        font-size: 14px;
+      }
+      .img-preview {
+        width: 100px;
+        height: 75px;
+      }
+      button.submit-btn, button.cancel-btn {
+        width: 100%;
+        padding: 14px 0;
+        margin-right: 0;
+        margin-bottom: 12px;
+      }
+      fieldset.checklist-section {
+        padding: 16px 18px;
+      }
+      table.inspection-table {
+        min-width: 600px;
+        font-size: 12px;
+      }
+      table.inspection-table th, table.inspection-table td {
+        padding: 8px 6px;
+      }
+      .checklist-summary {
+        max-width: 140px;
+      }
+      .inspection-photos-container {
+        max-width: 120px;
+      }
+      .inspection-photo-thumb {
+        width: 40px;
+        height: 30px;
+      }
     }
   </style>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 </head>
 <body>
-  <nav class="sidebar">
-    <h3>Checker Panel</h3>
-    <a href="#" class="active" data-page="dokumentasi">Upload Dokumentasi</a>
-    <a href="#" data-page="hasil-dokumentasi">Riwayat Dokumentasi</a>
-    <a href="#" data-page="inspeksi">Form Inspeksi</a>
-    <a href="#" data-page="hasil-inspeksi">Riwayat Inspeksi</a>
-  </nav>
+  <h1>Checker Inspeksi Kondisi Mobil</h1>
 
-  <main>
-    <section id="dokumentasi" class="content-section active">
-      <h2>Upload Dokumentasi Mobil</h2>
-      <form id="upload-form">
-        <label><input type="radio" name="documentation-type" value="Sebelum Sewa" /> Sebelum Sewa</label>
-        <label><input type="radio" name="documentation-type" value="Sesudah Sewa" /> Sesudah Sewa</label>
-        <div style="margin-top: 1rem;">
-          <label>Checklist Kerusakan:</label><br/>
-          <label><input type="checkbox" name="checklist" value="Body Lecet" /> Body Lecet</label>
-          <label><input type="checkbox" name="checklist" value="Ban Kempes" /> Ban Kempes</label>
-          <label><input type="checkbox" name="checklist" value="Lampu Pecah" /> Lampu Pecah</label>
+  <section class="container" aria-label="Form inspeksi mobil">
+    <form id="inspectionForm" novalidate>
+      <!-- Pilih ID Booking -->
+      <div>
+        <label for="bookingId">Pilih ID Booking</label>
+        <select id="bookingId" name="bookingId" required aria-required="true" aria-describedby="bookingHelp">
+          <option value="">-- Pilih Booking --</option>
+          <!-- Options akan diisi lewat JS -->
+        </select>
+        <small id="bookingHelp" style="color:#64748b;">
+          Pilih booking yang ingin diperiksa kondisinya.
+        </small>
+      </div>
+
+      <!-- Checklist kondisi mobil dengan detail kerusakan -->
+      <fieldset class="checklist-section" aria-describedby="checklistDesc">
+        <legend>Checklist Detail Kerusakan Mobil</legend>
+        <small id="checklistDesc" style="color:#64748b; display: block; margin-bottom: 12px;">Centang kerusakan yang ditemukan pada detail bagian berikut:</small>
+
+        <!-- Bodi -->
+        <fieldset class="checklist-section" aria-label="Kerusakan Bodi">
+          <legend>Bodi</legend>
+          <div class="checklist-group">
+            <label><input type="checkbox" name="checklist" value="Bodi - Penyok" /> Penyok</label>
+            <label><input type="checkbox" name="checklist" value="Bodi - Lecet" /> Lecet / Goresan</label>
+            <label><input type="checkbox" name="checklist" value="Bodi - Cat Terkelupas" /> Cat Terkelupas</label>
+            <label><input type="checkbox" name="checklist" value="Bodi - Retak" /> Retak</label>
+          </div>
+        </fieldset>
+
+        <!-- Ban -->
+        <fieldset class="checklist-section" aria-label="Kerusakan Ban">
+          <legend>Ban</legend>
+          <div class="checklist-group">
+            <label><input type="checkbox" name="checklist" value="Ban - Bocor" /> Bocor</label>
+            <label><input type="checkbox" name="checklist" value="Ban - Gundul" /> Ban Gundul</label>
+            <label><input type="checkbox" name="checklist" value="Ban - Velg Penyok" /> Velg Penyok</label>
+            <label><input type="checkbox" name="checklist" value="Ban - Baut Lemah" /> Baut Lemah / Hilang</label>
+          </div>
+        </fieldset>
+
+        <!-- Lampu -->
+        <fieldset class="checklist-section" aria-label="Kerusakan Lampu">
+          <legend>Lampu</legend>
+          <div class="checklist-group">
+            <label><input type="checkbox" name="checklist" value="Lampu - Mati" /> Mati</label>
+            <label><input type="checkbox" name="checklist" value="Lampu - Retak / Pecah" /> Retak / Pecah</label>
+            <label><input type="checkbox" name="checklist" value="Lampu - Kotor" /> Kotor / Buram</label>
+          </div>
+        </fieldset>
+
+        <!-- Interior -->
+        <fieldset class="checklist-section" aria-label="Kerusakan Interior">
+          <legend>Interior</legend>
+          <div class="checklist-group">
+            <label><input type="checkbox" name="checklist" value="Interior - Jok Robek" /> Jok Robek / Sobek</label>
+            <label><input type="checkbox" name="checklist" value="Interior - Dashboard Retak" /> Dashboard Retak</label>
+            <label><input type="checkbox" name="checklist" value="Interior - Lampu Kabin Rusak" /> Lampu Kabin Rusak</label>
+            <label><input type="checkbox" name="checklist" value="Interior - AC Tidak Dingin" /> AC Tidak Dingin</label>
+          </div>
+        </fieldset>
+
+        <!-- Kaca -->
+        <fieldset class="checklist-section" aria-label="Kerusakan Kaca">
+          <legend>Kaca</legend>
+          <div class="checklist-group">
+            <label><input type="checkbox" name="checklist" value="Kaca - Retak" /> Retak</label>
+            <label><input type="checkbox" name="checklist" value="Kaca - Pecah" /> Pecah</label>
+            <label><input type="checkbox" name="checklist" value="Kaca - Kotor" /> Kotor</label>
+          </div>
+        </fieldset>
+
+      </fieldset>
+
+      <!-- Upload Foto Sebelum Sewa -->
+      <div style="margin-top:24px;">
+        <label for="fotoPre">Upload Foto Kondisi Mobil Sebelum Sewa</label>
+        <div class="file-upload" aria-label="Upload foto sebelum sewa">
+          Klik atau seret file foto di sini
+          <input type="file" id="fotoPre" name="fotoPre" accept="image/*" multiple aria-describedby="fotoPreHelp" />
         </div>
-        <div style="margin-top: 1rem;">
-          <label>Upload Foto (max 3):</label><br/>
-          <input type="file" id="upload-files" accept="image/*" multiple />
-          <div id="upload-preview"></div>
+        <small id="fotoPreHelp" style="color:#64748b;">1 foto. Format JPG/PNG.</small>
+        <div id="previewPre" class="uploaded-preview" aria-live="polite"></div>
+      </div>
+
+      <!-- Upload Foto Setelah Sewa -->
+      <div style="margin-top:24px;">
+        <label for="fotoPost">Upload Foto Kondisi Mobil Setelah Sewa</label>
+        <div class="file-upload" aria-label="Upload foto setelah sewa">
+          Klik atau seret file foto di sini
+          <input type="file" id="fotoPost" name="fotoPost" accept="image/*" multiple aria-describedby="fotoPostHelp" />
         </div>
-        <button type="submit">Simpan Dokumentasi</button>
-        <p id="upload-status"></p>
-      </form>
-    </section>
+        <small id="fotoPostHelp" style="color:#64748b;">1 foto. Format JPG/PNG.</small>
+        <div id="previewPost" class="uploaded-preview" aria-live="polite"></div>
+      </div>
 
-    <section id="hasil-dokumentasi" class="content-section">
-      <h2>Hasil Dokumentasi Mobil</h2>
+      <!-- Hasil Inspeksi -->
+      <fieldset style="margin-top:24px; border:none;">
+        <legend style="font-weight: 600; color:#475569; margin-bottom: 12px;">Hasil Inspeksi</legend>
+        <div class="radio-group" role="radiogroup" aria-labelledby="hasilInspeksiLabel">
+          <label for="normal">
+            <input type="radio" id="normal" name="hasilInspeksi" value="Normal" required />
+            Normal
+          </label>
+          <label for="rusak">
+            <input type="radio" id="rusak" name="hasilInspeksi" value="Rusak" />
+            Rusak
+          </label>
+        </div>
+      </fieldset>
 
-      <h3>Sebelum Sewa</h3>
-      <table>
-        <thead><tr><th>Waktu</th><th>Checklist</th><th>Foto</th></tr></thead>
-        <tbody id="documentation-before-body"></tbody>
-      </table>
+      <div style="margin-top:24px;">
+        <label for="denda">Denda (Rp)</label>
+        <input type="number" id="denda" name="denda" min="0" step="1000" placeholder="Masukan jumlah denda jika ada" />
+      </div>
 
-      <h3 style="margin-top: 2rem;">Sesudah Sewa</h3>
-      <table>
-        <thead><tr><th>Waktu</th><th>Checklist</th><th>Foto</th></tr></thead>
-        <tbody id="documentation-after-body"></tbody>
-      </table>
-    </section>
+      <div style="margin-top: 32px; display: flex; align-items: center;">
+        <button type="submit" class="submit-btn" aria-live="polite" id="submitBtn">
+          Simpan Hasil Inspeksi
+        </button>
+        <button type="button" class="cancel-btn" id="cancelEditBtn" style="display:none;">
+          Batal Edit
+        </button>
+      </div>
 
-    <section id="inspeksi" class="content-section">
-      <h2>Form Inspeksi Mobil</h2>
-      <form id="inspection-form">
-        <label>Pilih Mobil:
-          <select id="car-select"></select>
-        </label><br/><br/>
-        <label><input type="radio" name="inspection-result" value="Normal" /> Normal</label>
-        <label><input type="radio" name="inspection-result" value="Rusak" /> Rusak</label><br/><br/>
-        <label>Catatan Kerusakan:</label><br/>
-        <textarea id="damage-notes" disabled></textarea><br/>
-        <label>Denda (Rp):</label><br/>
-        <input type="number" id="fine-amount" disabled value="0" /><br/><br/>
-        <button type="submit">Simpan Hasil</button>
-        <p id="status-msg" style="display:none;"></p>
-      </form>
-    </section>
+      <div id="formStatus" role="alert" style="margin-top:16px; font-weight:600;"></div>
+    </form>
+  </section>
 
-    <section id="hasil-inspeksi" class="content-section">
-      <h2>Riwayat Inspeksi</h2>
-      <table>
-        <thead>
-          <tr><th>Mobil</th><th>Hasil</th><th>Catatan</th><th>Denda</th><th>Waktu</th></tr>
-        </thead>
-        <tbody id="inspection-history-body"></tbody>
-      </table>
-    </section>
-  </main>
+  <section class="inspection-list-section" aria-label="Daftar Hasil Inspeksi">
+    <h2>Daftar Hasil Inspeksi Tersimpan</h2>
+    <table class="inspection-table" aria-describedby="inspectionDesc">
+      <caption id="inspectionDesc" class="sr-only">
+        Daftar hasil inspeksi mobil yang telah disimpan dengan rincian booking, hasil inspeksi, checklist, denda, dan foto.
+      </caption>
+      <thead>
+        <tr>
+          <th>ID Booking</th>
+          <th>Checklist Kerusakan</th>
+          <th>Hasil Inspeksi</th>
+          <th>Denda (Rp)</th>
+          <th>Foto Pre / Post</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="inspectionRecords">
+        <!-- Rows akan diisi JS -->
+      </tbody>
+    </table>
+  </section>
 
   <script>
-    const navLinks = document.querySelectorAll('nav.sidebar a');
-    const contentSections = document.querySelectorAll('main .content-section');
-
-    const uploadForm = document.getElementById('upload-form');
-    const uploadFilesInput = document.getElementById('upload-files');
-    const uploadPreview = document.getElementById('upload-preview');
-    const uploadStatus = document.getElementById('upload-status');
-    const documentationBeforeBody = document.getElementById('documentation-before-body');
-    const documentationAfterBody = document.getElementById('documentation-after-body');
-
-    const inspectionForm = document.getElementById('inspection-form');
-    const carSelect = document.getElementById('car-select');
-    const inspectionRadios = document.getElementsByName('inspection-result');
-    const damageNotes = document.getElementById('damage-notes');
-    const fineAmount = document.getElementById('fine-amount');
-    const statusMsg = document.getElementById('status-msg');
-    const inspectionHistoryBody = document.getElementById('inspection-history-body');
-
-    let documentationHistory = [];
-    let inspectionHistory = [];
-
-    const carsList = [
-      { id: '1', model: 'Avanza', status: 'Available' },
-      { id: '2', model: 'Xenia', status: 'Pending' },
-      { id: '3', model: 'Innova', status: 'Maintenance' }
+    const bookings = [
+      { id_booking: "BKG001", customer: "Agus Santoso", mobil: "Toyota Avanza", status_mobil: "Tersedia" },
+      { id_booking: "BKG002", customer: "Rina Wulandari", mobil: "Honda Jazz", status_mobil: "Disewa" },
+      { id_booking: "BKG003", customer: "Dedi Saputra", mobil: "Mitsubishi Xpander", status_mobil: "Disewa" },
     ];
 
-    function showPage(pageKey) {
-      navLinks.forEach(link => {
-        link.classList.toggle('active', link.getAttribute('data-page') === pageKey);
-      });
-      contentSections.forEach(section => {
-        section.classList.toggle('active', section.id === pageKey);
-      });
-      uploadStatus.textContent = '';
-      statusMsg.style.display = 'none';
-      if (pageKey === 'hasil-dokumentasi') renderDocumentationHistory();
-      if (pageKey === 'hasil-inspeksi') renderInspectionHistory();
-    }
+    const bookingSelect = document.getElementById('bookingId');
+    const inspectionRecordsTbody = document.getElementById('inspectionRecords');
+    const form = document.getElementById('inspectionForm');
+    const statusDiv = document.getElementById('formStatus');
+    const previewPre = document.getElementById('previewPre');
+    const previewPost = document.getElementById('previewPost');
+    const fotoPreInput = document.getElementById('fotoPre');
+    const fotoPostInput = document.getElementById('fotoPost');
+    const submitBtn = document.getElementById('submitBtn');
+    const cancelEditBtn = document.getElementById('cancelEditBtn');
 
-    navLinks.forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        showPage(link.getAttribute('data-page'));
-      });
-    });
+    let editIndex = -1; // -1 means not editing
 
-    uploadFilesInput.addEventListener('change', () => {
-      uploadPreview.innerHTML = '';
-      const files = uploadFilesInput.files;
-      Array.from(files).forEach(file => {
-        if (!file.type.startsWith('image/')) return;
-        const reader = new FileReader();
-        reader.onload = e => {
-          const img = document.createElement('img');
-          img.src = e.target.result;
-          uploadPreview.appendChild(img);
-        };
-        reader.readAsDataURL(file);
-      });
-    });
-uploadForm.addEventListener('submit', e => {
-  e.preventDefault();
-  const docTypeInput = uploadForm.querySelector('input[name="documentation-type"]:checked');
-  const checklistVals = Array.from(uploadForm.querySelectorAll('input[name="checklist"]:checked')).map(c => c.value);
-  const files = uploadFilesInput.files;
-
-  if (!docTypeInput || checklistVals.length === 0 || files.length === 0) {
-    uploadStatus.textContent = 'Isi semua data dokumentasi!';
-    uploadStatus.className = 'error';
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append('tipe', docTypeInput.value);
-  formData.append('checklist', checklistVals.join(', '));
-  for (let i = 0; i < files.length; i++) {
-    formData.append('foto[]', files[i]);
-  }
-
-  fetch('simpan_dokumentasi.php', {
-    method: 'POST',
-    body: formData
-  })
-    .then(res => res.text())
-    .then(text => {
-      if (text.includes('sukses')) {
-        uploadStatus.textContent = 'Dokumentasi berhasil disimpan.';
-        uploadStatus.className = 'success';
-        uploadForm.reset();
-        uploadPreview.innerHTML = '';
-      } else {
-        uploadStatus.textContent = 'Gagal menyimpan dokumentasi.';
-        uploadStatus.className = 'error';
-      }
-    });
-});
-
-    
-      });
-    });
-
-    function renderDocumentationHistory() {
-  fetch('ambil_dokumentasi.php')
-    .then(res => res.json())
-    .then(data => {
-      documentationBeforeBody.innerHTML = '';
-      documentationAfterBody.innerHTML = '';
-
-      ['Sebelum Sewa', 'Sesudah Sewa'].forEach(tipe => {
-        data[tipe].forEach(row => {
-          const tr = document.createElement('tr');
-          const fotoHTML = row.foto.split(',').map(f =>
-            `<img class="doc-photo" src="upload/${f.trim()}" />`
-          ).join('');
-          tr.innerHTML = `
-            <td>${row.waktu}</td>
-            <td>${row.checklist}</td>
-            <td>${fotoHTML}</td>
-          `;
-          if (tipe === 'Sebelum Sewa') documentationBeforeBody.appendChild(tr);
-          else documentationAfterBody.appendChild(tr);
-        });
-      });
-    });
+    // Load bookings to select dropdown
+function loadBookings() {
+  bookings.forEach(db => {  // Gantilah b ke db sesuai parameter
+    const option = document.createElement('option');
+    option.value = db.id_booking;  // Memperbaiki variabel dari b.id_booking menjadi db.id_booking
+    option.textContent = `${db.id_booking} - ${db.customer} (${db.mobil}) - Status: ${db.status_mobil}`;
+    bookingSelect.appendChild(option);  // Menambahkan <option> ke dalam <select>
+  });
 }
+    // Save to localStorage key
+    const STORAGE_KEY = 'inspectionResults';
 
-      });
+    // Save inspection to localStorage
+    function saveInspection(data) {
+      const currentData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      if (editIndex === -1) {
+        currentData.push(data);
+      } else {
+        currentData[editIndex] = data;
+      }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(currentData));
+      editIndex = -1;
     }
 
-    function populateCarSelect() {
-      carSelect.innerHTML = '';
-      carsList.forEach(car => {
-        const opt = document.createElement('option');
-        opt.value = car.id;
-        opt.textContent = `${car.model} (${car.status})`;
-        carSelect.appendChild(opt);
-      });
+    // Load inspections from localStorage
+    function loadInspections() {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
     }
 
-    inspectionRadios.forEach(r => {
-      r.addEventListener('change', () => {
-        const isRusak = r.value === 'Rusak' && r.checked;
-        damageNotes.disabled = !isRusak;
-        fineAmount.disabled = !isRusak;
-        if (!isRusak) {
-          damageNotes.value = '';
-          fineAmount.value = 0;
-        }
-      });
-    });
+    // Reset form to default state
+    function resetForm() {
+      form.reset();
+      previewPre.innerHTML = "";
+      previewPost.innerHTML = "";
+      statusDiv.textContent = "";
+      statusDiv.className = "";
+      submitBtn.textContent = "Simpan Hasil Inspeksi";
+      cancelEditBtn.style.display = "none";
+      editIndex = -1;
+    }
 
-    inspectionForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const selectedCar = carsList.find(c => c.id === carSelect.value);
-      const inspectionResult = inspectionForm['inspection-result'].value;
-      const notes = damageNotes.value.trim();
-      const fine = parseInt(fineAmount.value) || 0;
-
-      if (!inspectionResult || (inspectionResult === 'Rusak' && (!notes || fine < 0))) {
-        statusMsg.textContent = 'Lengkapi data inspeksi!';
-        statusMsg.className = 'error';
-        statusMsg.style.display = 'block';
+    // Render inspections list in table
+    function renderInspections() {
+      const data = loadInspections();
+      inspectionRecordsTbody.innerHTML = '';
+      if (data.length === 0) {
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.textContent = "Belum ada data inspeksi tersimpan.";
+        td.colSpan = 6;
+        td.style.textAlign = 'center';
+        td.style.fontStyle = 'italic';
+        tr.appendChild(td);
+        inspectionRecordsTbody.appendChild(tr);
         return;
       }
 
-      inspectionHistory.push({
-        carModel: selectedCar.model,
-        result: inspectionResult,
-        notes: notes || '-',
-        fine: inspectionResult === 'Rusak' ? fine : 0,
-        time: new Date().toLocaleString('id-ID')
-      });
-
-      selectedCar.status = (inspectionResult === 'Rusak') ? 'Maintenance' : 'Available';
-      populateCarSelect();
-      renderInspectionHistory();
-      inspectionForm.reset();
-      damageNotes.disabled = true;
-      fineAmount.disabled = true;
-      statusMsg.textContent = 'Hasil inspeksi disimpan.';
-      statusMsg.className = 'success';
-      statusMsg.style.display = 'block';
-    });
-
-    function renderInspectionHistory() {
-      inspectionHistoryBody.innerHTML = '';
-      inspectionHistory.forEach(record => {
+      data.forEach((record, index) => {
         const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${record.carModel}</td>
-          <td>${record.result}</td>
-          <td>${record.notes}</td>
-          <td>Rp ${record.fine.toLocaleString('id-ID')}</td>
-          <td>${record.time}</td>
-        `;
-        inspectionHistoryBody.appendChild(tr);
+
+        // ID Booking
+        const tdBooking = document.createElement('td');
+        tdBooking.textContent = record.bookingId;
+        tr.appendChild(tdBooking);
+
+        // Checklist summary (limit length)
+        const tdChecklist = document.createElement('td');
+        if (record.checklist.length === 0) {
+          tdChecklist.textContent = '-';
+        } else {
+          const maxChars = 50;
+          let text = record.checklist.join(', ');
+          if (text.length > maxChars) {
+            text = text.substring(0, maxChars) + '...';
+          }
+          tdChecklist.textContent = text;
+          tdChecklist.title = record.checklist.join(', ');
+          tdChecklist.classList.add('checklist-summary');
+        }
+        tr.appendChild(tdChecklist);
+
+        // Hasil Inspeksi
+        const tdHasil = document.createElement('td');
+        tdHasil.textContent = record.hasilInspeksi;
+        tr.appendChild(tdHasil);
+
+        // Denda
+        const tdDenda = document.createElement('td');
+        tdDenda.textContent = record.denda.toLocaleString('id-ID', {minimumFractionDigits: 0});
+        tr.appendChild(tdDenda);
+
+        // Foto Pre/Post images preview thumbnails
+        const tdFoto = document.createElement('td');
+        const container = document.createElement('div');
+        container.className = 'inspection-photos-container';
+
+        // For demonstration, photos stored as base64 strings in record.fotoPre and fotoPost arrays
+        if (record.fotoPre && record.fotoPre.length > 0) {
+          record.fotoPre.forEach((b64, i) => {
+            const img = document.createElement('img');
+            img.className = 'inspection-photo-thumb';
+            img.src = b64;
+            img.alt = `Foto kondisi sebelum sewa ${i + 1} booking ${record.bookingId}`;
+            container.appendChild(img);
+          });
+        }
+        if (record.fotoPost && record.fotoPost.length > 0) {
+          record.fotoPost.forEach((b64, i) => {
+            const img = document.createElement('img');
+            img.className = 'inspection-photo-thumb';
+            img.src = b64;
+            img.alt = `Foto kondisi setelah sewa ${i + 1} booking ${record.bookingId}`;
+            container.appendChild(img);
+          });
+        }
+
+        tdFoto.appendChild(container);
+        tr.appendChild(tdFoto);
+
+        // Actions - Edit & Delete buttons
+        const tdAction = document.createElement('td');
+        tdAction.style.display = 'flex';
+        tdAction.style.gap = '8px';
+
+        const btnEdit = document.createElement('button');
+        btnEdit.type = 'button';
+        btnEdit.className = 'submit-btn';
+        btnEdit.textContent = 'Edit';
+        btnEdit.setAttribute('aria-label', `Edit hasil inspeksi untuk booking ${record.bookingId}`);
+        btnEdit.style.backgroundColor = '#2563eb';
+        btnEdit.style.padding = '6px 12px';
+        btnEdit.style.fontSize = '14px';
+        btnEdit.style.fontWeight = '600';
+        btnEdit.style.borderRadius = '8px';
+        btnEdit.style.cursor = 'pointer';
+        btnEdit.addEventListener('click', () => {
+          startEdit(index);
+        });
+
+        const btnDelete = document.createElement('button');
+        btnDelete.type = 'button';
+        btnDelete.className = 'delete-btn';
+        btnDelete.textContent = 'Hapus';
+        btnDelete.setAttribute('aria-label', `Hapus hasil inspeksi untuk booking ${record.bookingId}`);
+        btnDelete.addEventListener('click', () => {
+          if (confirm(`Yakin ingin menghapus hasil inspeksi untuk booking ${record.bookingId}?`)) {
+            deleteInspection(index);
+          }
+        });
+        tdAction.appendChild(btnEdit);
+        tdAction.appendChild(btnDelete);
+        tr.appendChild(tdAction);
+
+        inspectionRecordsTbody.appendChild(tr);
       });
     }
 
-    populateCarSelect();
+    // Delete inspection record
+    function deleteInspection(index) {
+      const data = loadInspections();
+      data.splice(index, 1);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      if (editIndex === index) {
+        resetForm();
+      }
+      if (editIndex > index) {
+        editIndex--;
+      }
+      renderInspections();
+    }
+
+    // Convert file to base64 string for storage
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // Populate form with existing data for editing
+    async function startEdit(index) {
+      const data = loadInspections();
+      if (!data[index]) return;
+
+      const record = data[index];
+      editIndex = index;
+
+      form.bookingId.value = record.bookingId;
+
+      // Clear all checklist checkboxes then check those in record
+      const checklistCheckboxes = form.querySelectorAll('input[name="checklist"]');
+      checklistCheckboxes.forEach(chk => {
+        chk.checked = record.checklist.includes(chk.value);
+      });
+
+      // Set hasilInspeksi radio
+      if (record.hasilInspeksi) {
+        const radio = form.querySelector(`input[name="hasilInspeksi"][value="${record.hasilInspeksi}"]`);
+        if (radio) radio.checked = true;
+      }
+
+      // Set denda
+      form.denda.value = record.denda;
+
+      // Clear previews and file inputs
+      previewPre.innerHTML = '';
+      previewPost.innerHTML = '';
+      fotoPreInput.value = '';
+      fotoPostInput.value = '';
+
+      // Show saved images in preview (since files cant be restored to inputs)
+      if (record.fotoPre && record.fotoPre.length > 0) {
+        record.fotoPre.forEach(b64 => {
+          const img = document.createElement('img');
+          img.classList.add('img-preview');
+          img.src = b64;
+          img.alt = `Foto kondisi sebelum sewa saat edit booking ${record.bookingId}`;
+          previewPre.appendChild(img);
+        });
+      }
+      if (record.fotoPost && record.fotoPost.length > 0) {
+        record.fotoPost.forEach(b64 => {
+          const img = document.createElement('img');
+          img.classList.add('img-preview');
+          img.src = b64;
+          img.alt = `Foto kondisi setelah sewa saat edit booking ${record.bookingId}`;
+          previewPost.appendChild(img);
+        });
+      }
+
+      // Show messages that user should re-upload photos on edit
+      const aviso = "Silakan unggah ulang foto sebelum dan setelah sewa jika ingin mengubahnya.";
+
+      statusDiv.textContent = aviso;
+      statusDiv.className = "status-message";
+
+      // Change submit button text and show cancel edit btn
+      submitBtn.textContent = "Perbarui Hasil Inspeksi";
+      cancelEditBtn.style.display = "inline-block";
+
+      // Scroll form into view smoothly
+      form.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Preview images (for form file inputs)
+    function previewImages(input, previewContainer) {
+      previewContainer.innerHTML = "";
+      if (!input.files) return;
+      const files = Array.from(input.files);
+      if (files.length > 5) {
+        alert("Maksimal 5 foto per upload");
+        input.value = "";
+        return;
+      }
+      files.forEach(file => {
+        const img = document.createElement('img');
+        img.classList.add('img-preview');
+        img.src = URL.createObjectURL(file);
+        img.alt = `Pratinjau foto ${file.name}`;
+        img.onload = () => URL.revokeObjectURL(img.src);
+        previewContainer.appendChild(img);
+      });
+    }
+
+    // Cancel edit and reset form
+    cancelEditBtn.addEventListener('click', () => {
+      resetForm();
+    });
+
+    // On file change preview
+    fotoPreInput.addEventListener('change', () => previewImages(fotoPreInput, previewPre));
+    fotoPostInput.addEventListener('change', () => previewImages(fotoPostInput, previewPost));
+
+    // Form submit handler
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      statusDiv.textContent = "";
+      statusDiv.className = "";
+
+      if (!form.bookingId.value) {
+        statusDiv.textContent = "Harap pilih ID Booking terlebih dahulu.";
+        statusDiv.className = "status-error";
+        form.bookingId.focus();
+        return;
+      }
+      // Validate fotoPre: if no file selected and no previous photos in edit mode, error
+      if (form.fotoPre.files.length === 0 && !(editIndex !== -1 && loadInspections()[editIndex].fotoPre?.length > 0)) {
+        statusDiv.textContent = "Harap unggah minimal 1 foto kondisi mobil sebelum sewa.";
+        statusDiv.className = "status-error";
+        form.fotoPre.focus();
+        return;
+      }
+      // Validate fotoPost: if no file selected and no previous photos in edit mode, error
+      if (form.fotoPost.files.length === 0 && !(editIndex !== -1 && loadInspections()[editIndex].fotoPost?.length > 0)) {
+        statusDiv.textContent = "Harap unggah minimal 1 foto kondisi mobil setelah sewa.";
+        statusDiv.className = "status-error";
+        form.fotoPost.focus();
+        return;
+      }
+      if (!form.hasilInspeksi.value) {
+        statusDiv.textContent = "Harap pilih hasil inspeksi (Normal atau Rusak).";
+        statusDiv.className = "status-error";
+        return;
+      }
+
+      // Gather checklist values
+      const checklistValues = Array.from(form.checklist)
+        .filter(chk => chk.checked)
+        .map(chk => chk.value);
+
+      // Convert uploaded files to base64 for storage or reuse previous if no new upload
+      let fotoPreBase64 = [];
+      if (form.fotoPre.files.length > 0) {
+        fotoPreBase64 = await Promise.all(
+          Array.from(form.fotoPre.files).map(file => fileToBase64(file))
+        );
+      } else if(editIndex !== -1) {
+        // Use existing fotos if no new upload
+        fotoPreBase64 = loadInspections()[editIndex].fotoPre || [];
+      }
+
+      let fotoPostBase64 = [];
+      if (form.fotoPost.files.length > 0) {
+        fotoPostBase64 = await Promise.all(
+          Array.from(form.fotoPost.files).map(file => fileToBase64(file))
+        );
+      } else if(editIndex !== -1) {
+        fotoPostBase64 = loadInspections()[editIndex].fotoPost || [];
+      }
+
+      // Construct data object
+      const formData = {
+        bookingId: form.bookingId.value,
+        checklist: checklistValues,
+        hasilInspeksi: form.hasilInspeksi.value,
+        denda: form.denda.value ? parseInt(form.denda.value) : 0,
+        fotoPreCount: fotoPreBase64.length,
+        fotoPostCount: fotoPostBase64.length,
+        fotoPre: fotoPreBase64,
+        fotoPost: fotoPostBase64,
+        timestamp: new Date().toISOString()
+      };
+
+      // Update booking status in bookings array
+      const booking = bookings.find(b => b.id_booking === formData.bookingId);
+      if (booking) {
+        booking.status_mobil = formData.hasilInspeksi === "Normal" ? "Tersedia" : "Perbaikan";
+      }
+
+      // Save or update inspection
+      saveInspection(formData);
+      renderInspections();
+
+      statusDiv.textContent = editIndex === -1
+        ? "Hasil inspeksi berhasil disimpan. Status mobil otomatis diperbarui."
+        : "Hasil inspeksi berhasil diperbarui. Status mobil otomatis diperbarui.";
+      statusDiv.className = "status-message";
+
+      console.log("Data Inspeksi Terkirim:", formData);
+      console.log("Status mobil sekarang:", booking.status_mobil);
+
+      resetForm();
+    });
+
+    // Convert file to base64 string for storage
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // Initialize page
+    function init() {
+      loadBookings();
+      renderInspections();
+    }
+
+    init();
   </script>
 </body>
 </html>
+

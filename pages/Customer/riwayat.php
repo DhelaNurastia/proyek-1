@@ -123,7 +123,11 @@ $base_url = '/proyek-1/';
         <ul>
           <li><a href="index.php">Home</a></li>
           <li><a href="listing.php">Daftar Mobil</a></li>
-          <li><a href="riwayat.php" class="active">Riwayat Booking</a></li>
+          <li class="dropdown"><a href="#"><span>Riwayat</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="riwayat.php" class="active">Riwayat Booking</a></li>
+              <li><a href="denda.php">Riwayat Denda</a></li>
+            </ul>
           <li class="dropdown"><a href="#"><span>Akun</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="profile.php">Profile</a></li>
@@ -131,7 +135,7 @@ $base_url = '/proyek-1/';
               <li><a href="../Halaman_Register&Login/logout.php">LogOut</a></li>
             </ul>
           </li>
-          <li><a href="#contact">Kontak</a></li>
+          <li><a href="../customer/index.php/#contact">Kontak</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
@@ -173,7 +177,7 @@ $base_url = '/proyek-1/';
               <time datetime="2024-04-21"></time>
             </div>
             <div>
-              <span class="booking-label">Time</span>
+              <span class="booking-label">Fasilitas</span>
               <time datetime="2024-04-21T14:00"></time>
             </div>
             <div>
@@ -190,7 +194,7 @@ $base_url = '/proyek-1/';
         <article class="booking-card" tabindex="0" aria-labelledby="booking2-id booking2-unit">
           <div class="booking-info">
             <div>
-              <span class="booking-label" id="booking2-id"></span>
+              <span class="booking-label" id="booking2-id">Booking ID</span>
               <span></span>
             </div>
             <div>
@@ -202,7 +206,7 @@ $base_url = '/proyek-1/';
               <time datetime="2024-04-27"></time>
             </div>
             <div>
-              <span class="booking-label">Time</span>
+              <span class="booking-label">Fasilitas</span>
               <time datetime="2024-04-27T18:30"></time>
             </div>
             <div>
@@ -231,7 +235,7 @@ $base_url = '/proyek-1/';
               <time datetime="2024-05-05"></time>
             </div>
             <div>
-              <span class="booking-label">Time</span>
+              <span class="booking-label">Fasilitas</span>
               <time datetime="2024-05-05T12:45"></time>
             </div>
             <div>

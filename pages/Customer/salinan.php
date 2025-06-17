@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once '../../koneksi.php';
 
 $base_url = "http://localhost/proyek-1/";
@@ -16,11 +16,11 @@ $tanggalValid = true;
 $pesanError = '';
 
 if (!empty($tanggal)) {
-    $today = date('Y-m-d');
-    if ($tanggal < $today) {
-        $tanggalValid = false;
-        $pesanError = "Tanggal tidak boleh sebelum hari ini!";
-    }
+  $today = date('Y-m-d');
+  if ($tanggal < $today) {
+    $tanggalValid = false;
+    $pesanError = "Tanggal tidak boleh sebelum hari ini!";
+  }
 }
 
 $query = "SELECT u.id, j.nama AS unitName, j.harga_sewa AS pricePer12h,
@@ -31,7 +31,7 @@ $query = "SELECT u.id, j.nama AS unitName, j.harga_sewa AS pricePer12h,
           WHERE u.status = 'tersedia'";
 
 if ($tanggalValid && !empty($tanggal)) {
-    $query .= " AND u.tanggal >= '$tanggal'";
+  $query .= " AND u.tanggal >= '$tanggal'";
 }
 
 $result = $db->query($query);
@@ -87,7 +87,8 @@ while ($row = $result->fetch_assoc()) {
       font-weight: 700;
       font-size: 2.5rem;
       margin-bottom: 1.75rem;
-      color: #00000; /* dark slate gray */
+      color: #00000;
+      /* dark slate gray */
       user-select: none;
     }
 
@@ -101,7 +102,8 @@ while ($row = $result->fetch_assoc()) {
     .filter-form label {
       display: block;
       font-weight: 600;
-      color: #4b5563; /* neutral gray */
+      color: #4b5563;
+      /* neutral gray */
       margin-bottom: 0.3rem;
       font-size: 0.95rem;
       font-family: 'Nunito Sans', sans-serif;
@@ -182,7 +184,7 @@ while ($row = $result->fetch_assoc()) {
       grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
       gap: 0.75rem 1.25rem;
       padding-top: 0.5rem;
-      border-top: 1px solid rgba(255,255,255,0.15);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
       margin-top: 0.75rem;
       color: white !important;
       font-size: 0.95rem;
@@ -246,6 +248,7 @@ while ($row = $result->fetch_assoc()) {
       padding: 0;
       margin: -1px;
     }
+
     .btn-rent {
       font-family: 'Raleway', sans-serif;
       font-weight: 700;
@@ -287,8 +290,7 @@ while ($row = $result->fetch_assoc()) {
 <body class="starter-page-page">
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div
-      class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between"
-    >
+      class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
       <a href="index.php" class="logo d-flex align-items-center me-auto me-xl-0">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <!-- <img src="assets/img/logo.webp" alt=""> -->
@@ -301,10 +303,8 @@ while ($row = $result->fetch_assoc()) {
           <li><a href="listing.php" class="active">Daftar Mobil</a></li>
           <li><a href="riwayat.php">Riwayat Booking</a></li>
           <li class="dropdown">
-            <a href="#"
-              ><span>Akun</span>
-              <i class="bi bi-chevron-down toggle-dropdown"></i
-            ></a>
+            <a href="#"><span>Akun</span>
+              <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="profile.php">Profile</a></li>
               <li><a href="#">Status Blacklist</a></li>
@@ -334,38 +334,38 @@ while ($row = $result->fetch_assoc()) {
     </div>
     <!-- End Page Title -->
 
-        <!-- Car filter and listing start -->
-        <section class="car-filter-section" aria-labelledby="carFilterTitle">
-          <form id="car-filter-form" class="filter-form" aria-describedby="carFilterDesc" novalidate>
-            <div>
-              <label for="pickup-date">Pickup Date</label>
-              <input type="date" id="pickup-date" name="pickup-date" required aria-required="true" />
-            </div>
-            <div>
-              <label for="return-date">Return Date</label>
-              <input type="date" id="return-date" name="return-date" required aria-required="true" />
-            </div>
-            <div>
-              <label for="unit-name">Unit Name</label>
-              <input type="text" id="unit-name" name="unit-name" placeholder="e.g. Avanza, Jazz" autocomplete="off" />
-            </div>
-            <div>
-              <label for="transmission">Transmission</label>
-              <select id="transmission" name="transmission">
-                <option value="all">All</option>
-                <option value="Manual">Manual</option>
-                <option value="Matic">Matic</option>
-              </select>
-            </div>
-          </form>
-          <p id="carFilterDesc" class="visually-hidden">
-            Filter daftar mobil berdasarkan tanggal pengambilan & pengembalian, nama unit, dan jenis transmisi.
-          </p>
+    <!-- Car filter and listing start -->
+    <section class="car-filter-section" aria-labelledby="carFilterTitle">
+      <form id="car-filter-form" class="filter-form" aria-describedby="carFilterDesc" novalidate>
+        <div>
+          <label for="pickup-date">Pickup Date</label>
+          <input type="date" id="pickup-date" name="pickup-date" required aria-required="true" />
+        </div>
+        <div>
+          <label for="return-date">Return Date</label>
+          <input type="date" id="return-date" name="return-date" required aria-required="true" />
+        </div>
+        <div>
+          <label for="unit-name">Unit Name</label>
+          <input type="text" id="unit-name" name="unit-name" placeholder="e.g. Avanza, Jazz" autocomplete="off" />
+        </div>
+        <div>
+          <label for="transmission">Transmission</label>
+          <select id="transmission" name="transmission">
+            <option value="all">All</option>
+            <option value="Manual">Manual</option>
+            <option value="Matic">Matic</option>
+          </select>
+        </div>
+      </form>
+      <p id="carFilterDesc" class="visually-hidden">
+        Filter daftar mobil berdasarkan tanggal pengambilan & pengembalian, nama unit, dan jenis transmisi.
+      </p>
 
-          <div id="car-list" class="car-list" aria-live="polite" aria-relevant="all"></div>
-        </section>
-        <!-- Car filter and listing end -->
-      </div>
+      <div id="car-list" class="car-list" aria-live="polite" aria-relevant="all"></div>
+    </section>
+    <!-- Car filter and listing end -->
+    </div>
     </section>
     <!-- /Starter Section Section -->
   </main>
@@ -396,7 +396,7 @@ while ($row = $result->fetch_assoc()) {
           </ul>
         </div>
 
-         <div class="col-lg-2 col-6 footer-links">
+        <div class="col-lg-2 col-6 footer-links">
           <h4>Layanan Kami</h4>
           <ul>
             <li>Rental 24 Jam</a></li>
@@ -416,29 +416,27 @@ while ($row = $result->fetch_assoc()) {
           <p><strong>Email:</strong> <span>diki.a.gani@gmail.com</span></p>
         </div>
 
-    <div class="container copyright text-center mt-4">
-      <p>
-        © <span>Copyright</span> <strong class="px-1 sitename">Sigma RenctCar</strong>
-        <span>All Rights Reserved</span>
-      </p>
-      <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you've purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form:
+        <div class="container copyright text-center mt-4">
+          <p>
+            © <span>Copyright</span> <strong class="px-1 sitename">Sigma RenctCar</strong>
+            <span>All Rights Reserved</span>
+          </p>
+          <div class="credits">
+            <!-- All the links in the footer should remain intact. -->
+            <!-- You can delete the links only if you've purchased the pro version. -->
+            <!-- Licensing information: https://bootstrapmade.com/license/ -->
+            <!-- Purchase the pro version with working PHP/AJAX contact form:
         [buy-url] -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-      </div>
-    </div>
+            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+          </div>
+        </div>
   </footer>
 
   <!-- Scroll Top -->
   <a
     href="#"
     id="scroll-top"
-    class="scroll-top d-flex align-items-center justify-content-center"
-    ><i class="bi bi-arrow-up-short"></i
-  ></a>
+    class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   <!-- Preloader -->
   <div id="preloader"></div>
@@ -456,87 +454,91 @@ while ($row = $result->fetch_assoc()) {
   <script src="<?= $base_url ?>assets/template/home/Strategy/assets/js/main.js"></script>
 
   <script>
-  const cars = <?= json_encode($cars) ?>;
-  const baseURL = <?= json_encode($base_url) ?>;
+    const cars = <?= json_encode($cars) ?>;
+    const baseURL = <?= json_encode($base_url) ?>;
 
-  function formatCurrency(value) {
-    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(value);
-  }
-
-  const pickupInput = document.getElementById('pickup-date');
-  const returnInput = document.getElementById('return-date');
-  const unitNameInput = document.getElementById('unit-name');
-  const transmissionSelect = document.getElementById('transmission');
-  const carListContainer = document.getElementById('car-list');
-
-  const todayStr = new Date().toISOString().split('T')[0];
-  pickupInput.min = todayStr;
-  returnInput.min = todayStr;
-  pickupInput.value = todayStr;
-  returnInput.value = todayStr;
-
-  pickupInput.addEventListener('change', () => {
-    returnInput.min = pickupInput.value;
-    if (returnInput.value < pickupInput.value) {
-      returnInput.value = pickupInput.value;
+    function formatCurrency(value) {
+      return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 0
+      }).format(value);
     }
-  });
 
-  cars.forEach(car => {
-    const today = new Date();
-    const future = new Date();
-    future.setDate(today.getDate() + 60);
-    car.availableFrom = today.toISOString().split("T")[0];
-    car.availableTo = future.toISOString().split("T")[0];
-  });
+    const pickupInput = document.getElementById('pickup-date');
+    const returnInput = document.getElementById('return-date');
+    const unitNameInput = document.getElementById('unit-name');
+    const transmissionSelect = document.getElementById('transmission');
+    const carListContainer = document.getElementById('car-list');
 
-function filterCars() {
-    const pickupDate = pickupInput.value;
-    const returnDate = returnInput.value;
-    const unitName = unitNameInput.value.trim().toLowerCase();
-    const transmission = transmissionSelect.value;
+    const todayStr = new Date().toISOString().split('T')[0];
+    pickupInput.min = todayStr;
+    returnInput.min = todayStr;
+    pickupInput.value = todayStr;
+    returnInput.value = todayStr;
 
-    let filtered = cars;
+    pickupInput.addEventListener('change', () => {
+      returnInput.min = pickupInput.value;
+      if (returnInput.value < pickupInput.value) {
+        returnInput.value = pickupInput.value;
+      }
+    });
 
-    // Pastikan tanggal pengembalian lebih besar dari tanggal pengambilan
-    if (pickupDate && returnDate && pickupDate >= returnDate) {
+    cars.forEach(car => {
+      const today = new Date();
+      const future = new Date();
+      future.setDate(today.getDate() + 60);
+      car.availableFrom = today.toISOString().split("T")[0];
+      car.availableTo = future.toISOString().split("T")[0];
+    });
+
+    function filterCars() {
+      const pickupDate = pickupInput.value;
+      const returnDate = returnInput.value;
+      const unitName = unitNameInput.value.trim().toLowerCase();
+      const transmission = transmissionSelect.value;
+
+      let filtered = cars;
+
+      // Pastikan tanggal pengembalian lebih besar dari tanggal pengambilan
+      if (pickupDate && returnDate && pickupDate >= returnDate) {
         carListContainer.innerHTML = `<p class="no-results">Tanggal pengembalian harus setelah tanggal pengambilan.</p>`;
         return;
-    }
+      }
 
-    // Hanya filter berdasarkan tanggal jika kedua tanggal diisi
-    if (pickupDate && returnDate) {
+      // Hanya filter berdasarkan tanggal jika kedua tanggal diisi
+      if (pickupDate && returnDate) {
         filtered = filtered.filter(car => {
-            const carStart = new Date(car.availableFrom);
-            const carEnd = new Date(car.availableTo);
-            const pick = new Date(pickupDate);
-            const ret = new Date(returnDate);
+          const carStart = new Date(car.availableFrom);
+          const carEnd = new Date(car.availableTo);
+          const pick = new Date(pickupDate);
+          const ret = new Date(returnDate);
 
-            return carStart <= pick && carEnd >= ret;
+          return carStart <= pick && carEnd >= ret;
         });
-    }
+      }
 
-    // Filter berdasarkan nama unit
-    if (unitName) {
+      // Filter berdasarkan nama unit
+      if (unitName) {
         filtered = filtered.filter(car => car.unitName.toLowerCase().includes(unitName));
-    }
+      }
 
-    // Filter berdasarkan transmisi
-    if (transmission !== 'all') {
+      // Filter berdasarkan transmisi
+      if (transmission !== 'all') {
         filtered = filtered.filter(car => car.transmisi === transmission);
-    }
+      }
 
-    // Menampilkan hasil mobil yang sesuai dengan filter
-    if (filtered.length === 0) {
+      // Menampilkan hasil mobil yang sesuai dengan filter
+      if (filtered.length === 0) {
         carListContainer.innerHTML = `<p class="no-results">Mobil tidak ditemukan.</p>`;
         return;
-    }
+      }
 
-    // Render mobil yang sudah difilter
-    carListContainer.innerHTML = filtered.map(car => {
-        const fotoUrl = car.foto && car.foto.trim() !== ''
-            ? `${baseURL}uploads/dokumen-user/foto-mobil/${car.foto}`
-            : 'https://via.placeholder.com/320x180?text=No+Image';
+      // Render mobil yang sudah difilter
+      carListContainer.innerHTML = filtered.map(car => {
+        const fotoUrl = car.foto && car.foto.trim() !== '' ?
+          `${baseURL}uploads/dokumen-user/foto-mobil/${car.foto}` :
+          'https://via.placeholder.com/320x180?text=No+Image';
 
         return `
             <article class="car-card" tabindex="0">
@@ -559,15 +561,15 @@ function filterCars() {
 
             </article>
         `;
-    }).join('');
-}
+      }).join('');
+    }
 
-  [pickupInput, returnInput, unitNameInput, transmissionSelect].forEach(el => {
-    el.addEventListener('input', filterCars);
-  });
+    [pickupInput, returnInput, unitNameInput, transmissionSelect].forEach(el => {
+      el.addEventListener('input', filterCars);
+    });
 
-  filterCars();
-</script>
+    filterCars();
+  </script>
 </body>
 
 </html>

@@ -65,7 +65,11 @@ if (isset($_SESSION['user_id'])) {
         <ul>
           <li><a href="index.php" class="active">Home</a></li>
           <li><a href="listing.php">Daftar Mobil</a></li>
-          <li><a href="riwayat.php">Riwayat Booking</a></li>
+          <li class="dropdown"><a href="#"><span>Riwayat</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="riwayat.php" class="active">Riwayat Booking</a></li>
+              <li><a href="denda.php">Riwayat Denda</a></li>
+            </ul>
           <li class="dropdown"><a href="#"><span>Akun</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="profile.php">Profile</a></li>
@@ -256,13 +260,23 @@ if (isset($_SESSION['user_id'])) {
             <div class="contact-form-wrapper">
               <h2 class="text-center mb-4">Sapa Kami</h2>
 
-              <form action="forms/contact.php" method="post" class="php-email-form">
+              <form action="https://formsubmit.co/jhynjngf@gmail.com" method="POST">
+              <!-- Ganti youremail@example.com dengan email tujuan -->
+  
+              <!-- Anti-spam honeypot (opsional tapi disarankan) -->
+              <input type="text" name="_honey" style="display:none"></input>
+
+              <!-- Nonaktifkan captcha bawaan jika kamu ingin -->
+              <input type="hidden" name="_captcha" value="true"></input>
+
+              <!-- Redirect ke halaman setelah sukses kirim -->
+
                 <div class="row g-3">
                   <div class="col-md-6">
                     <div class="form-group">
                       <div class="input-with-icon">
                         <i class="bi bi-person"></i>
-                        <input type="text" class="form-control" name="name" placeholder="First Name" required="">
+                        <input type="text" class="form-control" name="name" placeholder="Nama Lengkap" required="">
                       </div>
                     </div>
                   </div>
@@ -271,7 +285,7 @@ if (isset($_SESSION['user_id'])) {
                     <div class="form-group">
                       <div class="input-with-icon">
                         <i class="bi bi-envelope"></i>
-                        <input type="email" class="form-control" name="email" placeholder="Email Address" required="">
+                        <input type="email" class="form-control" name="email" placeholder="Alamat Email" required="">
                       </div>
                     </div>
                   </div>
@@ -280,7 +294,7 @@ if (isset($_SESSION['user_id'])) {
                     <div class="form-group">
                       <div class="input-with-icon">
                         <i class="bi bi-text-left"></i>
-                        <input type="text" class="form-control" name="sbject" placeholder="Subject" required="">
+                        <input type="text" class="form-control" name="subject" placeholder="Perihal" required="">
                       </div>
                     </div>
                   </div>
@@ -289,15 +303,9 @@ if (isset($_SESSION['user_id'])) {
                     <div class="form-group">
                       <div class="input-with-icon">
                         <i class="bi bi-chat-dots message-icon"></i>
-                        <textarea class="form-control" name="message" placeholder="Write Message..." style="height: 180px" required=""></textarea>
+                        <textarea class="form-control" name="message" placeholder="Tulis Pesan..." style="height: 180px" required=""></textarea>
                       </div>
                     </div>
-                  </div>
-
-                  <div class="col-12">
-                    <div class="loading">Loading</div>
-                    <div class="error-message"></div>
-                    <div class="sent-message">Pesan Anda telah terkirim. Terima Kasih!</div>
                   </div>
 
                   <div class="col-12 text-center">

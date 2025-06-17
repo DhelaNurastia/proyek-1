@@ -321,7 +321,12 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
         <ul>
           <li><a href="index.php">Home</a></li>
           <li><a href="listing.php">Daftar Mobil</a></li>
-          <li><a href="riwayat.php">Riwayat Booking</a></li>
+          <li class="dropdown"><a href="#"><span>Riwayat</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="riwayat.php" class="active">Riwayat Booking</a></li>
+              <li><a href="denda.php">Riwayat Denda</a></li>
+            </ul>
+          </li>
           <li class="dropdown"><a href="#"><span>Akun</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="profile.php" class="active">Profile</a></li>
@@ -329,7 +334,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
               <li><a href="../Halaman_Register&Login/logout.php">LogOut</a></li>
             </ul>
           </li>
-          <li><a href="#contact">Kontak</a></li>
+          <li><a href="../customer/index.php/#contact">Kontak</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
@@ -348,8 +353,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
           Menjelajah destinasi baru dan mengendarai mobil terbaik kini lebih mudah. Sigma RentCar, solusi sewa mobil yang terpercaya.
         </p>
         <div class="profile-cta">
-          <a href="<?= $base_url ?>pages/customer/edit_profile.php" class="btn-primary">Edit Profile</a>
-          <button class="btn-primary" aria-label="View Rental History" id="btnRentalHistory">Riwayat</button>
+          <a href="<?= $base_url ?>pages/customer/riwayat.php" class="btn-primary">Riwayat Booking</a>
         </div>
       </section>
 
