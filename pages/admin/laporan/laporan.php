@@ -20,7 +20,7 @@ require_once "../../../koneksi.php"; ?>
   <style>
     /* CSS Variables for Theming and Colors */
     :root {
-      --color-primary: #4f46e5;
+      --color-primary: #111827;
       --color-primary-light: #c7d2fe;
       --color-bg: #f9fafb;
       --color-text: #1f2937;

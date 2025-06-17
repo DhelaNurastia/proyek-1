@@ -1,290 +1,180 @@
-<?php
-$base_url = '/proyek-1/';
-?>
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Starter Page - Strategy Bootstrap Template</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
-
-  <!-- Favicons -->
-  <link href="<?= $base_url ?>assets/image/favicon.jpeg" rel="icon">
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-
-  <!-- Main CSS File -->
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/css/main.css" rel="stylesheet">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Account Blacklisted - Trading Platform</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <style>
-    /* Additional styles for Blacklist Status section based on DEFAULT inspiration guidelines */
-    .blacklist-status-section {
-      padding-top: 4rem;
-      padding-bottom: 4rem;
-      background: transparent !important;
+    /* Modern dark theme base */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+    :root {
+      --bg-color: #1f2937; /* Gray 800 */
+      --card-bg: #111827; /* Gray 900 */
+      --text-primary: #f3f4f6; /* Gray 100 */
+      --text-secondary: #9ca3af; /* Gray 400 */
+      --danger: #ef4444; /* Red 500 */
+      --danger-light: #fca5a5; /* Red 300 */
+      --button-bg: #dc2626; /* Red 600 */
+      --button-hover: #b91c1c; /* Red 700 */
     }
-    .blacklist-status-container {
-      max-width: 1200px;
-      margin-left: auto;
-      margin-right: auto;
-      padding-left: 1rem;
-      padding-right: 1rem;
+
+    * {
+      box-sizing: border-box;
     }
-    .blacklist-card {
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-      background: #fff0f1; /* light red/pink background */
-      border-radius: 0.75rem;
-      box-shadow: 0 2px 8px rgba(241, 85, 110, 0.25);
-      padding: 3rem 2.5rem;
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      min-height: 100vh;
+    }
+
+    main {
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      padding: 48px 40px 56px 40px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.7);
       display: flex;
       flex-direction: column;
       align-items: center;
-      color: #b91c1c; /* red-700 */
       text-align: center;
-      user-select: none;
+      gap: 24px;
     }
-    .blacklist-card svg {
-      width: 64px;
-      height: 64px;
-      stroke: #b91c1c;
-      stroke-width: 2.5;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      fill: none;
-      margin-bottom: 1rem;
+
+    .icon-container {
+      background-color: var(--danger-light);
+      border-radius: 50%;
+      width: 96px;
+      height: 96px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 8px;
+      flex-shrink: 0;
     }
-    .blacklist-card h2 {
-      font-family: 'Raleway', sans-serif;
+
+    .icon-container .material-icons {
+      color: var(--danger);
+      font-size: 56px;
+    }
+
+    h1 {
       font-weight: 700;
-      font-size: 48px;
-      margin-bottom: 0.75rem;
-      color: #b91c1c;
-      line-height: 1.1;
+      font-size: 2.5rem;
+      margin: 0;
+      color: var(--danger);
+      letter-spacing: -0.02em;
     }
-    .blacklist-card p {
-      font-family: 'Nunito Sans', sans-serif;
-      font-size: 18px;
-      color: #6b7280; /* neutral gray text */
-      margin-bottom: 1.8rem;
-      max-width: 460px;
+
+    p {
+      font-weight: 400;
+      font-size: 1.125rem;
+      margin: 0;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      max-width: 360px;
     }
-    .blacklist-card a.btn-contact {
-      display: inline-block;
-      padding: 0.85rem 2rem;
-      font-weight: 700;
-      font-size: 16px;
-      color: white;
-      background-color: #b91c1c;
-      border-radius: 0.75rem;
+
+    .actions {
+      margin-top: 16px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    button, a.button-link {
+      cursor: pointer;
+      padding: 14px 32px;
+      font-weight: 600;
+      font-size: 1rem;
+      border-radius: 12px;
+      border: none;
       text-decoration: none;
-      box-shadow: 0 4px 10px rgba(185, 28, 28, 0.5);
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      text-align: center;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background-color: var(--button-bg);
+      color: white;
+      box-shadow: 0 6px 12px rgba(220,38,38,0.5);
+      transition: background-color 0.3s ease;
       user-select: none;
+      min-width: 160px;
+      flex-shrink: 0;
     }
-    .blacklist-card a.btn-contact:hover,
-    .blacklist-card a.btn-contact:focus {
-      background-color: #991b1b;
+
+    button:hover, a.button-link:hover,
+    button:focus-visible, a.button-link:focus-visible {
+      background-color: var(--button-hover);
       outline: none;
-      box-shadow: 0 6px 14px rgba(153, 27, 27, 0.7);
     }
-    @media (max-width: 600px) {
-      .blacklist-card h2 {
-        font-size: 36px;
+
+    .material-icons.button-icon {
+      font-size: 20px;
+    }
+
+    @media (max-width: 480px) {
+      main {
+        padding: 32px 24px 40px 24px;
       }
-      .blacklist-card p {
-        font-size: 16px;
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      p {
+        font-size: 1rem;
+        max-width: 100%;
+      }
+      
+      button, a.button-link {
+        min-width: 100%;
       }
     }
   </style>
-
-  <!-- =======================================================
-  * Template Name: Strategy
-  * Template URL: https://bootstrapmade.com/strategy-bootstrap-agency-template/
-  * Updated: May 09 2025 with Bootstrap v5.3.6
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
-
-<body class="starter-page-page">
-
-  <header id="header" class="header d-flex align-items-center fixed-top">
-    <div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
-
-      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
-        <!-- <img src="assets/img/logo.webp" alt=""> -->
-        <h1 class="sitename">Strategy</h1>
-      </a>
-
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="#hero">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#portfolio">Portfolio</a></li>
-          <li><a href="#team">Team</a></li>
-          <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li><a href="#">Dropdown 1</a></li>
-              <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="#">Deep Dropdown 1</a></li>
-                  <li><a href="#">Deep Dropdown 2</a></li>
-                  <li><a href="#">Deep Dropdown 3</a></li>
-                  <li><a href="#">Deep Dropdown 4</a></li>
-                  <li><a href="#">Deep Dropdown 5</a></li>
-                </ul>
-              </li>
-              <li><a href="#">Dropdown 2</a></li>
-              <li><a href="#">Dropdown 3</a></li>
-              <li><a href="#">Dropdown 4</a></li>
-            </ul>
-          </li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-
-      <a class="btn-getstarted" href="#about">Get Started</a>
-
+<body>
+  <main role="alert" aria-live="assertive" aria-labelledby="blacklist-title" aria-describedby="blacklist-desc">
+    <div class="icon-container" aria-hidden="true">
+      <span class="material-icons" aria-hidden="true">block</span>
     </div>
-  </header>
-
-  <main class="main">
-
-    <!-- Page Title -->
-    <div class="page-title dark-background" data-aos="fade">
-      <div class="container position-relative">
-        <h1>Starter Page</h1>
-        <p>Esse dolorum voluptatum ullam est sint nemo et est ipsa porro placeat quibusdam quia assumenda numquam molestias.</p>
-        <nav class="breadcrumbs">
-          <ol>
-            <li><a href="index.html">Home</a></li>
-            <li class="current">Starter Page</li>
-          </ol>
-        </nav>
-      </div>
-    </div><!-- End Page Title -->
-
-    <!-- Blacklist Status Section Inserted Below Starter Section -->
-    <section class="blacklist-status-section" aria-labelledby="blacklist-status-title" data-aos="fade-up">
-      <div class="blacklist-status-container">
-        <article class="blacklist-card" role="alert" aria-live="polite" aria-atomic="true" tabindex="0">
-          <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false" role="img" >
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="15" y1="9" x2="9" y2="15"></line>
-            <line x1="9" y1="9" x2="15" y2="15"></line>
-          </svg>
-          <h2 id="blacklist-status-title">Blacklist Status</h2>
-          <p>Due to violations or outstanding issues, your account access and rental privileges have been suspended. Please contact support for more information and to resolve the matter.</p>
-          <a href="contact.html" class="btn-contact" role="button" aria-label="Contact Support">Contact Support</a>
-        </article>
-      </div>
-    </section>
-
-
+    <h1 id="blacklist-title">Akun Anda Telah Di-Blacklist</h1>
+    <p id="blacklist-desc">
+      Kami menyesal memberitahukan bahwa akun Anda telah diblokir karena pelanggaran kebijakan kami. 
+      Jika Anda merasa ini adalah kesalahan, silakan hubungi tim dukungan kami untuk informasi lebih lanjut.
+    </p>
+    <div class="actions">
+      <a href="mailto:support@tradingplatform.com" class="button-link" aria-label="Hubungi Dukungan melalui email">
+        <span class="material-icons button-icon" aria-hidden="true">support_agent</span>
+        Hubungi Dukungan
+      </a>
+      <button type="button" onclick="handleLogout()" aria-label="Keluar dari akun Anda">
+        <span class="material-icons button-icon" aria-hidden="true">logout</span>
+        Keluar
+      </button>
+    </div>
   </main>
 
-  <footer id="footer" class="footer">
-
-    <div class="container footer-top">
-      <div class="row gy-4">
-        <div class="col-lg-5 col-md-12 footer-about">
-          <a href="index.html" class="logo d-flex align-items-center">
-            <span class="sitename">Strategy</span>
-          </a>
-          <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta donna mare fermentum iaculis eu non diam phasellus.</p>
-          <div class="social-links d-flex mt-4">
-            <a href=""><i class="bi bi-twitter-x"></i></a>
-            <a href=""><i class="bi bi-facebook"></i></a>
-            <a href=""><i class="bi bi-instagram"></i></a>
-            <a href=""><i class="bi bi-linkedin"></i></a>
-          </div>
-        </div>
-
-        <div class="col-lg-2 col-6 footer-links">
-          <h4>Useful Links</h4>
-          <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About us</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">Terms of service</a></li>
-            <li><a href="#">Privacy policy</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-2 col-6 footer-links">
-          <h4>Our Services</h4>
-          <ul>
-            <li><a href="#">Web Design</a></li>
-            <li><a href="#">Web Development</a></li>
-            <li><a href="#">Product Management</a></li>
-            <li><a href="#">Marketing</a></li>
-            <li><a href="#">Graphic Design</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
-          <h4>Contact Us</h4>
-          <p>A108 Adam Street</p>
-          <p>New York, NY 535022</p>
-          <p>United States</p>
-          <p class="mt-4"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-          <p><strong>Email:</strong> <span>info@example.com</span></p>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="container copyright text-center mt-4">
-      <p>© <span>Copyright</span> <strong class="px-1 sitename">Strategy</strong> <span>All Rights Reserved</span></p>
-      <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you've purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-      </div>
-    </div>
-
-  </footer>
-
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
-  <!-- Preloader -->
-  <div id="preloader"></div>
-
-  <!-- Vendor JS Files -->
-  <script src="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/php-email-form/validate.js"></script>
-  <script src="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/aos/aos.js"></script>
-  <script src="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
-  <script src="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-
-  <!-- Main JS File -->
-  <script src="<?= $base_url ?>assets/template/home/Strategy/assets/js/main.js"></script>
-
+  <script>
+    function handleLogout() {
+      // Placeholder logout function - redirect to login or homepage
+      // In real application, clear auth tokens and session here
+      window.location.href = '/login';
+    }
+  </script>
 </body>
-
 </html>
