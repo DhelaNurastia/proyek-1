@@ -1,5 +1,28 @@
 <?php
+session_start();
 $base_url = '/proyek-1/';
+$koneksi = new mysqli("localhost", "root", "", "proyek-1");
+
+if ($koneksi->connect_error) {
+    die("Koneksi gagal: " . $koneksi->connect_error);
+}
+
+$id_customer = $_SESSION['user_id'];
+
+// Query untuk mengambil data denda sesuai customer
+$sql = "
+    SELECT 
+        inspeksi.id,
+        inspeksi.tanggal_pemeriksaan,
+        inspeksi.kondisi,
+        inspeksi.catatan,
+        inspeksi.denda
+    FROM inspeksi
+    JOIN booking ON inspeksi.booking_id = booking.id
+    WHERE booking.customer_id = $id_customer
+";
+
+$result = $koneksi->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -404,46 +427,24 @@ $base_url = '/proyek-1/';
   <!-- Main JS File -->
   <script src="<?= $base_url ?>assets/template/home/Strategy/assets/js/main.js"></script>
 
-  <script>
-    // Dummy data simulating database records for fines
-    const finesData = [
-      {
-        id: 'FINE001',
-        date: '2025-04-15',
-        status: 'Belum Lunas',
-        dataDenda: 'Parkir tidak valid di zona terlarang',
-        biaya: 150000,
-        rincian:
-          'Denda dikenakan karena parkir di area terlarang selama lebih dari 2 jam tanpa izin. Harap segera lunasi denda untuk menghindari tindakan lanjutan.'
-      },
-      {
-        id: 'FINE002',
-        date: '2025-05-01',
-        status: 'Lunas',
-        dataDenda: 'Mengemudi melebihi batas kecepatan',
-        biaya: 500000,
-        rincian:
-          'Mengemudi dengan kecepatan 20 km/jam melebihi batas maksimal yang diperbolehkan di jalan tersebut. Denda sudah dilunasi pada tanggal 2025-05-10.'
-      },
-      {
-        id: 'FINE003',
-        date: '2025-05-12',
-        status: 'Belum Lunas',
-        dataDenda: 'Tidak memakai sabuk pengaman',
-        biaya: 75000,
-        rincian:
-          'Pengemudi tidak memakai sabuk pengaman saat kendaraan berjalan, membahayakan keselamatan. Harap lakukan pembayaran.'
-      },
-      {
-        id: 'FINE004',
-        date: '2025-06-07',
-        status: 'Belum Lunas',
-        dataDenda: 'Melanggar aturan lampu lalu lintas',
-        biaya: 200000,
-        rincian:
-          'Lampu merah dilanggar pada persimpangan utama. Mohoh segera selesaikan pembayaran denda ini.'
-      }
-    ];
+<script>
+const dendaData = [
+<?php
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $status = $row['denda'] > 0 ? 'Belum Lunas' : 'Lunas';
+        echo "{
+            id: 'FINE" . str_pad($row['id'], 3, '0', STR_PAD_LEFT) . "',
+            date: '" . $row['tanggal_pemeriksaan'] . "',
+            status: '$status',
+            dataDenda: '" . addslashes($row['catatan']) . "',
+            biaya: " . $row['denda'] . ",
+            rincian: '" . addslashes($row['catatan']) . "'
+        },";
+    }
+}
+?>
+];
 
     const fineListEl = document.getElementById('fine-list');
     const fineDetailTitle = document.getElementById('fine-detail-title');
