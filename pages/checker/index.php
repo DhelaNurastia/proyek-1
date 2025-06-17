@@ -1,6 +1,3 @@
-<?php
-require_once '../../koneksi.php';
-?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -431,7 +428,7 @@ require_once '../../koneksi.php';
           Klik atau seret file foto di sini
           <input type="file" id="fotoPost" name="fotoPost" accept="image/*" multiple aria-describedby="fotoPostHelp" />
         </div>
-        <small id="fotoPostHelp" style="color:#64748b;">1 foto. Format JPG/PNG.</small>
+        <small id="fotoPostHelp" style="color:#64748b;">1 foto.Format JPG/PNG.</small>
         <div id="previewPost" class="uploaded-preview" aria-live="polite"></div>
       </div>
 
@@ -492,8 +489,8 @@ require_once '../../koneksi.php';
 
   <script>
     const bookings = [
-      { id_booking: "BKG001", customer: "Agus Santoso", mobil: "Toyota Avanza", status_mobil: "Tersedia" },
-      { id_booking: "BKG002", customer: "Rina Wulandari", mobil: "Honda Jazz", status_mobil: "Disewa" },
+      { id_booking: "BKG001", customer: "Naura jawa", mobil: "Toyota Avanza", status_mobil: "Tersedia" },
+      { id_booking: "BKG002", customer: "Andi duda", mobil: "Honda Jazz", status_mobil: "Disewa" },
       { id_booking: "BKG003", customer: "Dedi Saputra", mobil: "Mitsubishi Xpander", status_mobil: "Disewa" },
     ];
 
@@ -511,14 +508,15 @@ require_once '../../koneksi.php';
     let editIndex = -1; // -1 means not editing
 
     // Load bookings to select dropdown
-function loadBookings() {
-  bookings.forEach(db => {  // Gantilah b ke db sesuai parameter
-    const option = document.createElement('option');
-    option.value = db.id_booking;  // Memperbaiki variabel dari b.id_booking menjadi db.id_booking
-    option.textContent = `${db.id_booking} - ${db.customer} (${db.mobil}) - Status: ${db.status_mobil}`;
-    bookingSelect.appendChild(option);  // Menambahkan <option> ke dalam <select>
-  });
-}
+    function loadBookings() {
+      bookings.forEach(b => {
+        const option = document.createElement('option');
+        option.value = b.id_booking;
+        option.textContent = `${b.id_booking} - ${b.customer} (${b.mobil}) - Status: ${b.status_mobil}`;
+        bookingSelect.appendChild(option);
+      });
+    }
+
     // Save to localStorage key
     const STORAGE_KEY = 'inspectionResults';
 
