@@ -1,5 +1,25 @@
 <?php
-$base_url = '/proyek-1/'
+session_start();
+require_once '../../koneksi.php';
+$base_url = '/proyek-1/';
+
+if (!isset($_SESSION['user_id'])) {
+  header("Location: ../auth/login.php");
+  exit;
+}
+
+$userId = $_SESSION['user_id'];
+$query = $db->prepare("SELECT u.nama_lengkap, u.nama, u.email, u.telepon, u.alamat, u.foto_profile, d.file_kk, d.file_ktp, d.file_sim, u.blacklist
+                      FROM users u
+                      LEFT JOIN dokumen_user d ON u.id = d.id_user
+                      WHERE u.id = ?");
+$query->bind_param("i", $userId);
+$query->execute();
+$result = $query->get_result();
+$user = $result->fetch_assoc();
+$fotoPath = isset($user['foto_profile']) && $user['foto_profile']
+  ? "../../uploads/foto_profile/" . $user['foto_profile']
+  : "../../assets/image/default.png";
 ?>
 
 <!DOCTYPE html>
@@ -59,13 +79,15 @@ $base_url = '/proyek-1/'
       font-weight: 700;
       font-size: clamp(1.8rem, 2vw, 2.5rem);
       margin-bottom: 1.2rem;
-      color: #00000;
+      color: #000000;
     }
 
     #profile-section .status-badge {
-      display: flex; /* ubah dari inline-flex agar bisa full width */
+      display: flex;
+      /* ubah dari inline-flex agar bisa full width */
       align-items: center;
-      justify-content: center; /* agar teks tetap di tengah */
+      justify-content: center;
+      /* agar teks tetap di tengah */
       gap: 6px;
       font-weight: 600;
       font-size: 0.9rem;
@@ -73,7 +95,8 @@ $base_url = '/proyek-1/'
       border-radius: 12px;
       color: white;
       user-select: none;
-      width: 100%; /* ini membuat elemen memenuhi seluruh lebar parent */
+      width: 100%;
+      /* ini membuat elemen memenuhi seluruh lebar parent */
     }
 
     #profile-section .status-active {
@@ -93,7 +116,7 @@ $base_url = '/proyek-1/'
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1.6rem 3rem;
-      color: #00000;
+      color: #000000;
       font-family: 'Nunito Sans', sans-serif;
     }
 
@@ -117,7 +140,7 @@ $base_url = '/proyek-1/'
     #profile-section .documents h3 {
       font-weight: 600;
       margin-bottom: 1rem;
-      color: #00000;
+      color: #000000;
       font-size: clamp(1.4rem, 1.8vw, 1.6rem);
     }
 
@@ -164,7 +187,7 @@ $base_url = '/proyek-1/'
     #profile-section .doc-card .doc-label {
       font-weight: 600;
       font-size: 1rem;
-      color: #00000;
+      color: #000000;
     }
 
     /* Responsive adjustments */
@@ -206,7 +229,8 @@ $base_url = '/proyek-1/'
     #doc-modal .modal-content {
       position: relative;
       width: 100%;
-      max-width: 720px; /* atau sesuaikan dengan keinginanmu */
+      max-width: 720px;
+      /* atau sesuaikan dengan keinginanmu */
       max-height: 90vh;
       background: rgba(255 255 255 / 0.15);
       border-radius: 1rem;
@@ -257,6 +281,25 @@ $base_url = '/proyek-1/'
     /* Prevent background scroll when modal is open */
     body.modal-open {
       overflow: hidden;
+    }
+
+    .status-badge {
+      padding: 8px 16px;
+      border-radius: 25px;
+      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-active {
+      background-color: #22c55e;
+      color: white;
+    }
+
+    .status-blacklist {
+      background-color: #ef4444;
+      color: white;
     }
   </style>
 
@@ -319,27 +362,33 @@ $base_url = '/proyek-1/'
     <!-- Profile Section -->
     <section id="profile-section" class="section" aria-label="User profile information">
       <div class="profile-card" tabindex="0" data-aos="fade-up" aria-live="polite" aria-atomic="true" aria-relevant="additions">
-            <h3>Detail Profile</h3>
+        <h3>Detail Profile</h3>
         <div class="profile-info" role="list">
           <div class="profile-info-item" role="listitem">
             <span class="material-icons" aria-hidden="true">person</span>
-            <span id="full-name" class="profile-text">Loading name...</span>
+            <div class="value"><?= htmlspecialchars($user['nama_lengkap'] ?? $user['nama']) ?></div>
           </div>
           <div class="profile-info-item" role="listitem">
             <span class="material-icons" aria-hidden="true">email</span>
-            <a href="" id="email" class="profile-text" aria-describedby="email-desc" target="_blank" rel="noopener noreferrer">Loading email...</a>
+            <div class="value"><?= htmlspecialchars($user['email']) ?></div>
           </div>
           <div class="profile-info-item" role="listitem">
             <span class="material-icons" aria-hidden="true">phone</span>
-            <a href="" id="phone" class="profile-text" aria-describedby="phone-desc">Loading phone...</a>
+            <div class="value"><?= htmlspecialchars($user['telepon']) ?></div>
           </div>
           <div class="profile-info-item" role="listitem">
             <span class="material-icons" aria-hidden="true">location_on</span>
-            <span id="address" class="profile-text">Loading address...</span>
+            <div class="value"><?= htmlspecialchars($user['alamat']) ?></div>
           </div>
+          <?php
+          $status = ($user['blacklist'] == 1) ? 'Terblacklist' : 'Active';
+          $statusClass = ($user['blacklist'] == 1) ? 'status-blacklist' : 'status-active';
+          ?>
           <div>
-            <span id="account-status" class="status-badge status-active" aria-label="Account status active">
-              <span class="material-icons" aria-hidden="true">check_circle</span> Active
+            <span id="account-status" class="status-badge <?= $statusClass ?>" aria-label="Account status <?= strtolower($status) ?>">
+              <span class="material-icons" aria-hidden="true">
+                <?= ($user['blacklist'] == 1) ? 'block' : 'check_circle' ?>
+              </span> <?= $status ?>
             </span>
           </div>
         </div>
@@ -347,20 +396,30 @@ $base_url = '/proyek-1/'
         <div class="documents" aria-label="User documents">
           <h3>Documents</h3>
           <div class="doc-list" role="list" aria-live="polite" aria-atomic="false" aria-relevant="additions removals">
-            <a href="#" target="_blank" class="doc-card" role="listitem" aria-label="View document Kartu Keluarga" tabindex="0">
-              <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/fc8a14ad-a87f-4e60-9d69-1e468b76f5bd.png" alt="Kartu Keluarga document preview, blue background with white text" loading="lazy" />
-              <span class="doc-label">Kartu Keluarga (KK)</span>
-            </a>
-            <a href="#" target="_blank" class="doc-card" role="listitem" aria-label="View document Kartu Tanda Penduduk" tabindex="0">
-              <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/00ea9d1b-d9b4-48ea-8ca2-d016d4f1842d.png" alt="Kartu Tanda Penduduk document preview, blue background with white text" loading="lazy" />
-              <span class="doc-label">Kartu Tanda Penduduk (KTP)</span>
-            </a>
-            <a href="#" target="_blank" class="doc-card" role="listitem" aria-label="View document Surat Izin Mengemudi" tabindex="0">
-              <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/835fe170-251c-4f1d-9487-be7a005d2944.png" alt="Surat Izin Mengemudi document preview, blue background with white text" loading="lazy" />
-              <span class="doc-label">Surat Izin Mengemudi (SIM)</span>
-            </a>
+            <?php if (!empty($user['file_kk'])): ?>
+              <a href="javascript:void(0)" class="doc-card" role="listitem" data-img-src="../../uploads/dokumen-user/<?= $user['file_kk'] ?>">
+                <img src="../../uploads/dokumen-user/<?= $user['file_kk'] ?>" alt="Kartu Keluarga">
+                <span class="doc-label">Kartu Keluarga (KK)</span>
+              </a>
+            <?php endif; ?>
+
+            <?php if (!empty($user['file_ktp'])): ?>
+              <a href="javascript:void(0)" class="doc-card" role="listitem" data-img-src="../../uploads/dokumen-user/<?= $user['file_ktp'] ?>">
+                <img src="../../uploads/dokumen-user/<?= $user['file_ktp'] ?>" alt="Kartu Tanda Penduduk">
+                <span class="doc-label">Kartu Tanda Penduduk (KTP)</span>
+              </a>
+            <?php endif; ?>
+
+            <?php if (!empty($user['file_sim'])): ?>
+              <a href="javascript:void(0)" class="doc-card" role="listitem" data-img-src="../../uploads/dokumen-user/<?= $user['file_sim'] ?>">
+                <img src="../../uploads/dokumen-user/<?= $user['file_sim'] ?>" alt="Surat Izin Mengemudi">
+                <span class="doc-label">Surat Izin Mengemudi (SIM)</span>
+              </a>
+            <?php endif; ?>
           </div>
         </div>
+
+      </div>
       </div>
     </section>
 
@@ -459,117 +518,51 @@ $base_url = '/proyek-1/'
   <script src="<?= $base_url ?>assets/template/home/Strategy/assets/js/main.js"></script>
 
   <script>
-    // Simulate fetching user profile data from a database
-    document.addEventListener('DOMContentLoaded', () => {
-      const userProfile = {
-        status: 'active', // or 'inactive'
-        fullName: 'Ahmad Faisal',
-        email: 'ahmad.faisal@example.com',
-        phone: '+62 812 3456 7890',
-        address: 'Jl. Merpati No. 45, Jakarta, Indonesia',
-        documents: {
-          KK: 'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/269ed8a3-a5af-4653-a333-96fd2dedc968.png',
-          KTP: 'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f9e90db5-73fd-40e4-b96c-a1faf4d77f3f.png',
-          SIM: 'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b42e2eed-a9c5-4a03-b840-18eedab1f881.png'
-        }
-      };
+  document.addEventListener('DOMContentLoaded', () => {
+    const docList = document.querySelector('#profile-section .doc-list');
+    const modal = document.getElementById('doc-modal');
+    const modalImage = modal.querySelector('.modal-image');
+    const closeBtn = modal.querySelector('.modal-close-button');
 
-      // Update account status
-      const statusBadge = document.getElementById('account-status');
-      if (userProfile.status === 'active') {
-        statusBadge.classList.remove('status-inactive');
-        statusBadge.classList.add('status-active');
-        statusBadge.innerHTML = '<span class="material-icons" aria-hidden="true">check_circle</span> Active';
-        statusBadge.setAttribute('aria-label', 'Account status active');
-      } else {
-        statusBadge.classList.remove('status-active');
-        statusBadge.classList.add('status-inactive');
-        statusBadge.innerHTML = '<span class="material-icons" aria-hidden="true">error</span> Inactive';
-        statusBadge.setAttribute('aria-label', 'Account status inactive');
+    if (!docList) return;
+
+    docList.addEventListener('click', (e) => {
+      const anchor = e.target.closest('a.doc-card');
+      if (!anchor) return;
+      e.preventDefault();
+
+      const imgSrc = anchor.dataset.imgSrc;
+      const imgAlt = anchor.querySelector('.doc-label')?.textContent + ' enlarged preview';
+      if (imgSrc) {
+        modalImage.src = imgSrc;
+        modalImage.alt = imgAlt;
+        modal.classList.add('show');
+        document.body.classList.add('modal-open');
+        modal.focus();
       }
-
-      // Update profile info
-      document.getElementById('full-name').textContent = userProfile.fullName;
-      const emailLink = document.getElementById('email');
-      emailLink.textContent = userProfile.email;
-      emailLink.href = 'mailto:' + userProfile.email;
-      emailLink.setAttribute('aria-describedby', 'email-desc');
-
-      const phoneLink = document.getElementById('phone');
-      phoneLink.textContent = userProfile.phone;
-      phoneLink.href = 'tel:' + userProfile.phone.replace(/[^\d+]/g, '');
-      phoneLink.setAttribute('aria-describedby', 'phone-desc');
-
-      document.getElementById('address').textContent = userProfile.address;
-
-      // Update document links and images
-      const docList = document.querySelector('#profile-section .doc-list');
-      const docs = docList.querySelectorAll('a.doc-card');
-      docs.forEach(doc => {
-        const label = doc.querySelector('.doc-label').textContent;
-        let docKey = '';
-        if (label.includes('Kartu Keluarga')) docKey = 'KK';
-        else if (label.includes('Kartu Tanda Penduduk')) docKey = 'KTP';
-        else if (label.includes('Surat Izin Mengemudi')) docKey = 'SIM';
-
-        if (docKey && userProfile.documents[docKey]) {
-          doc.href = '#';
-          doc.dataset.imgSrc = userProfile.documents[docKey];
-          const img = doc.querySelector('img');
-          if (img) {
-            img.src = userProfile.documents[docKey];
-            img.alt = label + ' document preview in blue background with white text';
-          }
-        }
-      });
-
-      // Modal functionality
-      const modal = document.getElementById('doc-modal');
-      const modalImage = modal.querySelector('.modal-image');
-      const closeBtn = modal.querySelector('.modal-close-button');
-
-      // Open modal on document click
-      docList.addEventListener('click', (e) => {
-        const anchor = e.target.closest('a.doc-card');
-        if (!anchor) return;
-        e.preventDefault();
-        const imgSrc = anchor.dataset.imgSrc;
-        const imgAlt = anchor.querySelector('.doc-label').textContent + ' enlarged document preview';
-        if (imgSrc) {
-          modalImage.src = imgSrc;
-          modalImage.alt = imgAlt;
-          modal.classList.add('show');
-          document.body.classList.add('modal-open');
-          modal.focus();
-        }
-      });
-
-      // Close modal function
-      function closeModal() {
-        modal.classList.remove('show');
-        document.body.classList.remove('modal-open');
-        modalImage.src = '';
-        modalImage.alt = '';
-      }
-
-      // Close modal on close button click
-      closeBtn.addEventListener('click', closeModal);
-
-      // Close modal on overlay click (outside modal content)
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          closeModal();
-        }
-      });
-
-      // Close modal on ESC key
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal.classList.contains('show')) {
-          closeModal();
-        }
-      });
     });
-  </script>
+
+    function closeModal() {
+      modal.classList.remove('show');
+      document.body.classList.remove('modal-open');
+      modalImage.src = '';
+      modalImage.alt = '';
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('show')) {
+        closeModal();
+      }
+    });
+  });
+</script>
+
 
 </body>
 
