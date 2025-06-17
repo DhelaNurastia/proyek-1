@@ -317,7 +317,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
           <li class="dropdown"><a href="#"><span>Riwayat</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="riwayat.php" class="active">Riwayat Booking</a></li>
-              <li><a href="#">Riwayat Denda</a></li>
+              <li><a href="denda.php">Riwayat Denda</a></li>
             </ul>
           </li>
           <li class="dropdown"><a href="#"><span>Akun</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
