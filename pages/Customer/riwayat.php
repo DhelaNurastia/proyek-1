@@ -8,12 +8,12 @@ $base_url = '/proyek-1/'
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Starter Page - Strategy Bootstrap Template</title>
+  <title>Riwayat Booking</title>
   <meta name="description" content="" />
   <meta name="keywords" content="" />
 
   <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon" />
+  <link href="<?= $base_url ?>assets/image/favicon.jpeg" rel="icon" />
   <link href="<?= $base_url ?>assets/template/home/Strategy/assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
 
   <!-- Fonts -->
@@ -208,10 +208,9 @@ $base_url = '/proyek-1/'
           >
           <thead>
             <tr>
-              <th scope="col">Booking ID</th>
-              <th scope="col">Unit Name</th>
-              <th scope="col">Date</th>
-              <th scope="col">Time</th>
+              <th scope="col">ID Booking</th>
+              <th scope="col">Nama Unit</th>
+              <th scope="col">Tanggal</th>
               <th scope="col">Total Biaya</th>
               <th scope="col">Status</th>
             </tr>
