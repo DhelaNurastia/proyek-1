@@ -12,8 +12,6 @@ require_once "../../../koneksi.php";
     <link href="../../../assets/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="../../../assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <style>
-        
-
         .row {
             display: flex;
             flex-wrap: wrap;
@@ -22,8 +20,8 @@ require_once "../../../koneksi.php";
         }
 
         .custom-card {
-            background-color: #0f172a;
-            color: #fff;
+            /* background-color: #0f172a; */
+            color: black;
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
@@ -35,7 +33,7 @@ require_once "../../../koneksi.php";
             width: 100%;
             height: 200px;
             object-fit: cover;
-            background-color: #1e293b;
+            /* background-color: #1e293b; */
         }
 
         .custom-card .card-body {
@@ -143,7 +141,7 @@ require_once "../../../koneksi.php";
                             };
                         ?>
                             <div class="custom-card">
-                                <img src="../../../uploads/dokumen-user/foto-mobil/<?= $row['foto'] ?>" alt="Foto mobil <?= htmlspecialchars($row['nama_mobil']) ?>">
+                                <img src="../../../uploads/foto-mobil/<?= $row['foto'] ?>" alt="Foto mobil <?= htmlspecialchars($row['nama_mobil']) ?>">
                                 <div class="card-body">
                                     <h5 class="card-title"><?= htmlspecialchars($row['nama_mobil']) ?></h5>
                                     <span class="<?= $statusClass ?>">
@@ -191,5 +189,3 @@ require_once "../../../koneksi.php";
 </body>
 
 </html>
-
-

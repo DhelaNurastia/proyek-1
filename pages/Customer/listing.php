@@ -1,7 +1,8 @@
 <?php
 require_once '../../koneksi.php';
 
-$base_url = "http://localhost/proyek-1/";
+// $base_url = "https://f7d4-112-215-65-100.ngrok-free.app/proyek-1/";
+$base_url = "../../";
 
 
 $db = mysqli_connect(hostname: HOSTNAME, username: USERNAME, password: PASSWORD, database: DATABASE);
@@ -86,7 +87,7 @@ while ($row = $result->fetch_assoc()) {
       font-weight: 700;
       font-size: 2.5rem;
       margin-bottom: 1.75rem;
-      color: #00000;
+      color: "#00000";
       /* dark slate gray */
       user-select: none;
     }
@@ -339,19 +340,19 @@ while ($row = $result->fetch_assoc()) {
     <section class="car-filter-section" aria-labelledby="carFilterTitle">
       <form id="car-filter-form" class="filter-form" aria-describedby="carFilterDesc" novalidate>
         <div>
-          <label for="pickup-date">Pickup Date</label>
+          <label for="pickup-date">Tanggal Peminjaman</label>
           <input type="date" id="pickup-date" name="pickup-date" required aria-required="true" />
         </div>
         <div>
-          <label for="return-date">Return Date</label>
+          <label for="return-date">Tanggal Pengembalian</label>
           <input type="date" id="return-date" name="return-date" required aria-required="true" />
         </div>
         <div>
-          <label for="unit-name">Unit Name</label>
+          <label for="unit-name">Cari Mobil</label>
           <input type="text" id="unit-name" name="unit-name" placeholder="e.g. Avanza, Jazz" autocomplete="off" />
         </div>
         <div>
-          <label for="transmission">Transmission</label>
+          <label for="transmission">Transmis</label>
           <select id="transmission" name="transmission">
             <option value="all">All</option>
             <option value="Manual">Manual</option>
@@ -458,6 +459,8 @@ while ($row = $result->fetch_assoc()) {
     const cars = <?= json_encode($cars) ?>;
     const baseURL = <?= json_encode($base_url) ?>;
 
+    console.log(cars[0].id);
+
     function formatCurrency(value) {
       return new Intl.NumberFormat('id-ID', {
         style: 'currency',
@@ -538,8 +541,8 @@ while ($row = $result->fetch_assoc()) {
       // Render mobil yang sudah difilter
       carListContainer.innerHTML = filtered.map(car => {
         const fotoUrl = car.foto && car.foto.trim() !== '' ?
-          `${baseURL}uploads/dokumen-user/foto-mobil/${car.foto}` :
-          'https://via.placeholder.com/320x180?text=No+Image';
+          `${baseURL}uploads/foto-mobil/${car.foto}` :
+          'https://via.placeholder.com/300x200';
 
         return `
             <article class="car-card" tabindex="0">
@@ -553,9 +556,9 @@ while ($row = $result->fetch_assoc()) {
                     <div class="car-info-item"><i class="bi bi-palette"></i><span>${car.warna}</span></div>
                     <div class="car-info-item"><span class="car-status available">Available</span></div>
                 </div>
-                <button class="btn-rent" type="button" onclick="window.location.href='booking.php?unit=${car.unitName}'" aria-label="Rental sekarang ${car.unitName}">
-    Rental Sekarang <i class="bi bi-arrow-right"></i>
-</button>
+                <button class="btn-rent" type="button" onclick="window.location.href='booking.php?unit=${car.unitName}&unit_id=${car.id}'" aria-label="Rental sekarang ${car.unitName}">
+                Rental Sekarang <i class="bi bi-arrow-right"></i>
+              </button>
             </article>
         `;
       }).join('');

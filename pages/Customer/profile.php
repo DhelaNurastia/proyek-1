@@ -5,8 +5,8 @@ require_once '../../koneksi.php'; // pastikan path-nya sesuai
 $base_url = "http://localhost/proyek-1/";
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ../auth/login.php");
-    exit;
+  header("Location: ../auth/login.php");
+  exit;
 }
 
 $userId = $_SESSION['user_id'];
@@ -19,8 +19,8 @@ $query->execute();
 $result = $query->get_result();
 $user = $result->fetch_assoc();
 $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
-    ? "../../uploads/foto_profile/" . $user['foto_profile']
-    : "../../assets/image/default.png";
+  ? "../../uploads/foto_profile/" . $user['foto_profile']
+  : "../../assets/image/default.png";
 ?>
 
 <!DOCTYPE html>
@@ -191,19 +191,23 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
     }
 
     .doc-item {
-      background: #1f2937; /* dark slate */
+      background: #1f2937;
+      /* dark slate */
       border-radius: 0.5rem;
       cursor: pointer;
       padding: 1rem 1.25rem;
       box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
       transition: box-shadow 0.3s ease;
-      color: #e5e7eb; /* light gray */
+      color: #e5e7eb;
+      /* light gray */
       user-select: none;
     }
+
     .doc-item:hover {
       box-shadow: 0 5px 15px rgb(0 0 0 / 0.2);
       background: #374151;
     }
+
     .doc-header {
       display: flex;
       justify-content: space-between;
@@ -224,14 +228,17 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
       margin-top: 0.75rem;
       font-weight: 400;
       font-size: 0.95rem;
-      color: #d1d5db; /* lighter gray */
+      color: #d1d5db;
+      /* lighter gray */
       line-height: 1.4;
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.35s ease;
     }
+
     .doc-item.active .doc-content {
-      max-height: 10rem; /* enough for content */
+      max-height: 10rem;
+      /* enough for content */
     }
 
     .form-group {
@@ -380,7 +387,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
                 <div class="doc-content" id="doc1-content" aria-labelledby="doc1-header" hidden>
                   <img src="../../uploads/dokumen-user/<?= htmlspecialchars($user['file_kk']) ?>" alt="KK" style="width: 100%; border-radius: 8px;">
                 </div>
-                  <p>Dokumen Kartu Keluarga (KK) - Detail atau pratinjau gambar Kartu Keluarga dapat ditampilkan di sini.</p>
+                <p>Dokumen Kartu Keluarga (KK) - Detail atau pratinjau gambar Kartu Keluarga dapat ditampilkan di sini.</p>
               </div>
               <div class="doc-item" tabindex="0">
                 <div class="doc-header" aria-expanded="false" role="button" aria-controls="doc2-content" id="doc2-header">
@@ -392,7 +399,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
                 <div class="doc-content" id="doc2-content" aria-labelledby="doc2-header" hidden>
                   <img src="../../uploads/dokumen-user/<?= htmlspecialchars($user['file_ktp']) ?>" alt="KTP">
                 </div>
-                  <p>Dokumen Kartu Tanda Penduduk (KTP) - Informasi atau pratinjau Kartu Tanda Penduduk akan ditampilkan di sini.</p>
+                <p>Dokumen Kartu Tanda Penduduk (KTP) - Informasi atau pratinjau Kartu Tanda Penduduk akan ditampilkan di sini.</p>
               </div>
               <div class="doc-item" tabindex="0">
                 <div class="doc-header" aria-expanded="false" role="button" aria-controls="doc3-content" id="doc3-header">
@@ -404,7 +411,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
                 <div class="doc-content" id="doc3-content" aria-labelledby="doc3-header" hidden>
                   <img src="../../uploads/dokumen-user/<?= htmlspecialchars($user['file_sim']) ?>" alt="SIM">
                 </div>
-                  <p>Dokumen Surat Izin Mengemudi (SIM) - Detail SIM akan ditampilkan di sini, termasuk catatan dan pratinjau gambar jika tersedia.</p>
+                <p>Dokumen Surat Izin Mengemudi (SIM) - Detail SIM akan ditampilkan di sini, termasuk catatan dan pratinjau gambar jika tersedia.</p>
               </div>
             </div>
           </article>
@@ -495,8 +502,10 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
 
   <script>
     // Smooth scroll to rental history
-    document.getElementById('btnRentalHistory').addEventListener('click', function () {
-      document.getElementById('rentalHistorySection').scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('btnRentalHistory').addEventListener('click', function() {
+      document.getElementById('rentalHistorySection').scrollIntoView({
+        behavior: 'smooth'
+      });
     });
 
     // Document accordion toggle
@@ -527,4 +536,5 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
     });
   </script>
 </body>
+
 </html>

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,7 +14,7 @@
         }
 
         .header {
-            background-color: #000957;
+            background-color: #111827;
             height: 350px;
             text-align: center;
             position: relative;

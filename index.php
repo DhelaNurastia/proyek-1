@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="keywords" content="">
 
-    <style>
+  <style>
     body {
       margin: 0;
       font-family: 'Nunito Sans', sans-serif;
@@ -18,8 +18,8 @@
       font-size: 17px;
       min-height: 100vh;
       display: flex;
-      flex-direction: column; 
-      align-items: center;     
+      flex-direction: column;
+      align-items: center;
       padding: 4rem 1rem 5rem;
     }
 
@@ -128,13 +128,13 @@
       display: inline-block;
       width: 100%;
       padding: 0.75rem 0;
-      background-color: #2563eb; 
+      background-color: #2563eb;
       color: #ffffff;
       font-size: 1rem;
       font-weight: 600;
       text-align: center;
       border: none;
-      border-radius: 0.75rem; 
+      border-radius: 0.75rem;
       cursor: pointer;
       transition: all 0.2s ease-in-out;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
@@ -142,7 +142,7 @@
     }
 
     .rent-button:hover {
-      background-color: #1e40af; 
+      background-color: #1e40af;
       transform: scale(1.03);
       box-shadow: 0 4px 10px rgba(37, 99, 235, 0.4);
     }
@@ -184,7 +184,7 @@
       <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <!-- <img src="assets/img/logo.webp" alt=""> -->
-          <img src="assets/image/logo.png" alt="">
+        <img src="assets/image/logo.png" alt="">
       </a>
 
       <nav id="navmenu" class="navmenu">
@@ -235,7 +235,7 @@
               </div>
 
               <div class="cta-button">
-                <a href="#services" class="btn">
+                <a href="pages/Halaman_Register&Login/login.php" class="btn">
                   <span>Pesan Sekarang</span>
                   <i class="bi bi-arrow-right"></i>
                 </a>
@@ -298,203 +298,203 @@
           </div>
         </div>
 
-    <!-- Services Section -->
-    <section id="services" class="services section">
+        <!-- Services Section -->
+        <section id="services" class="services section">
 
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Layanan</h2>
-        <div><span>Cek Layanan</span> <span class="description-title">Kami</span></div>
-      </div><!-- End Section Title -->
+          <!-- Section Title -->
+          <div class="container section-title" data-aos="fade-up">
+            <h2>Layanan</h2>
+            <div><span>Cek Layanan</span> <span class="description-title">Kami</span></div>
+          </div><!-- End Section Title -->
 
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
+          <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-        <div class="service-header">
-          <div class="row align-items-center">
-            <div class="col-lg-8 col-md-12">
-              <div class="service-intro">
-                <h2 class="service-heading">
-                  <div>Solusi Inovatif</div>
-                  <div><span>untuk Kebutuhan Transportasi Anda</span></div>
-                </h2>
+            <div class="service-header">
+              <div class="row align-items-center">
+                <div class="col-lg-8 col-md-12">
+                  <div class="service-intro">
+                    <h2 class="service-heading">
+                      <div>Solusi Inovatif</div>
+                      <div><span>untuk Kebutuhan Transportasi Anda</span></div>
+                    </h2>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                  <div class="service-summary">
+                    <p>Kami menggabungkan strategi visioner, pendekatan kreatif, dan teknologi terkini untuk memberikan pengalaman sewa mobil yang luar biasa, mendorong kenyamanan pelanggan, dan menjangkau pasar yang lebih luas.</p>
+                    <a href="services.html" class="service-btn">
+                      Lihat Semua Layanan
+                      <i class="bi bi-arrow-right"></i>
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="col-lg-4 col-md-12">
-              <div class="service-summary">
-                <p>Kami menggabungkan strategi visioner, pendekatan kreatif, dan teknologi terkini untuk memberikan pengalaman sewa mobil yang luar biasa, mendorong kenyamanan pelanggan, dan menjangkau pasar yang lebih luas.</p>
-                <a href="services.html" class="service-btn">
-                  Lihat Semua Layanan
-                  <i class="bi bi-arrow-right"></i>
-                </a>
+
+            <div class="row justify-content-center">
+              <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="service-card position-relative z-1">
+                  <div class="service-icon">
+                    <i class="bi bi-building"></i>
+                  </div>
+                  <h3>
+                    <a href="service-details.html">
+                      Kontrak <span>Perusahaan</span>
+                    </a>
+                  </h3>
+                  <p>Kami menawarkan paket kontrak khusus untuk perusahaan dengan berbagai keuntungan dan layanan ekslusif.</p>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="service-card position-relative z-1">
+                  <div class="service-icon">
+                    <i class="bi bi-airplane"></i>
+                  </div>
+                  <h3>
+                    <a href="service-details.html">
+                      Layanan Transportasi<span>Bandara</span>
+                    </a>
+                  </h3>
+                  <p>Kami menyediakan layanan transportasi yang handal dan tepat waktu dari dan ke bandara, demi kenyamanan perjalanan Anda.</p>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="service-card position-relative z-1">
+                  <div class="service-icon">
+                    <i class="bi bi-arrow-up"></i>
+                  </div>
+                  <h3>
+                    <a href="service-details.html">
+                      Sewa<span>Satu Arah</span>
+                    </a>
+                  </h3>
+                  <p>Kami menyediakan layanan sewa mobil satu arah untuk memudahkan perjalanan Anda tanpa harus kembali ke titik awal.</p>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="service-card position-relative z-1">
+                  <div class="service-icon">
+                    <i class="bi bi-house"></i>
+                  </div>
+                  <h3>
+                    <a href="service-details.html">
+                      Layanan Penjemputan<span>di Rumah</span>
+                    </a>
+                  </h3>
+                  <p>Nikmati kenyamanan layanan penjemputan langsung dari rumah Anda. Kami siap memberikan layanan terbaik dengan kenyamanan maksimal.</p>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="service-card position-relative z-1">
+                  <div class="service-icon">
+                    <i class="bi bi-gem"></i>
+                  </div>
+                  <h3>
+                    <a href="service-details.html">
+                      Pendekatan <span>Profesional</span>
+                    </a>
+                  </h3>
+                  <p>Kami mengundang Anda untuk merasakan layanan kami yang inovatif dan terpercaya. Kami menyediakan layanan yang siap memenuhi kebutuhan Anda.</p>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="service-card position-relative z-1">
+                  <div class="service-icon">
+                    <i class="bi bi-code-slash"></i>
+                  </div>
+                  <h3>
+                    <a href="service-details.html">
+                      Solusi Transportasi<span>Anda</span>
+                    </a>
+                  </h3>
+                  <p>Tidak ada yang lebih profesional dan handal dalam melayani kebutuhan transportasi Anda. Tim kami siap memberikan pengalaman terbaik untuk perjalanan Anda.</p>
+                </div>
               </div>
             </div>
+
           </div>
-        </div>
 
-        <div class="row justify-content-center">
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-            <div class="service-card position-relative z-1">
-              <div class="service-icon">
-                <i class="bi bi-building"></i>
-              </div>
-              <h3>
-                <a href="service-details.html">
-                  Kontrak <span>Perusahaan</span>
-                </a>
-              </h3>
-              <p>Kami menawarkan paket kontrak khusus untuk perusahaan dengan berbagai keuntungan dan layanan ekslusif.</p>
+        </section><!-- /Services Section -->
+
+        <!-- Steps Section -->
+        <section id="steps" class="steps section">
+
+          <!-- Section Title -->
+          <div class="container section-title" data-aos="fade-up">
+            <h2>Tahapan</h2>
+            <div><span>Tahapan</span> <span class="description-title">Sewa Mobil</span></div>
+          </div><!-- End Section Title -->
+
+          <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="steps-wrapper">
+
+              <div class="step-item" data-aos="fade-right" data-aos-delay="200">
+                <div class="step-content">
+                  <div class="step-icon">
+                    <i class="bi bi-lightbulb"></i>
+                  </div>
+                  <div class="step-info">
+                    <span class="step-number">Langkah Pertama</span>
+                    <h3>Masuk atau Daftar Akun</h3>
+                    <p>Mulailah dengan login ke akun Anda. Jika belum memiliki akun, silakan daftar terlebih dahulu untuk menikmati kemudahan layanan kami.</p>
+                  </div>
+                </div>
+              </div><!-- End Step Item -->
+
+              <div class="step-item" data-aos="fade-left" data-aos-delay="300">
+                <div class="step-content">
+                  <div class="step-icon">
+                    <i class="bi bi-gear"></i>
+                  </div>
+                  <div class="step-info">
+                    <span class="step-number">Langkah Ke-dua</span>
+                    <h3>Pilih Mobil Sesuai Kebutuhan</h3>
+                    <p>Jelajahi berbagai pilihan mobil yang tersedia. Pilih kendaraan yang sesuai dengan kebutuhan dan preferensi perjalanan Anda.</p>
+                  </div>
+                </div>
+              </div><!-- End Step Item -->
+
+              <div class="step-item" data-aos="fade-right" data-aos-delay="400">
+                <div class="step-content">
+                  <div class="step-icon">
+                    <i class="bi bi-bar-chart"></i>
+                  </div>
+                  <div class="step-info">
+                    <span class="step-number">Langkah Ke-tiga</span>
+                    <h3>Isi Formulir Pemesanan</h3>
+                    <p>Lengkapi formulir yang telah kami sediakan dengan detail perjalanan Anda, seperti tanggal sewa, lokasi penjemputan, dan informasi lainnya.</p>
+                  </div>
+                </div>
+              </div><!-- End Step Item -->
+
+              <div class="step-item" data-aos="fade-left" data-aos-delay="500">
+                <div class="step-content">
+                  <div class="step-icon">
+                    <i class="bi bi-check2-circle"></i>
+                  </div>
+                  <div class="step-info">
+                    <span class="step-number">Langkah Ke-empat</span>
+                    <h3>Lakukan Pembayaran & Ambil Mobil</h3>
+                    <p>Lakukan pembayaran sesuai harga yang tertera. Setelah itu, mobil siap diambil di lokasi yang telah disepakati.</p>
+                  </div>
+                </div>
+              </div><!-- End Step Item -->
+
             </div>
+
           </div>
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-            <div class="service-card position-relative z-1">
-              <div class="service-icon">
-                <i class="bi bi-airplane"></i>
-              </div>
-              <h3>
-                <a href="service-details.html">
-                  Layanan Transportasi<span>Bandara</span>
-                </a>
-              </h3>
-              <p>Kami menyediakan layanan transportasi yang handal dan tepat waktu dari dan ke bandara, demi kenyamanan perjalanan Anda.</p>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-            <div class="service-card position-relative z-1">
-              <div class="service-icon">
-                <i class="bi bi-arrow-up"></i>
-              </div>
-              <h3>
-                <a href="service-details.html">
-                    Sewa<span>Satu Arah</span>
-                </a>
-              </h3>
-              <p>Kami menyediakan layanan sewa mobil satu arah untuk memudahkan perjalanan Anda tanpa harus kembali ke titik awal.</p>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-            <div class="service-card position-relative z-1">
-              <div class="service-icon">
-                <i class="bi bi-house"></i>
-              </div>
-              <h3>
-                <a href="service-details.html">
-                Layanan Penjemputan<span>di Rumah</span>
-                </a>
-              </h3>
-              <p>Nikmati kenyamanan layanan penjemputan langsung dari rumah Anda. Kami siap memberikan layanan terbaik dengan kenyamanan maksimal.</p>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-            <div class="service-card position-relative z-1">
-              <div class="service-icon">
-                <i class="bi bi-gem"></i>
-              </div>
-              <h3>
-                <a href="service-details.html">
-                Pendekatan <span>Profesional</span>
-                </a>
-              </h3>
-              <p>Kami mengundang Anda untuk merasakan layanan kami yang inovatif dan terpercaya. Kami menyediakan layanan yang siap memenuhi kebutuhan Anda.</p>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-            <div class="service-card position-relative z-1">
-              <div class="service-icon">
-                <i class="bi bi-code-slash"></i>
-              </div>
-              <h3>
-                <a href="service-details.html">
-                  Solusi Transportasi<span>Anda</span>
-                </a>
-              </h3>
-              <p>Tidak ada yang lebih profesional dan handal dalam melayani kebutuhan transportasi Anda. Tim kami siap memberikan pengalaman terbaik untuk perjalanan Anda.</p>
-            </div>
-          </div>
-        </div>
 
-      </div>
+        </section><!-- /Steps Section -->
 
-    </section><!-- /Services Section -->
+        <!-- Portfolio Section -->
+        <section id="galeri" class="galeri section">
 
-    <!-- Steps Section -->
-    <section id="steps" class="steps section">
-
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Tahapan</h2>
-        <div><span>Tahapan</span> <span class="description-title">Sewa Mobil</span></div>
-      </div><!-- End Section Title -->
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="steps-wrapper">
-
-          <div class="step-item" data-aos="fade-right" data-aos-delay="200">
-            <div class="step-content">
-              <div class="step-icon">
-                <i class="bi bi-lightbulb"></i>
-              </div>
-              <div class="step-info">
-                <span class="step-number">Langkah Pertama</span>
-                <h3>Masuk atau Daftar Akun</h3>
-                <p>Mulailah dengan login ke akun Anda. Jika belum memiliki akun, silakan daftar terlebih dahulu untuk menikmati kemudahan layanan kami.</p>
-              </div>
-            </div>
-          </div><!-- End Step Item -->
-
-          <div class="step-item" data-aos="fade-left" data-aos-delay="300">
-            <div class="step-content">
-              <div class="step-icon">
-                <i class="bi bi-gear"></i>
-              </div>
-              <div class="step-info">
-                <span class="step-number">Langkah Ke-dua</span>
-                <h3>Pilih Mobil Sesuai Kebutuhan</h3>
-                <p>Jelajahi berbagai pilihan mobil yang tersedia. Pilih kendaraan yang sesuai dengan kebutuhan dan preferensi perjalanan Anda.</p>
-              </div>
-            </div>
-          </div><!-- End Step Item -->
-
-          <div class="step-item" data-aos="fade-right" data-aos-delay="400">
-            <div class="step-content">
-              <div class="step-icon">
-                <i class="bi bi-bar-chart"></i>
-              </div>
-              <div class="step-info">
-                <span class="step-number">Langkah Ke-tiga</span>
-                <h3>Isi Formulir Pemesanan</h3>
-                <p>Lengkapi formulir yang telah kami sediakan dengan detail perjalanan Anda, seperti tanggal sewa, lokasi penjemputan, dan informasi lainnya.</p>
-              </div>
-            </div>
-          </div><!-- End Step Item -->
-
-          <div class="step-item" data-aos="fade-left" data-aos-delay="500">
-            <div class="step-content">
-              <div class="step-icon">
-                <i class="bi bi-check2-circle"></i>
-              </div>
-              <div class="step-info">
-                <span class="step-number">Langkah Ke-empat</span>
-                <h3>Lakukan Pembayaran & Ambil Mobil</h3>
-                <p>Lakukan pembayaran sesuai harga yang tertera. Setelah itu, mobil siap diambil di lokasi yang telah disepakati.</p>
-              </div>
-            </div>
-          </div><!-- End Step Item -->
-
-        </div>
-
-      </div>
-
-    </section><!-- /Steps Section -->
-
-    <!-- Portfolio Section -->
-    <section id="galeri" class="galeri section">
-
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Galeri</h2>
-        <div><span>Lihat Galeri</span> <span class="description-title">Kami</span></div>
-      </div><!-- End Section Title -->
+          <!-- Section Title -->
+          <div class="container section-title" data-aos="fade-up">
+            <h2>Galeri</h2>
+            <div><span>Lihat Galeri</span> <span class="description-title">Kami</span></div>
+          </div><!-- End Section Title -->
 
           <div class="row g-4 isotope-container" data-aos="fade-up" data-aos-delay="300">
 
@@ -596,7 +596,7 @@
 
           </div><!-- End Portfolio Container -->
 
-        </div>
+      </div>
 
       </div>
 
@@ -611,31 +611,30 @@
       </div><!-- End Section Title -->
 
       <?php
-        $host = "localhost";
-        $user = "root";
-        $pass = "";
-        $db   = "proyek-1";
+      $host = "localhost";
+      $user = "root";
+      $pass = "";
+      $dbname   = "proyek-1";
 
-        $conn = new mysqli($host, $user, $pass, $db);
-        if ($conn->connect_error) {
-          die("Koneksi gagal: " . $conn->connect_error);
-        }
+      $conn = new mysqli($host, $user, $pass, $dbname);
+      if ($conn->connect_error) {
+        die("Koneksi gagal: " . $conn->connect_error);
+      }
 
-        $sql = "SELECT unit_mobil.*, jenis_mobil.nama AS nama_mobil, jenis_mobil.harga_sewa, jenis_mobil.jumlah_kursi
+      $sql = "SELECT unit_mobil.*, jenis_mobil.nama AS nama_mobil, jenis_mobil.harga_sewa, jenis_mobil.jumlah_kursi
                 FROM unit_mobil
                 JOIN jenis_mobil ON unit_mobil.jenis_mobil_id = jenis_mobil.id
                 WHERE unit_mobil.status = 'tersedia'";
-        $result = $conn->query($sql);
+      $result = $conn->query($sql);
 
-        if ($result->num_rows > 0): ?>
+      if ($result->num_rows > 0): ?>
         <div class="car-list" role="list">
-          <?php while($row = $result->fetch_assoc()): ?>
+          <?php while ($row = $result->fetch_assoc()): ?>
             <article class="car-card" tabindex="0" role="listitem" aria-label="Mobil <?= $row['nama_mobil']; ?>, harga <?= number_format($row['harga_sewa'], 0, ',', '.'); ?> rupiah per 12 jam, transmisi <?= $row['transmisi']; ?>, <?= $row['jumlah_kursi']; ?> kursi, plat nomor <?= $row['plat_nomor']; ?>, warna <?= $row['warna']; ?>">
               <img
-                src="<?= !empty($row['foto']) ? 'uploads/dokumen-user/foto-mobil/' . $row['foto'] : 'https://via.placeholder.com/300x170?text=No+Image'; ?>"
+                src="<?= !empty($row['foto']) ? 'uploads/foto-mobil/' . $row['foto'] : 'https://via.placeholder.com/300x170?text=No+Image'; ?>"
                 alt="Foto mobil <?= $row['nama_mobil']; ?> warna <?= $row['warna']; ?>"
-                class="car-image"
-              />
+                class="car-image" />
               <h3 class="car-name"><?= $row['nama_mobil']; ?></h3>
               <div class="car-info-row">
                 <div class="car-info-item" title="Harga per 12 jam">
@@ -667,9 +666,9 @@
         <p>Tidak ada mobil tersedia saat ini.</p>
       <?php endif; ?>
     </section>
-        </div>
+    </div>
 
-      </div>
+    </div>
 
     </section><!-- /Team Section -->
 
@@ -779,7 +778,7 @@
               </div>
               <div class="info-content">
                 <h4>Alamat Email</h4>
-                <p>diki.a.gani@gmail.com<</p>
+                <p>diki.a.gani@gmail.com<< /p>
               </div>
             </div>
           </div>

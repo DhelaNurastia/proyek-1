@@ -1,35 +1,37 @@
 <?php
-$base_url = '/proyek-1/';
+$base_url = '/proyek-1/'
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Riwayat Booking</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Starter Page - Strategy Bootstrap Template</title>
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
 
   <!-- Favicons -->
-  <link href="<?= $base_url ?>assets/image/favicon.jpeg" rel="icon">
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="assets/img/favicon.png" rel="icon" />
+  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
 
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet" />
 
   <!-- Vendor CSS Files -->
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/aos/aos.css" rel="stylesheet" />
+  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
 
   <!-- Main CSS File -->
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/css/main.css" rel="stylesheet">
+  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/css/main.css" rel="stylesheet" />
 
   <!-- =======================================================
   * Template Name: Strategy
@@ -39,89 +41,119 @@ $base_url = '/proyek-1/';
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
   <style>
-    /* Additional styles for Booking History Section */
+    /* Booking History Styles */
     .booking-history {
       background-color: transparent !important;
       padding-top: 4rem;
       padding-bottom: 4rem;
-      color: #6b7280; /* neutral gray */
+      color: #00000;
       font-feature-settings: "tnum"; /* tabular numbers for cost */
     }
+
     .booking-history h2 {
       font-weight: 700;
       font-size: 2.5rem;
-      color: #111827;
+      color: #00000;
       margin-bottom: 2rem;
+      text-align: center;
     }
-    .booking-card {
-      background-color: #374151;
-      border-radius: 0.75rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      padding: 1.5rem 2rem;
-      margin-bottom: 1.5rem;
-      transition: box-shadow 0.3s ease, transform 0.3s ease;
-      cursor: default;
-    }
-    .booking-card:hover,
-    .booking-card:focus {
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-      transform: translateY(-4px);
-      outline: none;
-    }
-    .booking-info {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 1rem 3rem;
+
+    table.booking-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
       font-size: 1rem;
-      color: white !important; 
+      color: #00000 !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      border-radius: 0.75rem;
+      overflow: hidden;
     }
-    .booking-label {
+
+    table.booking-table thead tr {
+      background-color: #111827;
+      text-align: left;
+      border-bottom: 2px solid #e5e7eb;
+    }
+
+    table.booking-table thead th {
+      padding: 1rem 1.5rem;
       font-weight: 600;
-      color: white !important;
-      margin-bottom: 0.25rem;
-      display: block;
-      font-size: 0.875rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-    }
-    .booking-status {
-      font-weight: 700;
-      border-radius: 0.5rem;
-      padding: 0.25rem 0.75rem;
-      display: inline-block;
-      font-size: 0.9rem;
+      color: #00000;
       user-select: none;
-      text-transform: capitalize;
     }
+
+    table.booking-table tbody tr {
+      background-color: #374151;
+      border-bottom: 1px solid #e5e7eb;
+      transition: background-color 0.3s ease;
+    }
+
+    table.booking-table tbody tr:hover {
+      background-color: #e0e7ff;
+    }
+
+    table.booking-table tbody td {
+      padding: 1rem 1.5rem;
+      vertical-align: middle;
+      border-right: 1px solid #e5e7eb;
+      font-variant-numeric: tabular-nums;
+    }
+
+    table.booking-table tbody td:last-child {
+      border-right: none;
+    }
+
+    .booking-status {
+      padding: 0.25rem 0.75rem;
+      border-radius: 0.5rem;
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: inline-block;
+      text-transform: capitalize;
+      user-select: none;
+      min-width: 85px;
+      text-align: center;
+    }
+
     .status-confirmed {
       background-color: #d1fae5;
       color: #065f46;
     }
+
     .status-pending {
       background-color: #fef3c7;
       color: #92400e;
     }
+
     .status-canceled {
       background-color: #fee2e2;
       color: #991b1b;
+    }
+
+    @media (max-width: 576px) {
+      table.booking-table thead th,
+      table.booking-table tbody td {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+      }
     }
   </style>
 </head>
 
 <body class="starter-page-page">
-
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
-
       <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <!-- <img src="assets/img/logo.webp" alt=""> -->
-        <h1 class="sitename">Sigma RenctCar</h1>
+        <h1 class="sitename">Strategy</h1>
       </a>
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="index.php">Home</a></li>
+          <li><a href="index.php" class="active">Home</a></li>
           <li><a href="listing.php">Daftar Mobil</a></li>
           <li class="dropdown"><a href="#"><span>Riwayat</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
@@ -135,20 +167,20 @@ $base_url = '/proyek-1/';
               <li><a href="../Halaman_Register&Login/logout.php">LogOut</a></li>
             </ul>
           </li>
-          <li><a href="../customer/index.php/#contact">Kontak</a></li>
+          <li><a href="#contact">Kontak</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
+
     </div>
   </header>
 
   <main class="main">
-
     <!-- Page Title -->
     <div class="page-title dark-background" data-aos="fade">
       <div class="container position-relative">
-        <h1>Riwayat Pemesanan Mobil</h1>
-        <p>Lihat kembali daftar pemesanan mobil yang pernah Anda lakukan.</p>
+        <h1>Riwayat Booking</h1>
+        <p>Lihat riwayat pemesanan mobil Anda secara lengkap dan terperinci di halaman ini.</p>
         <nav class="breadcrumbs">
           <ol>
             <li><a href="index.html">Home</a></li>
@@ -156,104 +188,43 @@ $base_url = '/proyek-1/';
           </ol>
         </nav>
       </div>
-    </div><!-- End Page Title -->
+    </div>
+    <!-- End Page Title -->
 
     <!-- Booking History Section -->
-    <section id="booking-history" class="booking-history" aria-label="Booking History section">
+    <section
+      id="booking-history"
+      class="booking-history"
+      aria-label="Booking History section"
+    >
       <div class="container">
-
-        <article class="booking-card" tabindex="0" aria-labelledby="booking1-id booking1-unit">
-          <div class="booking-info">
-            <div>
-              <span class="booking-label" id="booking1-id">Booking ID</span>
-              <span></span>
-            </div>
-            <div>
-              <span class="booking-label" id="booking1-unit">Unit Name</span>
-              <span></span>
-            </div>
-            <div>
-              <span class="booking-label">Date</span>
-              <time datetime="2024-04-21"></time>
-            </div>
-            <div>
-              <span class="booking-label">Fasilitas</span>
-              <time datetime="2024-04-21T14:00"></time>
-            </div>
-            <div>
-              <span class="booking-label">Total Cost</span>
-              <span></span>
-            </div>
-            <div>
-              <span class="booking-label">Status</span>
-              <span class="booking-status status-confirmed">Confirmed</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="booking-card" tabindex="0" aria-labelledby="booking2-id booking2-unit">
-          <div class="booking-info">
-            <div>
-              <span class="booking-label" id="booking2-id">Booking ID</span>
-              <span></span>
-            </div>
-            <div>
-              <span class="booking-label" id="booking2-unit">Unit Name</span>
-              <span></span>
-            </div>
-            <div>
-              <span class="booking-label">Date</span>
-              <time datetime="2024-04-27"></time>
-            </div>
-            <div>
-              <span class="booking-label">Fasilitas</span>
-              <time datetime="2024-04-27T18:30"></time>
-            </div>
-            <div>
-              <span class="booking-label">Total Cost</span>
-              <span></span>
-            </div>
-            <div>
-              <span class="booking-label">Status</span>
-              <span class="booking-status status-pending">Pending</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="booking-card" tabindex="0" aria-labelledby="booking3-id booking3-unit">
-          <div class="booking-info">
-            <div>
-              <span class="booking-label" id="booking3-id">Booking ID</span>
-              <span></span>
-            </div>
-            <div>
-              <span class="booking-label" id="booking3-unit">Unit Name</span>
-              <span></span>
-            </div>
-            <div>
-              <span class="booking-label">Date</span>
-              <time datetime="2024-05-05"></time>
-            </div>
-            <div>
-              <span class="booking-label">Fasilitas</span>
-              <time datetime="2024-05-05T12:45"></time>
-            </div>
-            <div>
-              <span class="booking-label">Total Cost</span>
-              <span></span>
-            </div>
-            <div>
-              <span class="booking-label">Status</span>
-              <span class="booking-status status-canceled">Canceled</span>
-            </div>
-          </div>
-        </article>
+        <table
+          class="booking-table"
+          aria-describedby="bookingHistoryDesc"
+          role="table"
+        >
+          <caption id="bookingHistoryDesc" class="visually-hidden"
+            >Table listing all booking history entries</caption
+          >
+          <thead>
+            <tr>
+              <th scope="col">Booking ID</th>
+              <th scope="col">Unit Name</th>
+              <th scope="col">Date</th>
+              <th scope="col">Time</th>
+              <th scope="col">Total Biaya</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody id="booking-table-body">
+          </tbody>
+        </table>
       </div>
     </section>
-
   </main>
 
   <footer id="footer" class="footer">
+
     <div class="container footer-top">
       <div class="row gy-4">
         <div class="col-lg-5 col-md-12 footer-about">
@@ -279,7 +250,7 @@ $base_url = '/proyek-1/';
           </ul>
         </div>
 
-         <div class="col-lg-2 col-6 footer-links">
+        <div class="col-lg-2 col-6 footer-links">
           <h4>Layanan Kami</h4>
           <ul>
             <li>Rental 24 Jam</a></li>
@@ -299,24 +270,29 @@ $base_url = '/proyek-1/';
           <p><strong>Email:</strong> <span>diki.a.gani@gmail.com</span></p>
         </div>
 
+      </div>
+    </div>
+
     <div class="container copyright text-center mt-4">
-      <p>
-        © <span>Copyright</span> <strong class="px-1 sitename">Sigma RenctCar</strong>
-        <span>All Rights Reserved</span>
-      </p>
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">Strategy</strong> <span>All Rights Reserved</span></p>
       <div class="credits">
         <!-- All the links in the footer should remain intact. -->
         <!-- You can delete the links only if you've purchased the pro version. -->
         <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form:
-        [buy-url] -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
         Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
       </div>
     </div>
+
   </footer>
 
   <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a
+    href="#"
+    id="scroll-top"
+    class="scroll-top d-flex align-items-center justify-content-center"
+    ><i class="bi bi-arrow-up-short"></i
+  ></a>
 
   <!-- Preloader -->
   <div id="preloader"></div>
@@ -332,7 +308,6 @@ $base_url = '/proyek-1/';
 
   <!-- Main JS File -->
   <script src="<?= $base_url ?>assets/template/home/Strategy/assets/js/main.js"></script>
-
 </body>
 
 </html>

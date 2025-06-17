@@ -22,7 +22,7 @@ $isPages           = strpos($current_uri, 'login.php') !== false || strpos($curr
 
 <style>
     .custom-sidebar-bg {
-        background-color: #1e293b !important;
+        background-color: #111827 !important;
     }
 </style>
 <ul class="navbar-nav sidebar sidebar-dark accordion custom-sidebar-bg" id="accordionSidebar">
@@ -72,7 +72,7 @@ $isPages           = strpos($current_uri, 'login.php') !== false || strpos($curr
         <div id="collapseSewa" class="collapse <?= $isSewaSection ? 'show' : '' ?>" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item <?= $isSewaPermintaan ? 'active' : '' ?>" href="<?= BASE_URL ?>/admin/permintaan-sewa/index.php">📥 Permintaan Sewa</a>
-                <a class="collapse-item <?= $isSewaAktif ? 'active' : '' ?>" href="<?= BASE_URL ?>/admin/sewa-aktif.php">📊 Sewa Aktif</a>
+                <a class="collapse-item <?= $isSewaAktif ? 'active' : '' ?>" href="<?= BASE_URL ?>/admin/booking-masuk/index.php">📊 Booking Masuk</a>
                 <a class="collapse-item <?= $isRiwayat ? 'active' : '' ?>" href="<?= BASE_URL ?>/admin/riwayat.php">📂 Riwayat Sewa</a>
             </div>
         </div>
@@ -119,19 +119,6 @@ $isPages           = strpos($current_uri, 'login.php') !== false || strpos($curr
         </div>
     </li>
 
-    <!-- Optional Tambahan -->
-    <li class="nav-item">
-        <a class="nav-link" href="<?= BASE_URL ?>/admin/charts.php">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Charts</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="<?= BASE_URL ?>/admin/tables.php">
-            <i class="fas fa-fw fa-table"></i>
-            <span>Tables</span>
-        </a>
-    </li>
 
     <hr class="sidebar-divider d-none d-md-block">
     <div class="text-center d-none d-md-inline">
