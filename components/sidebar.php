@@ -97,6 +97,17 @@ $isPages           = strpos($current_uri, 'login.php') !== false || strpos($curr
     </li>
 
     <hr class="sidebar-divider">
+    <div class="sidebar-heading">Laporan</div>
+
+    <li class="nav-item">
+        <a class="nav-link <?= $isLaporanPemasukan ? 'active' : '' ?>" href="<?= BASE_URL ?>/admin/laporan/laporan.php">
+            <i class="fas fa-chart-line"></i>
+            <span>Laporan Pemasukan</span>
+        </a>
+    </li>
+
+
+    <hr class="sidebar-divider">
     <div class="sidebar-heading">Fitur Tambahan</div>
 
     <li class="nav-item">
