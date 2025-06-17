@@ -27,7 +27,8 @@ endforeach;
 $statusPembayaran = 'berhasil';
 
 // Ambil data customer
-$stmt = mysqli_prepare($db, "SELECT nama, telepon, email, status_verifikasi FROM users WHERE id = ?");
+$stmt = mysqli_prepare($db, "SELECT nama, telepon, email, status_verifikasi, blacklist FROM users WHERE id = ?");
+
 mysqli_stmt_bind_param($stmt, "i", $data['customer_id']);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
@@ -38,6 +39,13 @@ mysqli_stmt_close($stmt);
 if ($customer['status_verifikasi'] == 'belum diverifikasi') {
     echo json_encode([
         "message" => "Akun Anda belum diverifikasi oleh admin."
+    ]);
+    exit;
+}
+// Hanya pengguna yang tidak terblacklist yang dapat melakukan booking
+if ($customer['blacklist'] == 1) {
+    echo json_encode([
+        "message" => "Akun Anda telah diblokir dan tidak dapat melakukan booking."
     ]);
     exit;
 }

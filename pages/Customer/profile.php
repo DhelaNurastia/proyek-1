@@ -79,7 +79,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
       font-weight: 700;
       font-size: clamp(1.8rem, 2vw, 2.5rem);
       margin-bottom: 1.2rem;
-      color: #00000;
+      color: #000000;
     }
 
     #profile-section .status-badge {
@@ -116,7 +116,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1.6rem 3rem;
-      color: #00000;
+      color: #000000;
       font-family: 'Nunito Sans', sans-serif;
     }
 
@@ -140,7 +140,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
     #profile-section .documents h3 {
       font-weight: 600;
       margin-bottom: 1rem;
-      color: #00000;
+      color: #000000;
       font-size: clamp(1.4rem, 1.8vw, 1.6rem);
     }
 
@@ -187,7 +187,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
     #profile-section .doc-card .doc-label {
       font-weight: 600;
       font-size: 1rem;
-      color: #00000;
+      color: #000000;
     }
 
     /* Responsive adjustments */
@@ -325,14 +325,14 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="index.php" >Home</a></li>
+          <li><a href="index.php">Home</a></li>
           <li><a href="listing.php">Daftar Mobil</a></li>
           <li class="dropdown"><a href="#"><span>Riwayat</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="riwayat.php" class="active">Riwayat Booking</a></li>
               <li><a href="denda.php">Riwayat Denda</a></li>
             </ul>
-          <li class="dropdown"><a href="#"class="active"><span>Akun</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+          <li class="dropdown"><a href="#" class="active"><span>Akun</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="profile.php">Profile</a></li>
               <li><a href="../Halaman_Register&Login/logout.php">LogOut</a></li>
@@ -383,17 +383,17 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
             <span class="material-icons" aria-hidden="true">location_on</span>
             <div class="value"><?= htmlspecialchars($user['alamat']) ?></div>
           </div>
-          <?php
-          $status = ($user['blacklist'] == 1) ? 'Terblacklist' : 'Active';
-          $statusClass = ($user['blacklist'] == 1) ? 'status-blacklist' : 'status-active';
-          ?>
-          <div>
-            <span id="account-status" class="status-badge <?= $statusClass ?>" aria-label="Account status <?= strtolower($status) ?>">
-              <span class="material-icons" aria-hidden="true">
-                <?= ($user['blacklist'] == 1) ? 'block' : 'check_circle' ?>
-              </span> <?= $status ?>
+          <?php if ($user['blacklist'] == 1): ?>
+            <a href="blacklist.php" style="text-decoration: none;">
+              <span class="status-badge status-blacklist">
+                <span class="material-icons">block</span> Terblacklist
+              </span>
+            </a>
+          <?php else: ?>
+            <span class="status-badge status-active">
+              <span class="material-icons">check_circle</span> Active
             </span>
-          </div>
+          <?php endif; ?>
         </div>
 
         <div class="documents" aria-label="User documents">
@@ -521,50 +521,50 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
   <script src="<?= $base_url ?>assets/template/home/Strategy/assets/js/main.js"></script>
 
   <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const docList = document.querySelector('#profile-section .doc-list');
-    const modal = document.getElementById('doc-modal');
-    const modalImage = modal.querySelector('.modal-image');
-    const closeBtn = modal.querySelector('.modal-close-button');
+    document.addEventListener('DOMContentLoaded', () => {
+      const docList = document.querySelector('#profile-section .doc-list');
+      const modal = document.getElementById('doc-modal');
+      const modalImage = modal.querySelector('.modal-image');
+      const closeBtn = modal.querySelector('.modal-close-button');
 
-    if (!docList) return;
+      if (!docList) return;
 
-    docList.addEventListener('click', (e) => {
-      const anchor = e.target.closest('a.doc-card');
-      if (!anchor) return;
-      e.preventDefault();
+      docList.addEventListener('click', (e) => {
+        const anchor = e.target.closest('a.doc-card');
+        if (!anchor) return;
+        e.preventDefault();
 
-      const imgSrc = anchor.dataset.imgSrc;
-      const imgAlt = anchor.querySelector('.doc-label')?.textContent + ' enlarged preview';
-      if (imgSrc) {
-        modalImage.src = imgSrc;
-        modalImage.alt = imgAlt;
-        modal.classList.add('show');
-        document.body.classList.add('modal-open');
-        modal.focus();
+        const imgSrc = anchor.dataset.imgSrc;
+        const imgAlt = anchor.querySelector('.doc-label')?.textContent + ' enlarged preview';
+        if (imgSrc) {
+          modalImage.src = imgSrc;
+          modalImage.alt = imgAlt;
+          modal.classList.add('show');
+          document.body.classList.add('modal-open');
+          modal.focus();
+        }
+      });
+
+      function closeModal() {
+        modal.classList.remove('show');
+        document.body.classList.remove('modal-open');
+        modalImage.src = '';
+        modalImage.alt = '';
       }
-    });
 
-    function closeModal() {
-      modal.classList.remove('show');
-      document.body.classList.remove('modal-open');
-      modalImage.src = '';
-      modalImage.alt = '';
-    }
-
-    closeBtn.addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        closeModal();
-      }
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeModal();
+        }
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('show')) {
+          closeModal();
+        }
+      });
     });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal.classList.contains('show')) {
-        closeModal();
-      }
-    });
-  });
-</script>
+  </script>
 
 
 </body>

@@ -1,3 +1,25 @@
+<?php
+session_start();
+require_once '../../koneksi.php';
+$base_url = '/proyek-1/';
+
+if (!isset($_SESSION['user_id'])) {
+  header("Location: ../auth/login.php");
+  exit;
+}
+
+$userId = $_SESSION['user_id'];
+$query = $db->prepare("SELECT u.nama_lengkap, u.nama, u.email, u.telepon, u.alamat, u.foto_profile, d.file_kk, d.file_ktp, d.file_sim, u.blacklist
+                      FROM users u
+                      LEFT JOIN dokumen_user d ON u.id = d.id_user
+                      WHERE u.id = ?");
+$query->bind_param("i", $userId);
+$query->execute();
+$result = $query->get_result();
+$user = $result->fetch_assoc();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

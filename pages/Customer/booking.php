@@ -15,7 +15,7 @@ if (isset($_SESSION['user_id'])) {
 }
 
 // SQL query to fetch user data, including documents
-$query = "SELECT nama_lengkap, alamat, telepon, email, status_verifikasi,file_ktp, file_kk 
+$query = "SELECT nama_lengkap, alamat, telepon, email, status_verifikasi,file_ktp, file_kk, blacklist
           FROM users 
           LEFT JOIN dokumen_user ON users.id = dokumen_user.id_user
           WHERE users.id = $user_id";
@@ -45,6 +45,14 @@ if ($result) {
 } else {
   echo "Error fetching data.";
 }
+
+if ($user['blacklist'] == 1): ?>
+  <script>
+    alert("Akun Anda diblokir dan tidak bisa melakukan pemesanan.");
+    window.location.href = "blacklist.php"; 
+  </script>
+<?php endif; 
+
 ?>
 
 <!DOCTYPE html>
