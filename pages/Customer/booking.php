@@ -550,23 +550,31 @@ if ($result) {
         let message = await result.message;
         if (message) return alert(message);
 
-        let snapToken = await result.snapToken;
-        if (snapToken) {
-          window.snap.pay(snapToken, {
-            onSuccess: function(result) {
-              console.log('success', result);
-              window.location.href = "./riwayat.php";
-            },
-            onPending: function(result) {
-              console.log('pending', result);
-            },
-            onError: function(result) {
-              console.log('error', result);
-            },
-            onClose: function() {
-              alert('Transaksi belum selesai');
-            }
-          });
+        const metode = document.getElementById("payment-method").value;
+
+        if (metode === "Transfer") {
+          let snapToken = await result.snapToken;
+          if (snapToken) {
+            window.snap.pay(snapToken, {
+              onSuccess: function(result) {
+                console.log('success', result);
+                window.location.href = "./riwayat.php";
+              },
+              onPending: function(result) {
+                console.log('pending', result);
+              },
+              onError: function(result) {
+                console.log('error', result);
+              },
+              onClose: function() {
+                alert('Transaksi belum selesai');
+              }
+            });
+          }
+        } else {
+          // CASH: redirect ke detail transaksi
+          const bookingId = result.booking_id;
+          window.location.href = `data.php?booking_id=${result.booking_id}`;
         }
       });
     });

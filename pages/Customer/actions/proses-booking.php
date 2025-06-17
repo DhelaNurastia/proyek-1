@@ -77,4 +77,5 @@ $params = [
 $snapToken = \Midtrans\Snap::getSnapToken($params);
 echo json_encode([
     'snapToken' => $snapToken,
+    'booking_id' => $bookingId // ✅ tambahkan ini
 ]);
