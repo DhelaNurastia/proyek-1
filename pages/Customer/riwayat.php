@@ -184,7 +184,11 @@ $result = $koneksi->query($sql);
         <ul>
           <li><a href="index.php" class="active">Home</a></li>
           <li><a href="listing.php">Daftar Mobil</a></li>
-          <li><a href="riwayat.php">Riwayat Booking</a></li>
+          <li class="dropdown"><a href="#"><span>Riwayat</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="riwayat.php" class="active">Riwayat Booking</a></li>
+              <li><a href="denda.php">Riwayat Denda</a></li>
+            </ul>
           <li class="dropdown"><a href="#"><span>Akun</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="profile.php">Profile</a></li>
