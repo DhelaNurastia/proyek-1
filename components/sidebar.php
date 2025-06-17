@@ -71,7 +71,7 @@ $isPages           = strpos($current_uri, 'login.php') !== false || strpos($curr
         </a>
         <div id="collapseSewa" class="collapse <?= $isSewaSection ? 'show' : '' ?>" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item <?= $isSewaPermintaan ? 'active' : '' ?>" href="<?= BASE_URL ?>/admin/permintaan-sewa/index.php">📥 Permintaan Sewa</a>
+                <a class="collapse-item <?= $isSewaPermintaan ? 'active' : '' ?>" href="<?= BASE_URL ?>/admin/permintaan-sewa/index.php">📥 Permintaan Verifikasi</a>
                 <a class="collapse-item <?= $isSewaAktif ? 'active' : '' ?>" href="<?= BASE_URL ?>/admin/booking-masuk/index.php">📊 Booking Masuk</a>
                 <a class="collapse-item <?= $isRiwayat ? 'active' : '' ?>" href="<?= BASE_URL ?>/admin/riwayat.php">📂 Riwayat Sewa</a>
             </div>

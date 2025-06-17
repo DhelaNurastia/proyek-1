@@ -26,6 +26,15 @@ $jenis_mobil = mysqli_query($db, "SELECT id, nama FROM jenis_mobil ORDER BY nama
                     <h1 class="h3 mb-2 text-gray-800">Tambah Unit Mobil</h1>
                     <p class="mb-4">Lengkapi form berikut untuk menambahkan unit mobil baru ke sistem.</p>
 
+                    <?php
+                    if (!isset($unit)) {
+                        $unit = [
+                            'foto' => ''
+                        ];
+                    }
+                    ?>
+
+
                     <div class="card shadow mb-4">
                         <div class="card-body">
                             <form method="post" action="actions.php" enctype="multipart/form-data">
@@ -42,6 +51,9 @@ $jenis_mobil = mysqli_query($db, "SELECT id, nama FROM jenis_mobil ORDER BY nama
                                 <div class="form-group">
                                     <label for="foto">Foto Mobil</label>
                                     <input type="file" name="foto" id="foto" class="form-control-file" accept="image/*" required>
+                                    <?php if (!empty($unit['foto'])): ?>
+                                        <p class="mt-2"><img src="../../../uploads/foto-mobil/<?= $unit['foto'] ?>" width="120" alt="Foto Mobil" class="img-thumbnail"></p>
+                                    <?php endif; ?>
                                 </div>
 
                                 <div class="form-group">

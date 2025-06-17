@@ -67,7 +67,7 @@ $jenisMobil = $db->query("SELECT * FROM jenis_mobil")->fetch_all(MYSQLI_ASSOC);
 
                                 <!-- Foto -->
                                 <div class="form-group">
-                                    <label for="foto">Ganti Foto (kosongkan jika tidak diganti)</label>
+                                    <label for="foto">Ganti Foto</label>
                                     <input type="file" name="foto" id="foto" class="form-control-file">
                                     <?php if (!empty($unit['foto'])): ?>
                                         <p class="mt-2"><img src="../../../uploads/foto-mobil/<?= $unit['foto'] ?>" width="120" alt="Foto Mobil" class="img-thumbnail"></p>

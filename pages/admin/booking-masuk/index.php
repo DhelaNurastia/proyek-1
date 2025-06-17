@@ -3,7 +3,7 @@ require_once "../../../config.php";
 require_once "../../../koneksi.php";
 require_once "../../../functions.php";
 
-$sql = "SELECT c.nama AS nama_customer, j.nama AS nama_unit, b.tgl_booking, b.tgl_kembali, b.status, p.status AS status_pembayaran
+$sql = "SELECT c.nama_lengkap  AS nama_customer, j.nama AS nama_unit, b.tgl_booking, b.tgl_kembali, b.status, p.status AS status_pembayaran
         FROM booking AS b
         JOIN pembayaran AS p ON p.booking_id = b.id
         JOIN users AS c ON c.id = b.customer_id
@@ -31,8 +31,8 @@ $result = mysqli_query($db, $sql)->fetch_all();
                 <?php include '../../../components/topbar.php'; ?>
 
                 <div class="container-fluid">
-                    <h1 class="h3 mb-2 text-gray-800">Verifikasi Customer</h1>
-                    <p class="mb-4">Berikut adalah daftar customer yang menunggu verifikasi dokumen.</p>
+                    <h1 class="h3 mb-2 text-gray-800">Booking Masuk</h1>
+                    <p class="mb-4">Berikut adalah daftar booking masuk hari ini.</p>
 
                     <div class="card shadow mb-4">
                         <div class="card-body table-responsive">
