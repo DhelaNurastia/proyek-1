@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update"]) && isset($_
     // Proses upload foto jika ada
     if (!empty($_FILES["foto"]["name"])) {
         $nama_file = basename($_FILES["foto"]["name"]);
-        $target = __DIR__ . "/../../../uploads/dokumen-user/foto-mobil/" . $nama_file;
+        $target = __DIR__ . "/../../../uploads/foto-mobil/" . $nama_file;
         move_uploaded_file($_FILES["foto"]["tmp_name"], $target);
     } else {
         $nama_file = null;

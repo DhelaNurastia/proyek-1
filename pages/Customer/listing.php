@@ -1,7 +1,8 @@
 <?php
 require_once '../../koneksi.php';
 
-$base_url = "https://f7d4-112-215-65-100.ngrok-free.app/proyek-1/";
+// $base_url = "https://f7d4-112-215-65-100.ngrok-free.app/proyek-1/";
+$base_url = "../../";
 
 
 $db = mysqli_connect(hostname: HOSTNAME, username: USERNAME, password: PASSWORD, database: DATABASE);

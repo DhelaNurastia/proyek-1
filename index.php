@@ -235,7 +235,7 @@
               </div>
 
               <div class="cta-button">
-                <a href="#services" class="btn">
+                <a href="pages/Halaman_Register&Login/login.php" class="btn">
                   <span>Pesan Sekarang</span>
                   <i class="bi bi-arrow-right"></i>
                 </a>
@@ -632,7 +632,7 @@
           <?php while ($row = $result->fetch_assoc()): ?>
             <article class="car-card" tabindex="0" role="listitem" aria-label="Mobil <?= $row['nama_mobil']; ?>, harga <?= number_format($row['harga_sewa'], 0, ',', '.'); ?> rupiah per 12 jam, transmisi <?= $row['transmisi']; ?>, <?= $row['jumlah_kursi']; ?> kursi, plat nomor <?= $row['plat_nomor']; ?>, warna <?= $row['warna']; ?>">
               <img
-                src="<?= !empty($row['foto']) ? 'uploads/dokumen-user/foto-mobil/' . $row['foto'] : 'https://via.placeholder.com/300x170?text=No+Image'; ?>"
+                src="<?= !empty($row['foto']) ? 'uploads/foto-mobil/' . $row['foto'] : 'https://via.placeholder.com/300x170?text=No+Image'; ?>"
                 alt="Foto mobil <?= $row['nama_mobil']; ?> warna <?= $row['warna']; ?>"
                 class="car-image" />
               <h3 class="car-name"><?= $row['nama_mobil']; ?></h3>
