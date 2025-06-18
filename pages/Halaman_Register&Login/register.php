@@ -178,16 +178,16 @@
                 <div class="form-group">
                     <div class="input-box">
                         <label for="kk">Upload KK</label>
-                        <input type="file" name="kk" id="kk" accept=".jpg,.jpeg,.png,.pdf"
+                        <input type="file" name="kk" id="kk" accept=".jpg,.jpeg,.png"
                             onchange="checkFileSize(this, 'err-kk', 'desc-kk')" />
-                        <small class="file-description" id="desc-kk">Format: JPG, JPEG, PNG, PDF. Maksimal 2MB.</small>
+                        <small class="file-description" id="desc-kk">Format: JPG, JPEG, PNG. Maksimal 2MB.</small>
                         <small class="error" id="err-kk"></small>
                     </div>
                     <div class="input-box">
                         <label for="ktp">Upload KTP</label>
-                        <input type="file" name="ktp" id="ktp" accept=".jpg,.jpeg,.png,.pdf"
+                        <input type="file" name="ktp" id="ktp" accept=".jpg,.jpeg,.png"
                             onchange="checkFileSize(this, 'err-ktp', 'desc-ktp')" />
-                        <small class="file-description" id="desc-ktp">Format: JPG, JPEG, PNG, PDF. Maksimal 2MB.</small>
+                        <small class="file-description" id="desc-ktp">Format: JPG, JPEG, PNG. Maksimal 2MB.</small>
                         <small class="error" id="err-ktp"></small>
                     </div>
                 </div>
@@ -195,9 +195,9 @@
                 <div class="form-group">
                     <div class="input-box" style="width:100%">
                         <label for="sim">Upload SIM</label>
-                        <input type="file" name="sim" id="sim" accept=".jpg,.jpeg,.png,.pdf"
+                        <input type="file" name="sim" id="sim" accept=".jpg,.jpeg,.png"
                             onchange="checkFileSize(this, 'err-sim', 'desc-sim')" />
-                        <small class="file-description" id="desc-sim">Format: JPG, JPEG, PNG, PDF. Maksimal 2MB.</small>
+                        <small class="file-description" id="desc-sim">Format: JPG, JPEG, PNG. Maksimal 2MB.</small>
                         <small class="error" id="err-sim"></small>
                     </div>
                 </div>

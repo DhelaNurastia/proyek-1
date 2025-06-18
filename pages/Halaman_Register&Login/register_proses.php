@@ -42,7 +42,7 @@ if ($password !== $konfirmasi) {
 }
 
 // Validasi file dokumen
-$allowed = ['jpg', 'jpeg', 'png', 'pdf'];
+$allowed = ['jpg', 'jpeg', 'png'];
 $max_size = 2 * 1024 * 1024; // 2MB
 
 foreach (['ktp', 'sim', 'kk'] as $doc) {
@@ -50,7 +50,7 @@ foreach (['ktp', 'sim', 'kk'] as $doc) {
     $size = $_FILES[$doc]['size'];
 
     if (!in_array(strtolower($ext), $allowed)) {
-        echo "<script>alert('" . strtoupper($doc) . " harus berupa JPG, PNG, atau PDF!'); window.location.href='register.php';</script>";
+        echo "<script>alert('" . strtoupper($doc) . " harus berupa JPG, PNG, atau JPEG!'); window.location.href='register.php';</script>";
         exit;
     }
 
