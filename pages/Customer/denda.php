@@ -4,7 +4,7 @@ $base_url = '/proyek-1/';
 $koneksi = new mysqli("localhost", "root", "", "proyek-1");
 
 if ($koneksi->connect_error) {
-    die("Koneksi gagal: " . $koneksi->connect_error);
+  die("Koneksi gagal: " . $koneksi->connect_error);
 }
 
 $id_customer = $_SESSION['user_id'];
@@ -13,7 +13,7 @@ $id_customer = $_SESSION['user_id'];
 $sql = "
     SELECT 
         inspeksi.id,
-        inspeksi.tanggal_post AS tanggal,
+        inspeksi.tanggal_pre AS tanggal,
         inspeksi.kondisi,
         inspeksi.data_denda,
         inspeksi.catatan,
@@ -30,7 +30,7 @@ $sql = "
 $result = $koneksi->query($sql);
 
 if (!$result) {
-    die("Query error: " . $koneksi->error);
+  die("Query error: " . $koneksi->error);
 }
 ?>
 
@@ -204,14 +204,17 @@ if (!$result) {
         flex-direction: column;
         margin: 32px 16px 64px;
       }
+
       .fine-list,
       .fine-detail {
         max-height: none;
         min-height: auto;
       }
+
       .fine-list {
         order: 2;
       }
+
       .fine-detail {
         order: 1;
         margin-bottom: 32px;
@@ -245,9 +248,11 @@ if (!$result) {
       .close-detail-btn {
         display: block;
       }
+
       .fine-history-container {
         position: relative;
       }
+
       .fine-detail {
         position: fixed;
         top: 64px;
@@ -263,6 +268,7 @@ if (!$result) {
         box-shadow: none;
         border: none;
       }
+
       .fine-list {
         max-height: none;
         border-radius: 16px;
@@ -293,7 +299,7 @@ if (!$result) {
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="index.php">Home</a></li>
-          <li><a href="listing.php" >Daftar Mobil</a></li>
+          <li><a href="listing.php">Daftar Mobil</a></li>
           <li class="dropdown"><a href="#" class="active"><span>Riwayat</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="riwayat.php">Riwayat Booking</a></li>
@@ -416,8 +422,7 @@ if (!$result) {
     href="#"
     id="scroll-top"
     class="scroll-top d-flex align-items-center justify-content-center"
-    aria-label="Scroll to top"
-  >
+    aria-label="Scroll to top">
     <i class="bi bi-arrow-up-short"></i>
   </a>
 
@@ -435,22 +440,22 @@ if (!$result) {
   <!-- Main JS File -->
   <script src="<?= $base_url ?>assets/template/home/Strategy/assets/js/main.js"></script>
 
-<script>
-const finesData = [
-<?php
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        echo "{
+  <script>
+    const finesData = [
+      <?php
+      if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+          echo "{
             id: 'FINE" . str_pad($row['id'], 3, '0', STR_PAD_LEFT) . "',
             date: '" . $row['tanggal'] . "',
             dataDenda: '" . addslashes($row['data_denda']) . "',
             biaya: " . $row['denda'] . ",
             rincian: '" . addslashes($row['catatan']) . "'
         },";
-    }
-}
-?>
-];
+        }
+      }
+      ?>
+    ];
 
     const fineListEl = document.getElementById('fine-list');
     const fineDetailTitle = document.getElementById('fine-detail-title');
@@ -477,6 +482,8 @@ if ($result->num_rows > 0) {
         li.setAttribute('role', 'option');
         li.setAttribute('tabindex', '-1');
         li.id = `fine-item-${fine.id}`;
+
+        fine.id;
         li.classList.toggle('selected', fine.id === selectedFineId);
         li.innerHTML = `
           <span>${fine.date} - ${fine.dataDenda}</span>
@@ -495,15 +502,16 @@ if ($result->num_rows > 0) {
     }
 
     // Render fine detail panel
-function renderFineDetail(fine) {
-  fineDetailTitle.textContent = `Detail Denda: ${fine.id}`;
-  fineDetailContent.innerHTML = `
+    function renderFineDetail(fine) {
+      fineDetailTitle.textContent = `Detail Denda: ${fine.id}`;
+      fineDetailContent.innerHTML = `
     <div class="detail-section"><strong>Tanggal Denda:</strong> ${fine.date}</div>
     <div class="detail-section"><strong>Data Denda:</strong> ${fine.dataDenda}</div>
     <div class="detail-section"><strong>Biaya Denda:</strong> ${formatCurrency(fine.biaya)}</div>
     <div class="detail-section"><strong>Rincian:</strong><p>${fine.rincian}</p></div>
   `;
-}
+    }
+
 
     // Select fine and update UI
     function selectFine(id) {
@@ -535,7 +543,7 @@ function renderFineDetail(fine) {
     // Keyboard navigation support
     fineListEl.addEventListener('keydown', (e) => {
       const items = Array.from(fineListEl.querySelectorAll('li'));
-      const currentIndex = items.findIndex((item) => item.id === `fine-item-${selectedFineId}`);
+      const currentIndex = items.findIndex((item) => item.id === `fine-item-${selectedFineId}`)
       if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
         e.preventDefault();
         const nextIndex = (currentIndex + 1) % items.length;
