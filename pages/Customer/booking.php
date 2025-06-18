@@ -456,6 +456,23 @@ if ($user['blacklist'] == 1): ?>
     </section>
   </main>
 
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const today = new Date().toISOString().split('T')[0];
+
+    const pickupDateInput = document.getElementById("tanggal_pengambilan");
+    const returnDateInput = document.getElementById("tanggal_pengembalian");
+
+    pickupDateInput.setAttribute("min", today);
+    returnDateInput.setAttribute("min", today);
+
+    // Opsional: Perbarui tanggal pengembalian otomatis setelah memilih tanggal pengambilan
+    pickupDateInput.addEventListener("change", function () {
+      returnDateInput.setAttribute("min", this.value);
+    });
+  });
+</script>
+
   <!-- Midtrans client key -->
   <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-G-mHIBdE0tG4avXY"></script>
   <script>

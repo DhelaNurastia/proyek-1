@@ -17,8 +17,7 @@ $sql = "
         inspeksi.kondisi,
         inspeksi.data_denda,
         inspeksi.catatan,
-        inspeksi.denda,
-        pembayaran.status AS status_pembayaran
+        inspeksi.denda
     FROM inspeksi
     JOIN booking ON inspeksi.booking_id = booking.id
     LEFT JOIN pembayaran ON inspeksi.booking_id = pembayaran.booking_id
@@ -441,11 +440,9 @@ const finesData = [
 <?php
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $status = $row['denda'] > 0 ? 'Belum Lunas' : 'Lunas';
         echo "{
             id: 'FINE" . str_pad($row['id'], 3, '0', STR_PAD_LEFT) . "',
             date: '" . $row['tanggal'] . "',
-            status: '$status',
             dataDenda: '" . addslashes($row['data_denda']) . "',
             biaya: " . $row['denda'] . ",
             rincian: '" . addslashes($row['catatan']) . "'
@@ -483,7 +480,6 @@ if ($result->num_rows > 0) {
         li.classList.toggle('selected', fine.id === selectedFineId);
         li.innerHTML = `
           <span>${fine.date} - ${fine.dataDenda}</span>
-          <span class="material-icons fine-icon" title="Status: ${fine.status}">${fine.status === 'Lunas' ? 'check_circle' : 'error_outline'}</span>
         `;
         li.addEventListener('click', () => {
           selectFine(fine.id);
@@ -503,7 +499,6 @@ function renderFineDetail(fine) {
   fineDetailTitle.textContent = `Detail Denda: ${fine.id}`;
   fineDetailContent.innerHTML = `
     <div class="detail-section"><strong>Tanggal Denda:</strong> ${fine.date}</div>
-    <div class="detail-section"><strong>Status Pembayaran:</strong> ${fine.status}</div>
     <div class="detail-section"><strong>Data Denda:</strong> ${fine.dataDenda}</div>
     <div class="detail-section"><strong>Biaya Denda:</strong> ${formatCurrency(fine.biaya)}</div>
     <div class="detail-section"><strong>Rincian:</strong><p>${fine.rincian}</p></div>
