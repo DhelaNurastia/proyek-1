@@ -1,40 +1,3 @@
-<?php
-session_start();
-$base_url = '/proyek-1/';
-$koneksi = new mysqli("localhost", "root", "", "proyek-1");
-
-if ($koneksi->connect_error) {
-    die("Koneksi gagal: " . $koneksi->connect_error);
-}
-
-$id_customer = $_SESSION['user_id'];
-
-// Query untuk mengambil data denda tipe 'post' dengan kondisi 'rusak'
-$sql = "
-    SELECT 
-        inspeksi.id,
-        inspeksi.tanggal_post AS tanggal,
-        inspeksi.kondisi,
-        inspeksi.data_denda,
-        inspeksi.catatan,
-        inspeksi.denda,
-        pembayaran.status AS status_pembayaran
-    FROM inspeksi
-    JOIN booking ON inspeksi.booking_id = booking.id
-    LEFT JOIN pembayaran ON inspeksi.booking_id = pembayaran.booking_id
-    WHERE 
-        booking.customer_id = $id_customer
-        AND inspeksi.tipe = 'post'
-        AND inspeksi.kondisi = 'rusak'
-";
-
-$result = $koneksi->query($sql);
-
-if (!$result) {
-    die("Query error: " . $koneksi->error);
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -437,16 +400,16 @@ if (!$result) {
   <script src="<?= $base_url ?>assets/template/home/Strategy/assets/js/main.js"></script>
 
 <script>
-const finesData = [
+const dendaData = [
 <?php
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $status = $row['denda'] > 0 ? 'Belum Lunas' : 'Lunas';
         echo "{
             id: 'FINE" . str_pad($row['id'], 3, '0', STR_PAD_LEFT) . "',
-            date: '" . $row['tanggal'] . "',
+            date: '" . $row['tanggal_pemeriksaan'] . "',
             status: '$status',
-            dataDenda: '" . addslashes($row['data_denda']) . "',
+            dataDenda: '" . addslashes($row['catatan']) . "',
             biaya: " . $row['denda'] . ",
             rincian: '" . addslashes($row['catatan']) . "'
         },";
@@ -499,23 +462,22 @@ if ($result->num_rows > 0) {
     }
 
     // Render fine detail panel
-function renderFineDetail(fine) {
-  fineDetailTitle.textContent = `Detail Denda: ${fine.id}`;
-  fineDetailContent.innerHTML = `
-    <div class="detail-section"><strong>Tanggal Denda:</strong> ${fine.date}</div>
-    <div class="detail-section"><strong>Status Pembayaran:</strong> ${fine.status}</div>
-    <div class="detail-section"><strong>Data Denda:</strong> ${fine.dataDenda}</div>
-    <div class="detail-section"><strong>Biaya Denda:</strong> ${formatCurrency(fine.biaya)}</div>
-    <div class="detail-section"><strong>Rincian:</strong><p>${fine.rincian}</p></div>
-  `;
-}
+    function renderFineDetail(fine) {
+      fineDetailTitle.textContent = `Detail Denda: ${fine.id}`;
+      fineDetailContent.innerHTML = `
+        <div class="detail-section"><strong>Tanggal Denda:</strong> ${fine.date}</div>
+        <div class="detail-section"><strong>Status Pembayaran:</strong> ${fine.status}</div>
+        <div class="detail-section"><strong>Data Denda:</strong> ${fine.dataDenda}</div>
+        <div class="detail-section"><strong>Biaya Denda:</strong> ${formatCurrency(fine.biaya)}</div>
+        <div class="detail-section"><strong>Rincian:</strong><p>${fine.rincian}</p></div>
+      `;
+    }
 
     // Select fine and update UI
     function selectFine(id) {
       if (selectedFineId === id) return; // already selected
       selectedFineId = id;
       const fine = finesData.find((f) => f.id === id);
-      console.log(finesData);
       if (!fine) return;
 
       renderFineList();
