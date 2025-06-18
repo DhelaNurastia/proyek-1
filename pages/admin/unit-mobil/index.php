@@ -1,6 +1,25 @@
 <?php
 require_once "../../../config.php";
 require_once "../../../koneksi.php";
+
+$query = "
+    SELECT 
+        u.id, j.nama AS nama_mobil, u.plat_nomor, u.warna, u.tahun_beli,
+        u.transmisi, j.harga_sewa, j.jumlah_kursi, u.status, u.foto,
+       (
+        SELECT b.tgl_kembali
+        FROM booking b
+        WHERE b.unit_mobil_id = u.id
+            AND NOW() BETWEEN b.tgl_booking AND b.tgl_kembali
+        ORDER BY b.tgl_kembali DESC
+        LIMIT 1
+        ) AS sedang_disewa_sampai
+    FROM unit_mobil u
+    JOIN jenis_mobil j ON u.jenis_mobil_id = j.id
+    ORDER BY u.id DESC
+";
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -132,15 +151,6 @@ require_once "../../../koneksi.php";
 
                     <div class="row">
                         <?php
-                        $query = "
-                            SELECT 
-                                u.id, j.nama AS nama_mobil, u.plat_nomor, u.warna, u.tahun_beli,
-                                u.transmisi, j.harga_sewa, j.jumlah_kursi, u.status, u.foto
-                            FROM unit_mobil u
-                            JOIN jenis_mobil j ON u.jenis_mobil_id = j.id
-                            ORDER BY u.id DESC
-                        ";
-
                         $result = mysqli_query($db, $query);
                         while ($row = mysqli_fetch_assoc($result)) :
                             $statusClass = match ($row['status']) {
@@ -148,14 +158,28 @@ require_once "../../../koneksi.php";
                                 'perbaikan' => 'status-label status-perbaikan',
                                 default => 'status-label'
                             };
+                            
+                            $isSedangDisewa = !empty($row['sedang_disewa_sampai']);
+
+                            $statusClass = $isSedangDisewa
+                                ? 'status-label status-disewa'
+                                : ($row['status'] === 'perbaikan' ? 'status-label status-perbaikan' : 'status-label');
                         ?>
                             <div class="custom-card">
                                 <img src="../../../uploads/foto-mobil/<?= $row['foto'] ?>" alt="Foto mobil <?= htmlspecialchars($row['nama_mobil']) ?>">
                                 <div class="card-body">
                                     <h5 class="card-title"><?= htmlspecialchars($row['nama_mobil']) ?></h5>
                                     <span class="<?= $statusClass ?>">
-                                        <?= $row['status'] === 'tersedia' ? 'Ready' : ($row['status'] === 'disewa' ? 'Disewa' : 'Perbaikan') ?>
+                                        <?php
+                                        if (!empty($row['sedang_disewa_sampai']) && strtotime($row['sedang_disewa_sampai']) !== false) {
+                                            echo 'Disewa sampai ' . date('d M Y H:i', strtotime($row['sedang_disewa_sampai']));
+                                        } else {
+                                            echo 'Ready';
+                                        }
+
+                                        ?>
                                     </span>
+
                                     <div class="card-row">
                                         <span><i class="fas fa-money-bill-wave"></i> Rp<?= number_format($row['harga_sewa']) ?></span>
                                         <span><i class="fas fa-cogs"></i> <?= htmlspecialchars($row['transmisi']) ?></span>

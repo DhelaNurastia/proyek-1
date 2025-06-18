@@ -369,10 +369,22 @@ if (!isset($data)) {
       </table>
     </section>
 
-    <section class="summary">
+    <section class="summary" style="font-family: Arial, sans-serif; padding: 16px; border: 1px solid #ddd; border-radius: 8px;">
       <div>Metode Pembayaran: <?= ucfirst($data['metode_pembayaran']) ?></div>
       <div>Status: <strong><?= ucfirst($bayar['status'] ?? 'Pending') ?></strong></div>
+
+      <a href="riwayat.php" style="
+    display: inline-block;
+    margin-top: 12px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+  ">Next</a>
     </section>
+
 
 
   </main>
