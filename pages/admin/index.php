@@ -35,7 +35,7 @@ $permintaan_sewa = mysqli_fetch_assoc(mysqli_query($db, "SELECT COUNT(*) AS tota
     <!-- Custom styles for this template-->
     <link href="../../assets/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="../../assets/css/custom.css" rel="stylesheet">
-
+c:\Users\ASUS\AppData\Local\Temp\Rar$DRa13528.21462\proses
     <style>
         .card-box {
             padding: 2rem;
