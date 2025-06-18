@@ -542,7 +542,7 @@ while ($row = mysqli_fetch_assoc($result)) {
               </select>
 
               <button type="submit" class="primary">Filter</button>
-              <a href="laporan_pemasukan.php" class="primary" style="background:#e11d48;">Reset</a>
+              <a href="laporan.php" class="btn btn-secondary">Reset</a>
               </section>
 
               <section aria-label="Income report table section">
@@ -582,7 +582,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                   <tfoot>
                     <tr>
                       <th colspan="2" scope="row" id="summary">Total Pemasukan:</th>
-                      <th class="amount" id="total-amount">Rp<?= number_format($total, 0, ',', '.') ?></th>
+                      <th colspan="4" class="amount" id="total-amount">Rp<?= number_format($total, 0, ',', '.') ?></th>
                       <th colspan="2"></th>
                     </tr>
                   </tfoot>
