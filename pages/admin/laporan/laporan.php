@@ -1,4 +1,16 @@
 <?php
+if (isset($_GET['export'])) {
+    $export = $_GET['export'];
+
+    if ($export === 'excel') {
+        header("Content-Type: application/vnd.ms-excel");
+        header("Content-Disposition: attachment; filename=laporan.xls");
+    }
+
+    if ($export === 'pdf') {
+        echo "<script>window.print();</script>";
+    }
+}
 require_once "../../../config.php";
 require_once "../../../koneksi.php";
 
@@ -587,6 +599,10 @@ while ($row = mysqli_fetch_assoc($result)) {
                     </tr>
                   </tfoot>
                 </table>
+                    <div class="no-print">
+                      <a href="laporan.php?export=excel&date-from=<?= $dateFrom ?>&date-to=<?= $dateTo ?>&status-filter=<?= $status ?>" class="btn btn-success">Export ke Excel</a>
+                      <a href="laporan.php?export=pdf&date-from=<?= $dateFrom ?>&date-to=<?= $dateTo ?>&status-filter=<?= $status ?>" class="btn btn-danger" target="_blank">Cetak PDF</a>
+                    </div>
               </section>
           </main>
 
