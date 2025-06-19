@@ -71,20 +71,11 @@ if ($tgl_mulai && $jam_mulai && $tgl_selesai && $jam_selesai) {
   <link href="<?= $base_url ?>assets/template/home/Strategy/assets/css/main.css" rel="stylesheet" />
 
   <style>
-    .car-card .card {
-      border-radius: 1rem;
-      transition: transform 0.2s ease-in-out;
-    }
-
-    .car-card .card:hover {
-      transform: translateY(-5px);
-    }
-
     /* Car filter section with no background or container box, spaced by margin & padding only */
     .car-filter-section {
       padding-top: 3.5rem;
       padding-bottom: 3.5rem;
-      max-width: 1500px;
+      max-width: 1200px;
       margin-left: auto;
       margin-right: auto;
     }
@@ -94,7 +85,7 @@ if ($tgl_mulai && $jam_mulai && $tgl_selesai && $jam_selesai) {
       font-weight: 700;
       font-size: 2.5rem;
       margin-bottom: 1.75rem;
-      color: "#00000";
+      color: #00000;
       /* dark slate gray */
       user-select: none;
     }
@@ -118,6 +109,7 @@ if ($tgl_mulai && $jam_mulai && $tgl_selesai && $jam_selesai) {
     }
 
     .filter-form input[type='date'],
+    .filter-form input[type='time'],
     .filter-form input[type='text'],
     .filter-form select {
       width: 100%;
@@ -134,6 +126,7 @@ if ($tgl_mulai && $jam_mulai && $tgl_selesai && $jam_selesai) {
     }
 
     .filter-form input[type='date']:focus,
+    .filter-form input[type='time']:focus,
     .filter-form input[type='text']:focus,
     .filter-form select:focus {
       outline: none;
@@ -144,15 +137,14 @@ if ($tgl_mulai && $jam_mulai && $tgl_selesai && $jam_selesai) {
     }
 
     /* Car list grid */
-    
-    /* .car-list {
+    .car-list {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 1.75rem;
-    } */
+    }
 
     /* Car cards with subtle shadow and rounded corners only */
-    /* .car-card {
+    .car-card {
       background-color: transparent !important;
       box-shadow: none !important;
       border: 1px solid rgba(255, 255, 255, 0.15);
@@ -168,9 +160,15 @@ if ($tgl_mulai && $jam_mulai && $tgl_selesai && $jam_selesai) {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
-    } */
+    }
 
-   
+    .car-card:hover,
+    .car-card:focus-visible {
+      outline: none;
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px rgba(37, 99, 235, 0.3);
+      background: #f9fafb;
+    }
 
     .car-card:focus-visible {
       box-shadow: 0 0 0 3px #2563eb;
@@ -250,7 +248,7 @@ if ($tgl_mulai && $jam_mulai && $tgl_selesai && $jam_selesai) {
       padding: 0;
       margin: -1px;
     }
-
+    .filter-form input[type='submit'],
     .btn-rent {
       font-family: 'Raleway', sans-serif;
       font-weight: 700;
@@ -270,7 +268,7 @@ if ($tgl_mulai && $jam_mulai && $tgl_selesai && $jam_selesai) {
       align-items: center;
       gap: 0.4rem;
     }
-
+    .filter-form input[type='submit'],
     .btn-rent:hover,
     .btn-rent:focus {
       background-color: #1e40af;
@@ -278,94 +276,7 @@ if ($tgl_mulai && $jam_mulai && $tgl_selesai && $jam_selesai) {
       text-decoration: none;
       color: #ffffff;
     }
-
-    .car-filter-section {
-      max-width: 600px;
-      margin: 30px auto;
-      padding: 25px;
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    }
-
-    h2 {
-      color: #2c3e50;
-      margin-top: 0;
-      margin-bottom: 20px;
-      font-size: 1.8rem;
-      text-align: center;
-    }
-
-    .filter-form {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    .full-width {
-      grid-column: span 2;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-      color: #34495e;
-      font-size: 0.9rem;
-    }
-
-    input[type="date"],
-    input[type="time"] {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      box-sizing: border-box;
-      font-family: inherit;
-      font-size: 0.95rem;
-      transition: border-color 0.3s;
-    }
-
-    input[type="date"]:focus,
-    input[type="time"]:focus {
-      border-color: #3498db;
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-    }
-
-    button {
-      background-color: #3498db;
-      color: white;
-      padding: 14px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: background-color 0.3s;
-      width: 100%;
-    }
-
-    button:hover {
-      background-color: #2980b9;
-    }
-
-    /* Responsive design */
-    @media (max-width: 600px) {
-      .filter-form {
-        grid-template-columns: 1fr;
-      }
-
-      .full-width {
-        grid-column: span 1;
-      }
-    }
   </style>
-
 
 </head>
 
@@ -425,7 +336,7 @@ if ($tgl_mulai && $jam_mulai && $tgl_selesai && $jam_selesai) {
           <input type="date" id="pickup-date" name="tanggal_mulai" value="<?= htmlspecialchars($tgl_mulai) ?>" required />
         </div>
         <div>
-          <label>Jam Mulai</label>
+          <label for="pickup-date">Jam Mulai</label>
           <input type="time" name="jam_mulai" value="<?= htmlspecialchars($jam_mulai) ?>" required>
         </div>
         <div>
@@ -433,11 +344,11 @@ if ($tgl_mulai && $jam_mulai && $tgl_selesai && $jam_selesai) {
           <input type="date" id="return-date" name="tanggal_selesai" value="<?= htmlspecialchars($tgl_selesai) ?>" required />
         </div>
         <div>
-          <label>Jam Selesai</label>
+          <label for="pickup-date">Jam Selesai</label>
           <input type="time" name="jam_selesai" value="<?= htmlspecialchars($jam_selesai) ?>" required>
         </div>
         <div>
-          <button type="submit">Cari Mobil</button>
+          <button class="btn-rent" type="submit">Cari Mobil</button>
         </div>
       </form>
 
@@ -463,11 +374,11 @@ if ($tgl_mulai && $jam_mulai && $tgl_selesai && $jam_selesai) {
             $foto = !empty($mobil['foto']) ? "{$base_url}uploads/foto-mobil/{$mobil['foto']}" : "https://via.placeholder.com/300x200";
             ?>
             <div class="col-md-4 mb-4">
-              <div class="card h-100 shadow-sm">
+              <div class="car-card">
                 <img src="<?= $foto ?>" class="card-img-top" alt="<?= htmlspecialchars($mobil['unitName']) ?>" style="height:200px; object-fit:cover;">
                 <div class="card-body">
                   <h5 class="card-title"><?= htmlspecialchars($mobil['unitName']) ?></h5>
-                  <p class="card-text">
+                  <p class="car-info-row">
                     <strong>Harga:</strong> Rp<?= number_format($mobil['pricePer12h']) ?>/12 jam<br>
                     <strong>Kursi:</strong> <?= $mobil['seats'] ?> orang<br>
                     <strong>Plat Nomor:</strong> <?= $mobil['plat_nomor'] ?><br>
