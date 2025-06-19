@@ -79,7 +79,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
       font-weight: 700;
       font-size: clamp(1.8rem, 2vw, 2.5rem);
       margin-bottom: 1.2rem;
-      color: #000000;
+      color: #00000;
     }
 
     #profile-section .status-badge {
@@ -116,7 +116,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1.6rem 3rem;
-      color: #000000;
+      color: #00000;
       font-family: 'Nunito Sans', sans-serif;
     }
 
@@ -140,7 +140,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
     #profile-section .documents h3 {
       font-weight: 600;
       margin-bottom: 1rem;
-      color: #000000;
+      color: #00000;
       font-size: clamp(1.4rem, 1.8vw, 1.6rem);
     }
 
@@ -187,7 +187,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
     #profile-section .doc-card .doc-label {
       font-weight: 600;
       font-size: 1rem;
-      color: #000000;
+      color: #00000;
     }
 
     /* Responsive adjustments */
@@ -305,7 +305,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
     /* Tombol edit profile */
     .edit-btn {
       padding: 15px 30px;
-      background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+      background: #0056b3;
       color: white;
       border: none;
       border-radius: 50px;
@@ -314,16 +314,12 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
       cursor: pointer;
       overflow: hidden;
       transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(255, 154, 158, 0.4);
+      box-shadow: 0 5px 15px #0056b3(255, 154, 158, 0.4);
       display: inline-block;
-      display: flex;
       justify-content: center;
-      /* Horizontal tengah */
       align-items: center;
-      /* biar ukurannya mengikuti isi */
     }
 
-   
 
     .edit-btn:hover {
       background-color: #0056b3;
@@ -331,7 +327,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
 
     .edit-btn:hover {
       transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(255, 154, 158, 0.6);
+      box-shadow: 0 8px 20px #0056b3(255, 154, 158, 0.6);
     }
 
     .edit-btn:active {
@@ -345,7 +341,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(45deg, #fad0c4 0%, #ff9a9e 99%, #ff9a9e 100%);
+      background: linear-gradient(45deg,rgb(61, 108, 159) 0%, #0056b3 99%, #0056b3 100%);
       z-index: -1;
       opacity: 0;
       transition: opacity 0.3s ease;
@@ -449,8 +445,9 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
     </div><!-- End Page Title -->
 
     <!-- Button edit profile -->
-    </div>
-    <a href="edit_profile.php" class="edit-btn" id="editProfileBtn">Edit Profile</a>
+     <br>
+    <div style="text-align: center;">
+      <a href="edit_profile.php" class="edit-btn" id="editProfileBtn">Edit Profile</a>
     </div>
 
     <!-- Profile Section -->
