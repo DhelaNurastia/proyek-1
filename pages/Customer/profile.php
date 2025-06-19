@@ -79,7 +79,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
       font-weight: 700;
       font-size: clamp(1.8rem, 2vw, 2.5rem);
       margin-bottom: 1.2rem;
-      color: #00000;
+      color: #000000;
     }
 
     #profile-section .status-badge {
@@ -116,7 +116,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1.6rem 3rem;
-      color: #00000;
+      color: #000000;
       font-family: 'Nunito Sans', sans-serif;
     }
 
@@ -140,7 +140,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
     #profile-section .documents h3 {
       font-weight: 600;
       margin-bottom: 1rem;
-      color: #00000;
+      color: #000000;
       font-size: clamp(1.4rem, 1.8vw, 1.6rem);
     }
 
@@ -187,7 +187,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
     #profile-section .doc-card .doc-label {
       font-weight: 600;
       font-size: 1rem;
-      color: #00000;
+      color: #000000;
     }
 
     /* Responsive adjustments */
@@ -301,6 +301,92 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
       background-color: #ef4444;
       color: white;
     }
+
+    /* Tombol edit profile */
+    .edit-btn {
+      padding: 15px 30px;
+      background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(255, 154, 158, 0.4);
+      display: inline-block;
+      display: flex;
+      justify-content: center;
+      /* Horizontal tengah */
+      align-items: center;
+      /* biar ukurannya mengikuti isi */
+    }
+
+   
+
+    .edit-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .edit-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255, 154, 158, 0.6);
+    }
+
+    .edit-btn:active {
+      transform: translateY(1px);
+    }
+
+    .edit-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, #fad0c4 0%, #ff9a9e 99%, #ff9a9e 100%);
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+
+
+    .edit-btn:hover::before {
+      opacity: 1;
+    }
+
+    /* Efek ripple */
+    .edit-btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 5px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.5);
+      opacity: 0;
+      border-radius: 100%;
+      transform: scale(1, 1) translate(-50%);
+      transform-origin: 50% 50%;
+    }
+
+    .edit-btn:focus:not(:active)::after {
+      animation: ripple 1s ease-out;
+    }
+
+    @keyframes ripple {
+      0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+      }
+
+      100% {
+        transform: scale(20, 20);
+        opacity: 0;
+      }
+    }
   </style>
 
   <!-- =======================================================
@@ -361,6 +447,11 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
         </nav>
       </div>
     </div><!-- End Page Title -->
+
+    <!-- Button edit profile -->
+    </div>
+    <a href="edit_profile.php" class="edit-btn" id="editProfileBtn">Edit Profile</a>
+    </div>
 
     <!-- Profile Section -->
     <section id="profile-section" class="section" aria-label="User profile information">
