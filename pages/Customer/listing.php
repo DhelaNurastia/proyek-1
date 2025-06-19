@@ -1,46 +1,44 @@
 <?php
 require_once '../../koneksi.php';
 
-$base_url = "https://f7d4-112-215-65-100.ngrok-free.app/proyek-1/";
 $base_url = "../../";
-
-
 $db = mysqli_connect(hostname: HOSTNAME, username: USERNAME, password: PASSWORD, database: DATABASE);
 
-if ($db->connect_error) {
-  die("Connection failed: " . $db->connect_error);
-}
+$tgl_mulai = $_GET['tanggal_mulai'] ?? '';
+$jam_mulai = $_GET['jam_mulai'] ?? '';
+$tgl_selesai = $_GET['tanggal_selesai'] ?? '';
+$jam_selesai = $_GET['jam_selesai'] ?? '';
 
-$tanggal = $_POST['tanggal'] ?? '';
-$tanggalValid = true;
-$pesanError = '';
+$start_datetime = "$tgl_mulai $jam_mulai";
+$end_datetime = "$tgl_selesai $jam_selesai";
 
-if (!empty($tanggal)) {
-  $today = date('Y-m-d');
-  if ($tanggal < $today) {
-    $tanggalValid = false;
-    $pesanError = "Tanggal tidak boleh sebelum hari ini!";
+$mobil_tersedia = [];
+$error = '';
+
+if ($tgl_mulai && $jam_mulai && $tgl_selesai && $jam_selesai) {
+  if (strtotime($start_datetime) >= strtotime($end_datetime)) {
+    $error = "Tanggal dan jam mulai harus lebih awal dari tanggal dan jam selesai.";
+  } else {
+    $query = "SELECT u.id, j.nama AS unitName, j.harga_sewa AS pricePer12h,
+              u.transmisi, j.jumlah_kursi AS seats, u.plat_nomor,
+              u.warna, u.status, u.foto
+              FROM unit_mobil u
+              JOIN jenis_mobil j ON u.jenis_mobil_id = j.id
+              WHERE u.id NOT IN (
+                SELECT unit_mobil_id FROM booking
+                WHERE 
+                  CONCAT(tgl_booking, ' ', jam_booking) < ?
+                  AND 
+                  CONCAT(tgl_kembali, ' ', jam_kembali) > ?
+              )";
+
+    $stmt = $db->prepare($query);
+    $stmt->bind_param("ss", $end_datetime, $start_datetime);
+    $stmt->execute();
+    $mobil_tersedia = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
   }
 }
-
-$query = "SELECT u.id, j.nama AS unitName, j.harga_sewa AS pricePer12h,
-                 u.transmisi, j.jumlah_kursi AS seats, u.plat_nomor,
-                 u.warna, u.status, u.foto
-          FROM unit_mobil u
-          JOIN jenis_mobil j ON u.jenis_mobil_id = j.id
-          WHERE u.status = 'tersedia'";
-
-if ($tanggalValid && !empty($tanggal)) {
-  $query .= " AND u.tanggal >= '$tanggal'";
-}
-
-$result = $db->query($query);
-$cars = [];
-while ($row = $result->fetch_assoc()) {
-  $cars[] = $row;
-}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -73,11 +71,20 @@ while ($row = $result->fetch_assoc()) {
   <link href="<?= $base_url ?>assets/template/home/Strategy/assets/css/main.css" rel="stylesheet" />
 
   <style>
+    .car-card .card {
+      border-radius: 1rem;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .car-card .card:hover {
+      transform: translateY(-5px);
+    }
+
     /* Car filter section with no background or container box, spaced by margin & padding only */
     .car-filter-section {
       padding-top: 3.5rem;
       padding-bottom: 3.5rem;
-      max-width: 1200px;
+      max-width: 1500px;
       margin-left: auto;
       margin-right: auto;
     }
@@ -137,14 +144,15 @@ while ($row = $result->fetch_assoc()) {
     }
 
     /* Car list grid */
-    .car-list {
+    
+    /* .car-list {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 1.75rem;
-    }
+    } */
 
     /* Car cards with subtle shadow and rounded corners only */
-    .car-card {
+    /* .car-card {
       background-color: transparent !important;
       box-shadow: none !important;
       border: 1px solid rgba(255, 255, 255, 0.15);
@@ -160,15 +168,9 @@ while ($row = $result->fetch_assoc()) {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
-    }
+    } */
 
-    .car-card:hover,
-    .car-card:focus-visible {
-      outline: none;
-      transform: translateY(-6px);
-      box-shadow: 0 12px 32px rgba(37, 99, 235, 0.3);
-      background: #f9fafb;
-    }
+   
 
     .car-card:focus-visible {
       box-shadow: 0 0 0 3px #2563eb;
@@ -276,15 +278,95 @@ while ($row = $result->fetch_assoc()) {
       text-decoration: none;
       color: #ffffff;
     }
+
+    .car-filter-section {
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 25px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    h2 {
+      color: #2c3e50;
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+      text-align: center;
+    }
+
+    .filter-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .full-width {
+      grid-column: span 2;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #34495e;
+      font-size: 0.9rem;
+    }
+
+    input[type="date"],
+    input[type="time"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: border-color 0.3s;
+    }
+
+    input[type="date"]:focus,
+    input[type="time"]:focus {
+      border-color: #3498db;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    }
+
+    button {
+      background-color: #3498db;
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: background-color 0.3s;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    /* Responsive design */
+    @media (max-width: 600px) {
+      .filter-form {
+        grid-template-columns: 1fr;
+      }
+
+      .full-width {
+        grid-column: span 1;
+      }
+    }
   </style>
 
-  <!-- =======================================================
-  * Template Name: Strategy
-  * Template URL: https://bootstrapmade.com/strategy-bootstrap-agency-template/
-  * Updated: May 09 2025 with Bootstrap v5.3.6
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+
 </head>
 
 <body class="starter-page-page">
@@ -337,28 +419,74 @@ while ($row = $result->fetch_assoc()) {
 
     <!-- Car filter and listing start -->
     <section class="car-filter-section" aria-labelledby="carFilterTitle">
-      <form id="car-filter-form" class="filter-form" aria-describedby="carFilterDesc" novalidate>
+      <form id="car-filter-form" class="filter-form" method="get" aria-describedby="carFilterDesc" novalidate>
         <div>
           <label for="pickup-date">Tanggal Peminjaman</label>
-          <input type="date" id="pickup-date" name="pickup-date" required aria-required="true" />
+          <input type="date" id="pickup-date" name="tanggal_mulai" value="<?= htmlspecialchars($tgl_mulai) ?>" required />
+        </div>
+        <div>
+          <label>Jam Mulai</label>
+          <input type="time" name="jam_mulai" value="<?= htmlspecialchars($jam_mulai) ?>" required>
         </div>
         <div>
           <label for="return-date">Tanggal Pengembalian</label>
-          <input type="date" id="return-date" name="return-date" required aria-required="true" />
+          <input type="date" id="return-date" name="tanggal_selesai" value="<?= htmlspecialchars($tgl_selesai) ?>" required />
         </div>
         <div>
-          <label for="unit-name">Cari Mobil</label>
-          <input type="text" id="unit-name" name="unit-name" placeholder="e.g. Avanza, Jazz" autocomplete="off" />
+          <label>Jam Selesai</label>
+          <input type="time" name="jam_selesai" value="<?= htmlspecialchars($jam_selesai) ?>" required>
         </div>
         <div>
-          <label for="transmission">Transmis</label>
-          <select id="transmission" name="transmission">
-            <option value="all">All</option>
-            <option value="Manual">Manual</option>
-            <option value="Matic">Matic</option>
-          </select>
+          <button type="submit">Cari Mobil</button>
         </div>
       </form>
+
+      <?php if ($error): ?>
+        <p style="color:red;"><?= $error ?></p>
+      <?php endif; ?>
+
+      <!-- <h2>Hasil Pencarian</h2>
+      <?php if (!empty($mobil_tersedia)): ?>
+        <ul>
+          <?php foreach ($mobil_tersedia as $mobil): ?>
+            <li><?= $mobil['plat_nomor'] ?> - <?= $mobil['unitName'] ?> - Rp<?= number_format($mobil['pricePer12h']) ?>/12 jam</li>
+          <?php endforeach; ?>
+        </ul>
+      <?php elseif ($tgl_mulai): ?>
+        <p>Tidak ada mobil tersedia di tanggal dan waktu yang dipilih.</p>
+      <?php endif; ?> -->
+      <h2>Hasil Pencarian</h2>
+      <div class="row">
+        <?php if (!empty($mobil_tersedia)): ?>
+          <?php foreach ($mobil_tersedia as $mobil): ?>
+            <?php
+            $foto = !empty($mobil['foto']) ? "{$base_url}uploads/foto-mobil/{$mobil['foto']}" : "https://via.placeholder.com/300x200";
+            ?>
+            <div class="col-md-4 mb-4">
+              <div class="card h-100 shadow-sm">
+                <img src="<?= $foto ?>" class="card-img-top" alt="<?= htmlspecialchars($mobil['unitName']) ?>" style="height:200px; object-fit:cover;">
+                <div class="card-body">
+                  <h5 class="card-title"><?= htmlspecialchars($mobil['unitName']) ?></h5>
+                  <p class="card-text">
+                    <strong>Harga:</strong> Rp<?= number_format($mobil['pricePer12h']) ?>/12 jam<br>
+                    <strong>Kursi:</strong> <?= $mobil['seats'] ?> orang<br>
+                    <strong>Plat Nomor:</strong> <?= $mobil['plat_nomor'] ?><br>
+                    <strong>Transmisi:</strong> <?= $mobil['transmisi'] ?><br>
+                    <strong>Warna:</strong> <?= $mobil['warna'] ?>
+                  </p>
+                  <a href="booking.php?unit=<?= urlencode($mobil['unitName']) ?>&unit_id=<?= $mobil['id'] ?>" class="btn btn-primary w-100">
+                    Rental Sekarang
+                  </a>
+                </div>
+              </div>
+            </div>
+          <?php endforeach; ?>
+        <?php elseif ($tgl_mulai): ?>
+          <p>Tidak ada mobil tersedia di tanggal dan waktu yang dipilih.</p>
+        <?php endif; ?>
+      </div>
+
+
       <p id="carFilterDesc" class="visually-hidden">
         Filter daftar mobil berdasarkan tanggal pengambilan & pengembalian, nama unit, dan jenis transmisi.
       </p>
@@ -423,11 +551,8 @@ while ($row = $result->fetch_assoc()) {
             <span>All Rights Reserved</span>
           </p>
           <div class="credits">
-            <!-- All the links in the footer should remain intact. -->
-            <!-- You can delete the links only if you've purchased the pro version. -->
-            <!-- Licensing information: https://bootstrapmade.com/license/ -->
-            <!-- Purchase the pro version with working PHP/AJAX contact form:
-        [buy-url] -->
+
+
             Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
           </div>
         </div>
@@ -455,7 +580,21 @@ while ($row = $result->fetch_assoc()) {
   <script src="<?= $base_url ?>assets/template/home/Strategy/assets/js/main.js"></script>
 
   <script>
-    const cars = <?= json_encode($cars) ?>;
+    const pickupInput = document.getElementById('pickup-date');
+    const returnInput = document.getElementById('return-date');
+    const todayStr = new Date().toISOString().split('T')[0];
+    pickupInput.min = todayStr;
+    returnInput.min = todayStr;
+
+    pickupInput.addEventListener('change', () => {
+      returnInput.min = pickupInput.value;
+      if (returnInput.value < pickupInput.value) {
+        returnInput.value = pickupInput.value;
+      }
+    });
+
+
+    const cars = <?= json_encode($mobil_tersedia) ?>;
     const baseURL = <?= json_encode($base_url) ?>;
 
     console.log(cars[0].id);
@@ -468,17 +607,16 @@ while ($row = $result->fetch_assoc()) {
       }).format(value);
     }
 
-    const pickupInput = document.getElementById('pickup-date');
-    const returnInput = document.getElementById('return-date');
+
     const unitNameInput = document.getElementById('unit-name');
     const transmissionSelect = document.getElementById('transmission');
     const carListContainer = document.getElementById('car-list');
 
-    const todayStr = new Date().toISOString().split('T')[0];
-    pickupInput.min = todayStr;
-    returnInput.min = todayStr;
-    pickupInput.value = todayStr;
-    returnInput.value = todayStr;
+    // const todayStr = new Date().toISOString().split('T')[0];
+    // pickupInput.min = todayStr;
+    // returnInput.min = todayStr;
+    // pickupInput.value = todayStr;
+    // returnInput.value = todayStr;
 
     pickupInput.addEventListener('change', () => {
       returnInput.min = pickupInput.value;
