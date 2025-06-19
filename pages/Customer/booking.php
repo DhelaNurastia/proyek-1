@@ -1,58 +1,58 @@
 <?php
-// Start the session
 session_start();
-
-// Include your database connection file
 include('../../koneksi.php');
 
-// Check if the user is logged in (assuming user_id is stored in session)
-if (isset($_SESSION['user_id'])) {
-  $user_id = $_SESSION['user_id']; // Get the logged-in user's ID
-} else {
-  // Redirect to login page if the user is not logged in
+// Cek apakah user sudah login
+if (!isset($_SESSION['user_id'])) {
   header("Location: login.php");
   exit();
 }
 
-// SQL query to fetch user data, including documents
-$query = "SELECT nama_lengkap, alamat, telepon, email, status_verifikasi,file_ktp, file_kk, blacklist
-          FROM users 
-          LEFT JOIN dokumen_user ON users.id = dokumen_user.id_user
-          WHERE users.id = $user_id";
-$result = mysqli_query($db, $query);
+$user_id = $_SESSION['user_id'];
 
-if (isset($_GET['unit_id'])) {
-  $unit_id = $_GET['unit_id'];
-  $query = mysqli_query($db, "SELECT * FROM unit_mobil WHERE id = '$unit_id'");
-  $mobil = mysqli_fetch_assoc($query);
-} else {
+// Cek apakah akun user ditolak
+$cek_verifikasi = mysqli_query($db, "SELECT status_verifikasi, blacklist FROM users WHERE id = '$user_id'");
+$user_status = mysqli_fetch_assoc($cek_verifikasi);
+
+if ($user_status['status_verifikasi'] === 'ditolak') {
+  echo "<script>alert('Akun Anda telah ditolak dan tidak dapat melakukan booking.'); window.location.href='listing.php';</script>";
+  exit;
+}
+
+if ($user_status['blacklist'] == 1) {
+  echo "<script>alert('Akun Anda diblokir dan tidak bisa melakukan pemesanan.'); window.location.href='blacklist.php';</script>";
+  exit;
+}
+
+// Ambil informasi tanggal & jam dari GET
+$tanggal_mulai   = $_GET['tanggal_mulai'] ?? '';
+$jam_mulai       = $_GET['jam_mulai'] ?? '';
+$tanggal_selesai = $_GET['tanggal_selesai'] ?? '';
+$jam_selesai     = $_GET['jam_selesai'] ?? '';
+
+// Ambil data user lengkap
+$query_user = "SELECT nama_lengkap, alamat, telepon, email, status_verifikasi, file_ktp, file_kk, blacklist
+               FROM users 
+               LEFT JOIN dokumen_user ON users.id = dokumen_user.id_user
+               WHERE users.id = $user_id";
+$result_user = mysqli_query($db, $query_user);
+$user = mysqli_fetch_assoc($result_user);
+
+// Ambil data mobil
+if (!isset($_GET['unit_id'])) {
   echo "ID mobil tidak ditemukan.";
   exit;
 }
 
-// Ambil detail mobil
+$unit_id = $_GET['unit_id'];
+
 $query_mobil = "
-SELECT um.*, jm.nama AS nama_mobil, jm.harga_sewa, jm.id, jm.nama, jm.harga_sewa, jm.jumlah_kursi
-FROM unit_mobil um 
-JOIN jenis_mobil jm ON um.jenis_mobil_id = jm.id 
-WHERE um.id = $unit_id
+    SELECT um.*, jm.nama AS nama_mobil, jm.harga_sewa, jm.jumlah_kursi
+    FROM unit_mobil um
+    JOIN jenis_mobil jm ON um.jenis_mobil_id = jm.id
+    WHERE um.id = $unit_id
 ";
 $mobil = mysqli_fetch_assoc(mysqli_query($db, $query_mobil));
-
-// Check if the query was successful
-if ($result) {
-  $user = mysqli_fetch_assoc($result);
-} else {
-  echo "Error fetching data.";
-}
-
-if ($user['blacklist'] == 1): ?>
-  <script>
-    alert("Akun Anda diblokir dan tidak bisa melakukan pemesanan.");
-    window.location.href = "blacklist.php"; 
-  </script>
-<?php endif; 
-
 ?>
 
 <!DOCTYPE html>
@@ -294,6 +294,44 @@ if ($user['blacklist'] == 1): ?>
     textarea::placeholder {
       color: #9ca3af;
     }
+
+    .form-info {
+      margin-bottom: 1rem;
+    }
+
+    .form-info label {
+      font-weight: bold;
+      color: #333;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .form-info p {
+      display: inline-block;
+      /* Agar lebar menyesuaikan isi */
+      background: #f8f9fa;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid #ccc;
+      white-space: pre-wrap;
+      /* Agar teks tetap wrap jika panjang */
+      max-width: 100%;
+      /* Hindari overflow melewati container */
+    }
+
+    .form-display {
+      display: block;
+      background-color: #f8f9fa;
+      padding: 0.5rem 1rem;
+      border: 1px solid #ced4da;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      color: #495057;
+      min-height: 42px;
+      /* biar sejajar dengan input lain */
+      line-height: 1.5;
+      margin-top: 4px;
+    }
   </style>
 </head>
 
@@ -304,55 +342,56 @@ if ($user['blacklist'] == 1): ?>
         <h1 id="formTitle">Form Rental Mobil</h1>
         <p class="description">Silakan isi formulir di bawah untuk menyewa mobil pilihan Anda dengan mudah dan cepat.</p>
 
-        <!-- Nama Lengkap & Alamat side by side -->
+        <!-- Informasi User -->
         <div class="grouped-inputs">
-          <div class="form-group">
-            <label for="full-name">Nama Lengkap</label>
-            <input type="text" id="nama_lengkap" name="nama_lengkap" value="<?php echo $user['nama_lengkap']; ?>" required>
+          <div class="form-info">
+            <label>Nama Lengkap</label>
+            <p><?= htmlspecialchars($user['nama_lengkap']) ?></p>
           </div>
 
           <div class="form-group">
-            <label for="address">Alamat</label>
-            <textarea id="alamat" name="alamat" required><?php echo $user['alamat']; ?></textarea>
+            <label for="alamat">Alamat</label>
+            <p class="form-display"><?= htmlspecialchars($user['alamat']) ?></p>
           </div>
         </div>
 
-        <!-- Nomor Telepon & Email side by side -->
         <div class="grouped-inputs">
-          <div class="form-group">
-            <label for="phone-number">Nomor Telepon</label>
-            <input type="tel" id="nomor_telepon" name="nomor_telepon" value="<?php echo $user['telepon']; ?>" required>
+          <div class="form-info">
+            <label>Nomor Telepon</label>
+            <p><?= htmlspecialchars($user['telepon']) ?></p>
           </div>
 
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" value="<?php echo $user['email']; ?>" required>
+          <div class="form-info">
+            <label>Email</label>
+            <p><?= htmlspecialchars($user['email']) ?></p>
           </div>
         </div>
 
-        <!-- Jam Pengambilan & Jam Pengembalian side by side -->
+        <!-- Informasi Tanggal & Jam -->
         <div class="grouped-time-inputs">
-          <div class="form-group">
-            <label for="pickup-time">Jam Pengambilan</label>
-            <input type="time" id="jam_pengambilan" name="pickup-time" required />
+          <div class="form-info">
+            <label>Tanggal Pengambilan</label>
+            <p><?= htmlspecialchars($tanggal_mulai) ?></p>
+            <input type="hidden" id="tanggal_pengambilan" value="<?= $tanggal_mulai ?>">
           </div>
-
-          <div class="form-group">
-            <label for="return-time">Jam Pengembalian</label>
-            <input type="time" id="jam_pengembalian" name="return-time" required />
+          <div class="form-info">
+            <label>Jam Pengambilan</label>
+            <p><?= htmlspecialchars($jam_mulai) ?></p>
+            <input type="hidden" id="jam_pengambilan" value="<?= $jam_mulai ?>">
           </div>
         </div>
 
-        <!-- Tanggal Pengambilan & Tanggal Pengembalian side by side -->
+        <!-- Tanggal & Jam Pengembalian -->
         <div class="grouped-inputs">
-          <div class="form-group">
-            <label for="pickup-date">Tanggal Pengambilan</label>
-            <input type="date" id="tanggal_pengambilan" name="pickup-date" required />
+          <div class="form-info">
+            <label>Tanggal Pengembalian</label>
+            <p><?= htmlspecialchars($tanggal_selesai) ?></p>
+            <input type="hidden" id="tanggal_pengembalian" value="<?= $tanggal_selesai ?>">
           </div>
-
-          <div class="form-group">
-            <label for="return-date">Tanggal Pengembalian</label>
-            <input type="date" id="tanggal_pengembalian" name="return-date" required />
+          <div class="form-info">
+            <label>Jam Pengembalian</label>
+            <p><?= htmlspecialchars($jam_selesai) ?></p>
+            <input type="hidden" id="jam_pengembalian" value="<?= $jam_selesai ?>">
           </div>
         </div>
 
@@ -456,22 +495,22 @@ if ($user['blacklist'] == 1): ?>
     </section>
   </main>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const today = new Date().toISOString().split('T')[0];
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const today = new Date().toISOString().split('T')[0];
 
-    const pickupDateInput = document.getElementById("tanggal_pengambilan");
-    const returnDateInput = document.getElementById("tanggal_pengembalian");
+      const pickupDateInput = document.getElementById("tanggal_pengambilan");
+      const returnDateInput = document.getElementById("tanggal_pengembalian");
 
-    pickupDateInput.setAttribute("min", today);
-    returnDateInput.setAttribute("min", today);
+      pickupDateInput.setAttribute("min", today);
+      returnDateInput.setAttribute("min", today);
 
-    // Opsional: Perbarui tanggal pengembalian otomatis setelah memilih tanggal pengambilan
-    pickupDateInput.addEventListener("change", function () {
-      returnDateInput.setAttribute("min", this.value);
+      // Opsional: Perbarui tanggal pengembalian otomatis setelah memilih tanggal pengambilan
+      pickupDateInput.addEventListener("change", function() {
+        returnDateInput.setAttribute("min", this.value);
+      });
     });
-  });
-</script>
+  </script>
 
   <!-- Midtrans client key -->
   <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-G-mHIBdE0tG4avXY"></script>

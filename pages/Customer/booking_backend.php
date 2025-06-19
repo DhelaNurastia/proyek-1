@@ -56,3 +56,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   exit();
 }
+
+session_start();
+$id_user = $_SESSION['user_id'];
+
+$cek = mysqli_query($db, "SELECT status_verifikasi FROM users WHERE id = '$id_user'");
+$data = mysqli_fetch_assoc($cek);
+
+if ($data['status_verifikasi'] === 'ditolak') {
+  echo "<script>alert('Akun Anda telah ditolak dan tidak dapat melakukan booking.'); window.location.href='listing.php';</script>";
+  exit;
+}

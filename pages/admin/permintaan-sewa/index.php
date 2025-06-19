@@ -76,12 +76,20 @@ $result = mysqli_query($db, $sql);
                                             </td>
 
                                             <td>
-                                                <form action="actions.php" method="post">
+                                                <form action="actions.php" method="post" class="d-inline">
                                                     <input type="hidden" name="id" value="<?= $row['id'] ?>">
                                                     <button name="verifikasi" class="btn btn-success btn-sm" onclick="return confirm('Verifikasi user ini?')">
                                                         <i class="fas fa-check"></i> Verifikasi
                                                     </button>
                                                 </form>
+
+                                                <form action="actions.php" method="post" class="d-inline">
+                                                    <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                                                    <button name="tolak" class="btn btn-danger btn-sm" onclick="return confirm('Tolak verifikasi user ini?')">
+                                                        <i class="fas fa-times"></i> Tolak
+                                                    </button>
+                                                </form>
+                                                
                                             </td>
                                         </tr>
                                     <?php endwhile; ?>

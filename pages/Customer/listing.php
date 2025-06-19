@@ -250,6 +250,7 @@ if ($tgl_mulai && $jam_mulai && $tgl_selesai && $jam_selesai) {
       padding: 0;
       margin: -1px;
     }
+
     .filter-form input[type='submit'],
     .btn-rent {
       font-family: 'Raleway', sans-serif;
@@ -270,6 +271,7 @@ if ($tgl_mulai && $jam_mulai && $tgl_selesai && $jam_selesai) {
       align-items: center;
       gap: 0.4rem;
     }
+
     .filter-form input[type='submit'],
     .btn-rent:hover,
     .btn-rent:focus {
@@ -387,9 +389,10 @@ if ($tgl_mulai && $jam_mulai && $tgl_selesai && $jam_selesai) {
                     <strong>Transmisi:</strong> <?= $mobil['transmisi'] ?><br>
                     <strong>Warna:</strong> <?= $mobil['warna'] ?>
                   </p>
-                  <a href="booking.php?unit=<?= urlencode($mobil['unitName']) ?>&unit_id=<?= $mobil['id'] ?>" class="btn btn-primary w-100">
+                  <a href="booking.php?unit=<?= urlencode($mobil['unitName']) ?>&unit_id=<?= $mobil['id'] ?>&tanggal_mulai=<?= $tgl_mulai ?>&jam_mulai=<?= $jam_mulai ?>&tanggal_selesai=<?= $tgl_selesai ?>&jam_selesai=<?= $jam_selesai ?>" class="btn btn-primary w-100">
                     Rental Sekarang
                   </a>
+
                 </div>
               </div>
             </div>

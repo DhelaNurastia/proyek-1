@@ -24,4 +24,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['batal_verifikasi'])) 
 
     header("Location: daftar-terverifikasi.php?success=Verifikasi dibatalkan");
     exit;
+
+    if (isset($_POST['tolak'])) {
+        $id = $_POST['id'];
+
+        // Update status_verifikasi menjadi 'ditolak'
+        $query = "UPDATE users SET status_verifikasi = 'ditolak' WHERE id = ?";
+        $stmt = $db->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        header("Location: index.php"); // Redirect kembali ke halaman verifikasi
+        exit;
+    }
+}
+
+if (isset($_POST['tolak'])) {
+    $id = $_POST['id'];
+
+    $query = "UPDATE users SET status_verifikasi = 'ditolak' WHERE id = ?";
+    $stmt = $db->prepare($query);
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    // Redirect balik ke halaman verifikasi
+    header("Location: index.php?tolak=berhasil");
+    exit;
 }

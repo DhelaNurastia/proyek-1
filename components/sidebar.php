@@ -85,10 +85,6 @@ $isPages           = strpos($current_uri, 'login.php') !== false || strpos($curr
             <i class="fas fa-fw fa-user"></i>
             <span>Data Customer</span>
         </a>
-        <a class="nav-link <?= $isMarketing ? 'active' : '' ?>" href="<?= BASE_URL ?>/admin/marketing/index.php">
-            <i class="fas fa-fw fa-user-tie"></i>
-            <span>Data Marketing</span>
-        </a>
         <a class="nav-link <?= $isChecker ? 'active' : '' ?>" href="<?= BASE_URL ?>/admin/checker/index.php">
             <i class="fas fa-fw fa-user-check"></i>
             <span>Data Checker</span>
