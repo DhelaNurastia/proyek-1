@@ -20,17 +20,19 @@ if ($tgl_mulai && $jam_mulai && $tgl_selesai && $jam_selesai) {
     $error = "Tanggal dan jam mulai harus lebih awal dari tanggal dan jam selesai.";
   } else {
     $query = "SELECT u.id, j.nama AS unitName, j.harga_sewa AS pricePer12h,
-              u.transmisi, j.jumlah_kursi AS seats, u.plat_nomor,
-              u.warna, u.status, u.foto
-              FROM unit_mobil u
-              JOIN jenis_mobil j ON u.jenis_mobil_id = j.id
-              WHERE u.id NOT IN (
-                SELECT unit_mobil_id FROM booking
-                WHERE 
-                  CONCAT(tgl_booking, ' ', jam_booking) < ?
-                  AND 
-                  CONCAT(tgl_kembali, ' ', jam_kembali) > ?
-              )";
+    u.transmisi, j.jumlah_kursi AS seats, u.plat_nomor,
+    u.warna, u.status, u.foto
+    FROM unit_mobil u
+    JOIN jenis_mobil j ON u.jenis_mobil_id = j.id
+    WHERE u.id NOT IN (
+      SELECT unit_mobil_id FROM booking
+      WHERE 
+        CONCAT(tgl_booking, ' ', jam_booking) < ?
+        AND 
+        CONCAT(tgl_kembali, ' ', jam_kembali) > ?
+    )
+    AND u.is_active = 1";
+
 
     $stmt = $db->prepare($query);
     $stmt->bind_param("ss", $end_datetime, $start_datetime);
@@ -85,7 +87,7 @@ if ($tgl_mulai && $jam_mulai && $tgl_selesai && $jam_selesai) {
       font-weight: 700;
       font-size: 2.5rem;
       margin-bottom: 1.75rem;
-      color: #00000;
+      color: #000000;
       /* dark slate gray */
       user-select: none;
     }

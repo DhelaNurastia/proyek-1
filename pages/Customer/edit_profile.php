@@ -428,10 +428,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <section class="container form-section" data-aos="fade-up">
-                <?php if ($error): ?>
-                    <div class="alert alert-danger"><?= $error ?></div>
-                <?php endif; ?>
-
                 <form method="POST" action="" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="nama" class="form-label">Nama Lengkap</label>

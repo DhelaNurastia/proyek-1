@@ -6,13 +6,14 @@ $query = "
     SELECT 
         u.id, j.nama AS nama_mobil, u.plat_nomor, u.warna, u.tahun_beli,
         u.transmisi, j.harga_sewa, j.jumlah_kursi, u.status, u.foto,
-       (
-        SELECT b.tgl_kembali
-        FROM booking b
-        WHERE b.unit_mobil_id = u.id
-            AND NOW() BETWEEN b.tgl_booking AND b.tgl_kembali
-        ORDER BY b.tgl_kembali DESC
-        LIMIT 1
+        u.is_active,
+        (
+            SELECT b.tgl_kembali
+            FROM booking b
+            WHERE b.unit_mobil_id = u.id
+                AND NOW() BETWEEN b.tgl_booking AND b.tgl_kembali
+            ORDER BY b.tgl_kembali DESC
+            LIMIT 1
         ) AS sedang_disewa_sampai
     FROM unit_mobil u
     JOIN jenis_mobil j ON u.jenis_mobil_id = j.id
@@ -158,7 +159,7 @@ $query = "
                                 'perbaikan' => 'status-label status-perbaikan',
                                 default => 'status-label'
                             };
-                            
+
                             $isSedangDisewa = !empty($row['sedang_disewa_sampai']);
 
                             $statusClass = $isSedangDisewa
@@ -193,12 +194,17 @@ $query = "
                                     </div>
                                     <div class="action-buttons">
                                         <a href="edit.php?id=<?= $row['id'] ?>" class="btn-action"><i class="fas fa-edit"></i> Edit</a>
-                                        <form action="actions.php" method="post" style="display:inline;">
-                                            <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                                            <button type="submit" name="delete" class="btn-action" onclick="return confirm('Hapus unit mobil ini?')">
-                                                <i class="fas fa-trash"></i> Hapus
-                                            </button>
-                                        </form>
+                                        <?php if ($row['is_active'] == 1): ?>
+                                            <form action="actions.php" method="post" style="display:inline;" onsubmit="return confirm('Nonaktifkan unit mobil ini?')">
+                                                <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                                                <button type="submit" name="deactivate" class="btn btn-danger btn-sm">Nonaktifkan</button>
+                                            </form>
+                                        <?php else: ?>
+                                            <form action="actions.php" method="post" style="display:inline;" onsubmit="return confirm('Aktifkan unit mobil ini?')">
+                                                <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                                                <button type="submit" name="activate" class="btn btn-success btn-sm">Aktifkan</button>
+                                            </form>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>

@@ -85,17 +85,28 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["create"])) {
     exit;
 }
 
-// Hapus data unit mobil
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
+// Nonaktifkan unit mobil
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deactivate'])) {
     $id = $_POST['id'];
 
-    // Hapus dari database
-    $stmt = $db->prepare("DELETE FROM unit_mobil WHERE id = ?");
+    $stmt = $db->prepare("UPDATE unit_mobil SET is_active = 0 WHERE id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $stmt->close();
 
-    // Redirect kembali ke index
-    header("Location: index.php?success=Data berhasil dihapus");
+    header("Location: index.php?success=Unit mobil berhasil dinonaktifkan");
+    exit;
+}
+
+// Aktifkan unit mobil
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['activate'])) {
+    $id = $_POST['id'];
+
+    $stmt = $db->prepare("UPDATE unit_mobil SET is_active = 1 WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->close();
+
+    header("Location: index.php?success=Unit mobil berhasil diaktifkan");
     exit;
 }
