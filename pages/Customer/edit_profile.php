@@ -9,6 +9,8 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $userId = $_SESSION['user_id'];
+
+// Ambil data user + dokumen
 $query = $db->prepare("SELECT u.nama_lengkap, u.nama, u.email, u.telepon, u.alamat, u.foto_profile, d.file_kk, d.file_ktp, d.file_sim, u.blacklist
                       FROM users u
                       LEFT JOIN dokumen_user d ON u.id = d.id_user
@@ -17,11 +19,78 @@ $query->bind_param("i", $userId);
 $query->execute();
 $result = $query->get_result();
 $user = $result->fetch_assoc();
-$fotoPath = isset($user['foto_profile']) && $user['foto_profile']
+
+$fotoPath = (!empty($user['foto_profile']))
     ? "../../uploads/foto_profile/" . $user['foto_profile']
     : "../../assets/image/default.png";
-?>
 
+// ==== FORM DIPROSES ====
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nama_lengkap = $_POST['nama'];
+    $email = $_POST['email'];
+    $telepon = $_POST['telepon'];
+    $alamat = $_POST['alamat'];
+
+    if (empty($nama_lengkap) || empty($email) || empty($telepon) || empty($alamat)) {
+        $error = "Semua field wajib diisi.";
+    } else {
+        // 1. Update profil
+        $stmt = $db->prepare("UPDATE users SET nama_lengkap = ?, email = ?, telepon = ?, alamat = ? WHERE id = ?");
+        $stmt->bind_param("ssssi", $nama_lengkap, $email, $telepon, $alamat, $userId);
+        $stmt->execute();
+
+        // 2. Upload dokumen
+        $upload_dir = '../../uploads/dokumen-user/';
+        $allowed_types = ['image/jpeg', 'image/png', 'application/pdf'];
+
+        function uploadDokumen($input_name)
+        {
+            global $upload_dir, $allowed_types;
+
+            if (!empty($_FILES[$input_name]['name'])) {
+                $tmp = $_FILES[$input_name]['tmp_name'];
+                $type = mime_content_type($tmp);
+
+                if (in_array($type, $allowed_types)) {
+                    $filename = uniqid() . '_' . basename($_FILES[$input_name]['name']);
+                    move_uploaded_file($tmp, $upload_dir . $filename);
+                    return $filename;
+                }
+            }
+            return '';
+        }
+
+        $file_kk = uploadDokumen('file_kk');
+        $file_ktp = uploadDokumen('file_ktp');
+        $file_sim = uploadDokumen('file_sim');
+
+        // 3. Cek apakah dokumen_user sudah ada
+        $cek = $db->prepare("SELECT id_user FROM dokumen_user WHERE id_user = ?");
+        $cek->bind_param("i", $userId);
+        $cek->execute();
+        $hasil = $cek->get_result();
+
+        if ($hasil->num_rows === 0) {
+            $insert = $db->prepare("INSERT INTO dokumen_user (id_user) VALUES (?)");
+            $insert->bind_param("i", $userId);
+            $insert->execute();
+        }
+
+        // 4. Update dokumen (jika ada file baru)
+        $update = $db->prepare("UPDATE dokumen_user SET 
+            file_kk = COALESCE(NULLIF(?, ''), file_kk),
+            file_ktp = COALESCE(NULLIF(?, ''), file_ktp),
+            file_sim = COALESCE(NULLIF(?, ''), file_sim)
+            WHERE id_user = ?");
+        $update->bind_param("sssi", $file_kk, $file_ktp, $file_sim, $userId);
+        $update->execute();
+
+        // 5. Selesai
+        header("Location: profile.php");
+        exit;
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -363,7 +432,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
                     <div class="alert alert-danger"><?= $error ?></div>
                 <?php endif; ?>
 
-                <form method="POST" action="">
+                <form method="POST" action="" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="nama" class="form-label">Nama Lengkap</label>
                         <input type="text" name="nama" class="form-control" id="nama" value="<?= htmlspecialchars($user['nama_lengkap']) ?>" required>
@@ -383,7 +452,20 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
                         <label for="alamat" class="form-label">Alamat</label>
                         <textarea name="alamat" class="form-control" id="alamat" rows="3"><?= htmlspecialchars($user['alamat']) ?></textarea>
                     </div>
+                    <div class="mb-3">
+                        <label for="file_kk" class="form-label">Upload Kartu Keluarga (KK)</label>
+                        <input type="file" name="file_kk" class="form-control" id="file_kk" accept=".jpg,.jpeg,.png,.pdf">
+                    </div>
 
+                    <div class="mb-3">
+                        <label for="file_ktp" class="form-label">Upload KTP</label>
+                        <input type="file" name="file_ktp" class="form-control" id="file_ktp" accept=".jpg,.jpeg,.png,.pdf">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="file_sim" class="form-label">Upload SIM</label>
+                        <input type="file" name="file_sim" class="form-control" id="file_sim" accept=".jpg,.jpeg,.png,.pdf">
+                    </div>
                     <div class="d-flex justify-content-between">
                         <a href="profile.php" class="btn btn-secondary">Batal</a>
                         <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
