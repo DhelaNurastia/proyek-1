@@ -1,22 +1,16 @@
 <?php
-if (isset($_GET['export'])) {
-    $export = $_GET['export'];
-
-    if ($export === 'excel') {
-        header("Content-Type: application/vnd.ms-excel");
-        header("Content-Disposition: attachment; filename=laporan.xls");
-    }
-
-    if ($export === 'pdf') {
-        echo "<script>window.print();</script>";
-    }
-}
-require_once "../../../config.php";
-require_once "../../../koneksi.php";
+require_once __DIR__ . '/../../../vendor/autoload.php'; // untuk PhpSpreadsheet
+require_once __DIR__ . '/../../../config.php';
+require_once __DIR__ . '/../../../koneksi.php';
 
 $dateFrom = $_GET['date-from'] ?? null;
 $dateTo = $_GET['date-to'] ?? null;
 $status = $_GET['status-filter'] ?? null;
+
+if (isset($_GET['export']) && $_GET['export'] === 'pdf') {
+    echo "<script>window.print();</script>";
+}
+
 
 $query = "
   SELECT 
@@ -76,6 +70,33 @@ while ($row = mysqli_fetch_assoc($result)) {
   <link href="../../../assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
   <style>
+    @media print {
+  /* Sembunyikan elemen yang tidak perlu dicetak */
+  .no-print, .navbar, .btn, .sidebar, footer {
+    display: none !important;
+  }
+
+  /* Atur ulang layout agar cocok dicetak */
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  table, th, td {
+    border: 1px solid black;
+  }
+
+  th, td {
+    padding: 6px;
+    text-align: left;
+  }
+}
+
     /* CSS Variables for Theming and Colors */
     :root {
       --color-primary: #111827;
@@ -600,9 +621,10 @@ while ($row = mysqli_fetch_assoc($result)) {
                   </tfoot>
                 </table>
                     <div class="no-print">
-                      <a href="laporan.php?export=excel&date-from=<?= $dateFrom ?>&date-to=<?= $dateTo ?>&status-filter=<?= $status ?>" class="btn btn-success">Export ke Excel</a>
-                      <a href="laporan.php?export=pdf&date-from=<?= $dateFrom ?>&date-to=<?= $dateTo ?>&status-filter=<?= $status ?>" class="btn btn-danger" target="_blank">Cetak PDF</a>
+                      <a href="export_excel.php?date-from=<?= $dateFrom ?>&date-to=<?= $dateTo ?>&status-filter=<?= $status ?>" class="btn btn-success">Export ke Excel</a>
+                      <a href="laporan.php?export=pdf&date-from=<?= $dateFrom ?>&date-to=<?= $dateTo ?>&status-filter=<?= $status ?>" class="btn btn-danger">Cetak PDF</a>
                     </div>
+
               </section>
           </main>
 

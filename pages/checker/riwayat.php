@@ -57,6 +57,8 @@ $riwayat = mysqli_query($db, "
               <th>Post - Foto</th>
               <th>Catatan</th>
               <th>Denda (Rp)</th>
+              <th>Edit</th>
+
             </tr>
           </thead>
           <tbody>
@@ -80,6 +82,10 @@ $riwayat = mysqli_query($db, "
               </td>
               <td><?= $r['catatan'] ?: '-' ?></td>
               <td><?= number_format($r['denda'], 0, ',', '.') ?></td>
+              <td>
+    <!-- Tombol Edit -->
+    <a href="edit.php?id=<?= $r['id'] ?>" class="btn btn-warning btn-sm">Edit</a>
+</td>
             </tr>
             <?php } ?>
           </tbody>

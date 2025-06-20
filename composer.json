@@ -1,6 +1,6 @@
 {
     "require": {
         "midtrans/midtrans-php": "^2.6",
-        "dompdf/dompdf": "^3.1"
+        "phpoffice/phpspreadsheet": "1.29"
     }
 }
