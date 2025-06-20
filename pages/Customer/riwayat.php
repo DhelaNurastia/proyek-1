@@ -4,7 +4,7 @@ $base_url = '/proyek-1/';
 $koneksi = new mysqli("localhost", "root", "", "proyek-1");
 
 if ($koneksi->connect_error) {
-    die("Koneksi gagal: " . $koneksi->connect_error);
+  die("Koneksi gagal: " . $koneksi->connect_error);
 }
 
 // Ambil id customer dari session
@@ -17,7 +17,10 @@ $sql = "
         jenis_mobil.nama AS nama_mobil,
         booking.tgl_booking,
         booking.jam_booking,
+        booking.tgl_kembali,
+        booking.jam_kembali,
         booking.total_biaya,
+        booking.status AS status_booking,
         pembayaran.status AS status_pembayaran
     FROM booking
     JOIN unit_mobil ON booking.unit_mobil_id = unit_mobil.id
@@ -75,14 +78,24 @@ $result = $koneksi->query($sql);
       background-color: transparent !important;
       padding-top: 4rem;
       padding-bottom: 4rem;
-      color: #00000;
-      font-feature-settings: "tnum"; /* tabular numbers for cost */
+      color: #000000;
+      font-feature-settings: "tnum";
+      /* tabular numbers for cost */
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    table.booking-table {
+      font-size: 0.85rem;
     }
 
     .booking-history h2 {
       font-weight: 700;
       font-size: 2.5rem;
-      color: #00000;
+      color: #000000;
       margin-bottom: 2rem;
       text-align: center;
     }
@@ -92,7 +105,7 @@ $result = $koneksi->query($sql);
       border-collapse: collapse;
       margin-bottom: 2rem;
       font-size: 1rem;
-      color: #00000 !important;
+      color: #000000 !important;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
       border-radius: 0.75rem;
       overflow: hidden;
@@ -109,7 +122,7 @@ $result = $koneksi->query($sql);
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: #00000;
+      color: #000000;
       user-select: none;
     }
 
@@ -162,6 +175,7 @@ $result = $koneksi->query($sql);
     }
 
     @media (max-width: 576px) {
+
       table.booking-table thead th,
       table.booking-table tbody td {
         padding: 0.5rem 0.75rem;
@@ -222,51 +236,76 @@ $result = $koneksi->query($sql);
     <section
       id="booking-history"
       class="booking-history"
-      aria-label="Booking History section"
-    >
+      aria-label="Booking History section">
       <div class="container">
-        <table
-          class="booking-table"
-          aria-describedby="bookingHistoryDesc"
-          role="table"
-        >
-          <caption id="bookingHistoryDesc" class="visually-hidden"
-            >Table listing all booking history entries</caption
-          >
-          <thead>
-            <tr>
-              <th scope="col">Booking ID</th>
-              <th scope="col">Unit Name</th>
-              <th scope="col">Date</th>
-              <th scope="col">Time</th>
-              <th scope="col">Total Cost</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-          <tbody id="booking-table-body">
-            <?php
-            if ($result->num_rows > 0) {
+        <div class="table-responsive">
+          <table class="booking-table"
+            aria-describedby="bookingHistoryDesc"
+            role="table">
+            <caption id="bookingHistoryDesc" class="visually-hidden">Table listing all booking history entries</caption>
+            <thead>
+              <tr>
+                <th scope="col">ID Booking</th>
+                <th scope="col">Nama Unit</th>
+                <th scope="col">Tgl Pengambilan</th>
+                <th scope="col">Jam Pengambilan</th>
+                <th scope="col">Tgl Pengembalian</th>
+                <th scope="col">Jam Pengembalian</th>
+                <th scope="col">Total Biaya</th>
+                <th scope="col">Status Pembayaran</th>
+                <th scope="col">Status Booking</th>
+                <th scope="col">Aksi</th>
+              </tr>
+            </thead>
+
+            <tbody id="booking-table-body">
+              <?php
+              if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>#BK" . str_pad($row['id'], 8, '0', STR_PAD_LEFT) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['nama_mobil']) . "</td>";
-                    echo "<td><time datetime='" . date('Y-m-d', strtotime($row['tgl_booking'])) . "'>" . date('F d, Y', strtotime($row['tgl_booking'])) . "</time></td>";
-                    echo "<td><time datetime='" . date('Y-m-d\TH:i', strtotime($row['tgl_booking'] . ' ' . $row['jam_booking'])) . "'>" . date('H:i', strtotime($row['jam_booking'])) . "</time></td>";
-                    echo "<td>Rp " . number_format($row['total_biaya'], 0, ',', '.') . "</td>";
+                  echo "<tr>"; // <-- tambahkan baris ini
 
-                    $status = $row['status_pembayaran'] == 'berhasil' ? 'Confirmed' : 'Pending';
-                    $statusClass = $row['status_pembayaran'] == 'berhasil' ? 'status-confirmed' : 'status-pending';
-                    echo "<td><span class='booking-status $statusClass'>$status</span></td>";
+                  echo "<td>#BK" . str_pad($row['id'], 8, '0', STR_PAD_LEFT) . "</td>";
+                  echo "<td>" . htmlspecialchars($row['nama_mobil']) . "</td>";
+                  echo "<td>" . date('d-m-Y', strtotime($row['tgl_booking'])) . "</td>";
+                  echo "<td>" . date('H:i', strtotime($row['jam_booking'])) . "</td>";
+                  echo "<td>" . date('d-m-Y', strtotime($row['tgl_kembali'])) . "</td>";
+                  echo "<td>" . date('H:i', strtotime($row['jam_kembali'])) . "</td>";
+                  echo "<td>Rp " . number_format($row['total_biaya'], 0, ',', '.') . "</td>";
 
-                    echo "</tr>";
+                  // Status Pembayaran
+                  $status_pembayaran = $row['status_pembayaran'] == 'berhasil' ? 'Confirmed' : 'Pending';
+                  $statusClassPembayaran = $row['status_pembayaran'] == 'berhasil' ? 'status-confirmed' : 'status-pending';
+                  echo "<td><span class='booking-status $statusClassPembayaran'>$status_pembayaran</span></td>";
+
+                  // Status Booking
+                  $status_booking = $row['status_booking'];
+                  $statusClassBooking = match ($status_booking) {
+                    'pending' => 'status-pending',
+                    'confirmed', 'on_rent', 'completed' => 'status-confirmed',
+                    'rejected', 'cancelled' => 'status-canceled',
+                    default => 'status-pending'
+                  };
+                  echo "<td><span class='booking-status $statusClassBooking'>" . ucfirst($status_booking) . "</span></td>";
+
+                  // Aksi
+                  echo "<td>";
+                  if ($status_booking == 'pending') {
+                    echo "<button class='btn btn-danger btn-sm' onclick='confirmCancel(" . $row['id'] . ")'>Batalkan</button>";
+                  } else {
+                    echo "-";
+                  }
+                  echo "</td>";
+
+                  echo "</tr>"; // penutup <tr> tetap
                 }
-            } else {
-                echo "<tr><td colspan='6'>Tidak ada data booking</td></tr>";
-            }
-            ?>
-          </tbody>
-        </table>
-      </div>
+              } else {
+                echo "<tr><td colspan='8'>Tidak ada data booking</td></tr>";
+              }
+              ?>
+            </tbody>
+
+          </table>
+        </div>
     </section>
   </main>
 
@@ -337,9 +376,7 @@ $result = $koneksi->query($sql);
   <a
     href="#"
     id="scroll-top"
-    class="scroll-top d-flex align-items-center justify-content-center"
-    ><i class="bi bi-arrow-up-short"></i
-  ></a>
+    class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   <!-- Preloader -->
   <div id="preloader"></div>
@@ -355,6 +392,14 @@ $result = $koneksi->query($sql);
 
   <!-- Main JS File -->
   <script src="<?= $base_url ?>assets/template/home/Strategy/assets/js/main.js"></script>
+
+  <script>
+    function confirmCancel(id) {
+      if (confirm("Apakah kamu yakin ingin membatalkan booking ini?")) {
+        window.location.href = "batalkan_booking.php?id=" + id;
+      }
+    }
+  </script>
 </body>
 
 </html>
