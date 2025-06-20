@@ -1,576 +1,123 @@
 <?php
 session_start();
+include '../../koneksi.php';
+
 $base_url = '/proyek-1/';
-$koneksi = new mysqli("localhost", "root", "", "proyek-1");
-
-if ($koneksi->connect_error) {
-  die("Koneksi gagal: " . $koneksi->connect_error);
-}
-
 $id_customer = $_SESSION['user_id'];
 
-// Query untuk mengambil data denda tipe 'post' dengan kondisi 'rusak'
-$sql = "
+// Ambil data denda berdasarkan booking customer
+$query = "
     SELECT 
-        inspeksi.id,
-        inspeksi.tanggal_pre AS tanggal,
-        inspeksi.kondisi,
-        inspeksi.data_denda,
-        inspeksi.catatan,
-        inspeksi.denda
-    FROM inspeksi
-    JOIN booking ON inspeksi.booking_id = booking.id
-    LEFT JOIN pembayaran ON inspeksi.booking_id = pembayaran.booking_id
-    WHERE 
-        booking.customer_id = $id_customer
-        AND inspeksi.tipe = 'post'
-        AND inspeksi.kondisi = 'rusak'
+        i.id AS inspeksi_id,
+        b.id AS booking_id,
+        jm.nama AS nama_mobil,
+        u.plat_nomor,
+        b.tgl_kembali,
+        i.kondisi_post,
+        i.catatan,
+        i.denda,
+        i.foto_post
+    FROM inspeksi i
+    JOIN booking b ON i.booking_id = b.id
+    JOIN unit_mobil u ON b.unit_mobil_id = u.id
+    JOIN jenis_mobil jm ON u.jenis_mobil_id = jm.id
+    WHERE b.customer_id = $id_customer
+      AND i.denda > 0
+    ORDER BY b.tgl_kembali DESC
 ";
-
-$result = $koneksi->query($sql);
-
-if (!$result) {
-  die("Query error: " . $koneksi->error);
-}
+$result = mysqli_query($db, $query);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <meta charset="UTF-8" />
   <title>Riwayat Denda</title>
-  <meta name="description" content="" />
-  <meta name="keywords" content="" />
-
-  <!-- Favicons -->
-  <link href="<?= $base_url ?>assets/image/favicon.jpeg" rel="icon" />
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect" />
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap"
-    rel="stylesheet" />
-
-  <!-- Material Design Icons -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-
-  <!-- Vendor CSS Files -->
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/aos/aos.css" rel="stylesheet" />
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
-
-  <!-- Main CSS File -->
-  <link href="<?= $base_url ?>assets/template/home/Strategy/assets/css/main.css" rel="stylesheet" />
-
+  <link rel="stylesheet" href="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/bootstrap/css/bootstrap.min.css" />
   <style>
-    /* Override and add styles for fine history section */
     body {
-      font-family: 'Roboto', 'Nunito Sans', 'Raleway', sans-serif;
+      padding: 2rem;
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
     }
 
-    /* Container for the fine history and details */
-    .fine-history-container {
-      display: flex;
-      flex-direction: row;
-      gap: 24px;
-      margin: 48px auto 80px;
-      max-width: 1200px;
-      padding: 0 16px;
+    h2 {
+      margin-bottom: 1.5rem;
+      text-align: center;
     }
 
-    /* Sidebar listing fines */
-    .fine-list {
-      flex: 1 1 320px;
-      background: rgba(255 255 255 / 0.08);
-      border-radius: 16px;
-      backdrop-filter: blur(14px);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-      overflow-y: auto;
-      max-height: calc(100vh - 200px);
-      padding: 16px 0;
-      border: 1px solid rgba(255 255 255 / 0.15);
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
     }
 
-    .fine-list h3 {
-      font-weight: 700;
-      font-size: 1.3rem;
-      padding: 0 24px 12px;
-      border-bottom: 1px solid rgba(255 255 255 / 0.12);
-      color: #e0e0e0;
-      user-select: none;
+    th,
+    td {
+      padding: 12px 16px;
+      border: 1px solid #ddd;
     }
 
-    .fine-list ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
+    th {
+      background-color: #343a40;
+      color: #fff;
     }
 
-    .fine-list li {
-      cursor: pointer;
-      padding: 14px 24px;
-      border-bottom: 1px solid rgba(255 255 255 / 0.10);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: background-color 0.3s ease;
-      color: #eeeeee;
-      font-weight: 500;
-    }
-
-    .fine-list li:hover,
-    .fine-list li:focus-visible {
-      background-color: rgba(106, 58, 255, 0.15);
-      outline: none;
-    }
-
-    .fine-list li.selected {
-      background-color: rgba(64, 0, 255, 0.35);
-      font-weight: 700;
-      color: #2563eb;
-      border-left: 4px solid #2563eb;
-    }
-
-    /* Icon in fine list */
-    .material-icons.fine-icon {
-      font-size: 20px;
-      margin-left: 12px;
-      color: #2563eb;
-    }
-
-    /* Detail panel for selected fine */
-    .fine-detail {
-      flex: 2 1 600px;
-      background: rgba(255 255 255 / 0.1);
-      border-radius: 20px;
-      box-shadow: 0 5px 24px rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(16px);
-      padding: 32px 40px;
-      color: #e0e0e0;
-      min-height: calc(100vh - 200px);
-      overflow-y: auto;
-      position: relative;
-      border: 1px solid rgba(255 255 255 / 0.13);
-    }
-
-    .fine-detail h2 {
-      margin-top: 0;
-      font-weight: 800;
-      font-size: 2rem;
-      color: #2563eb;
-      user-select: none;
-    }
-
-    .fine-detail p {
-      font-size: 1.1rem;
-      margin-bottom: 20px;
-      line-height: 1.5;
-    }
-
-    .fine-detail strong {
-      color: #2563eb;
-    }
-
-    .fine-detail .detail-section {
-      margin-bottom: 28px;
-    }
-
-    /* Scrollbar styling */
-    .fine-list::-webkit-scrollbar,
-    .fine-detail::-webkit-scrollbar {
-      width: 12px;
-    }
-
-    .fine-list::-webkit-scrollbar-thumb,
-    .fine-detail::-webkit-scrollbar-thumb {
-      background-color: rgba(0, 47, 255, 0.5);
-      border-radius: 10px;
-    }
-
-    .fine-list::-webkit-scrollbar-track,
-    .fine-detail::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 1024px) {
-      .fine-history-container {
-        flex-direction: column;
-        margin: 32px 16px 64px;
-      }
-
-      .fine-list,
-      .fine-detail {
-        max-height: none;
-        min-height: auto;
-      }
-
-      .fine-list {
-        order: 2;
-      }
-
-      .fine-detail {
-        order: 1;
-        margin-bottom: 32px;
-      }
-    }
-
-    /* Button to close detail on mobile */
-    .close-detail-btn {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      background: transparent;
-      border: none;
-      color: #2563eb;
-      cursor: pointer;
-      font-size: 28px;
-      line-height: 1;
-      padding: 4px;
-      transition: color 0.3s ease;
-      display: none;
-      user-select: none;
-    }
-
-    .close-detail-btn:hover,
-    .close-detail-btn:focus {
-      color: #2563eb;
-      outline: none;
-    }
-
-    @media (max-width: 640px) {
-      .close-detail-btn {
-        display: block;
-      }
-
-      .fine-history-container {
-        position: relative;
-      }
-
-      .fine-detail {
-        position: fixed;
-        top: 64px;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(18, 0, 60, 0.95);
-        backdrop-filter: blur(20px);
-        z-index: 2000;
-        border-radius: 0;
-        padding-top: 56px;
-        overflow-y: auto;
-        box-shadow: none;
-        border: none;
-      }
-
-      .fine-list {
-        max-height: none;
-        border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-      }
+    img {
+      max-width: 120px;
+      border-radius: 6px;
     }
   </style>
-
-  <!-- =======================================================
-  * Template Name: Strategy
-  * Template URL: https://bootstrapmade.com/strategy-bootstrap-agency-template/
-  * Updated: May 09 2025 with Bootstrap v5.3.6
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
-<body class="starter-page-page">
-  <header id="header" class="header d-flex align-items-center fixed-top">
-    <div
-      class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
-      <a href="index.php" class="logo d-flex align-items-center me-auto me-xl-0">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
-        <!-- <img src="assets/img/logo.webp" alt=""> -->
-        <h1 class="sitename">Sigma RentCar</h1>
-      </a>
+<body>
+  <h2>Riwayat Denda Anda</h2>
 
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="index.php">Home</a></li>
-          <li><a href="listing.php">Daftar Mobil</a></li>
-          <li class="dropdown"><a href="#" class="active"><span>Riwayat</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li><a href="riwayat.php">Riwayat Booking</a></li>
-              <li><a href="denda.php">Riwayat Denda</a></li>
-            </ul>
-          <li class="dropdown"><a href="#"><span>Akun</span><i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li><a href="profile.php">Profile</a></li>
-              <li><a href="../Halaman_Register&Login/logout.php">LogOut</a></li>
-            </ul>
-          </li>
-          <li><a href="../customer/index.php/#contact">Kontak</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-    </div>
-  </header>
-
-  <main class="main">
-    <!-- Page Title -->
-    <div class="page-title dark-background" data-aos="fade">
-      <div class="container position-relative">
-        <h1>Pantau dan Kelola Riwayat Denda Anda</h1>
-        <p>Jangan lewatkan informasi penting terkait denda selama penyewaan — transparan dan mudah diakses.</p>
-        <nav class="breadcrumbs">
-          <ol>
-            <li><a href="index.php">Home</a></li>
-            <li class="listing.php">Riwayat Denda</li>
-          </ol>
-        </nav>
-      </div>
-    </div>
-    <!-- End Page Title -->
-
-    <!-- Fine History Section -->
-    <section id="fine-history" aria-label="Riwayat Denda dan Rincian">
-      <div class="fine-history-container" role="region" aria-live="polite" aria-relevant="additions removals">
-        <nav class="fine-list" aria-label="Daftar Riwayat Denda" tabindex="0">
-          <h3>Riwayat Denda</h3>
-          <ul id="fine-list" role="listbox" aria-activedescendant="" tabindex="0">
-            <!-- Dynamically filled by JS -->
-          </ul>
-        </nav>
-        <section class="fine-detail" aria-live="polite" aria-atomic="true" tabindex="0" aria-label="Detail Denda">
-          <button class="close-detail-btn" aria-label="Tutup rincian denda">&times;</button>
-          <h2 id="fine-detail-title">Pilih daftar denda untuk melihat detail</h2>
-          <div id="fine-detail-content" aria-describedby="fine-detail-title">
-            <p>Detail akan ditampilkan di sini saat Anda memilih daftar denda.</p>
-          </div>
-        </section>
-      </div>
-    </section>
-  </main>
-
-  <footer id="footer" class="footer">
-
-    <div class="container footer-top">
-      <div class="row gy-4">
-        <div class="col-lg-5 col-md-12 footer-about">
-          <a href="index.html" class="logo d-flex align-items-center">
-            <span class="sitename">Sigma RentCar</span>
-          </a>
-          <p>Sigma RentCar, solusi rental mobil terpercaya untuk berbagai kebutuhan anda. Kami hadir dengan komitmen menghadirkan layanan yang mudah, nyaman, dan dapat diandalkan</p>
-          <div class="social-links d-flex mt-4">
-            <a href="https://www.tiktok.com/@sigma_rentcar?_t=ZS-8wtmnFIOOvd&_r=1"><i class="bi bi-tiktok"></i></a>
-            <a href="https://www.facebook.com/share/16bwovUwpX/?mibextid=wwXIfr"><i class="bi bi-facebook"></i></a>
-            <a href="https://www.instagram.com/sigma_rentcar?igsh=dG1id2E2enRubGJj"><i class="bi bi-instagram"></i></a>
-          </div>
-        </div>
-
-        <div class="col-lg-2 col-6 footer-links">
-          <h4>Tautan Penting</h4>
-          <ul>
-            <li><a href="index.php">Home</a></li>
-            <li><a href="about.php">Tentang Kami</a></li>
-            <li><a href="listing.php">Daftar Mobil</a></li>
-            <li><a href="#galeri">Galeri</a></li>
-            <li><a href="#faq">FAQ</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-2 col-6 footer-links">
-          <h4>Layanan Kami</h4>
-          <ul>
-            <li>Rental 24 Jam</a></li>
-            <li>Rental Harian</a></li>
-            <li>Rental Mingguan</a></li>
-            <li>Rental Mobil dengan Supir</a></li>
-            <li>Rental Mobil Lepas Kunci</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
-          <h4>Kontak Kami</h4>
-          <p>Jl.Letnan Jenderal S.Parman</p>
-          <p>Subang, Jawa Barat</p>
-          <p>Indonesia</p>
-          <p class="mt-4"><strong>Nomer Hp:</strong> <span>+62 8121 2280 564</span></p>
-          <p><strong>Email:</strong> <span>diki.a.gani@gmail.com</span></p>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="container copyright text-center mt-4">
-      <p>© <span>Copyright</span> <strong class="px-1 sitename">Strategy</strong> <span>All Rights Reserved</span></p>
-      <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you've purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-      </div>
-    </div>
-
-  </footer>
-
-  <!-- Scroll Top -->
-  <a
-    href="#"
-    id="scroll-top"
-    class="scroll-top d-flex align-items-center justify-content-center"
-    aria-label="Scroll to top">
-    <i class="bi bi-arrow-up-short"></i>
-  </a>
-
-  <!-- Preloader -->
-  <div id="preloader"></div>
-
-  <!-- Vendor JS Files -->
-  <script src="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/php-email-form/validate.js"></script>
-  <script src="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/aos/aos.js"></script>
-  <script src="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
-  <script src="<?= $base_url ?>assets/template/home/Strategy/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <!-- Main JS File -->
-  <script src="<?= $base_url ?>assets/template/home/Strategy/assets/js/main.js"></script>
-
-  <script>
-    const finesData = [
-      <?php
-      if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-          echo "{
-            id: 'FINE" . str_pad($row['id'], 3, '0', STR_PAD_LEFT) . "',
-            date: '" . $row['tanggal'] . "',
-            dataDenda: '" . addslashes($row['data_denda']) . "',
-            biaya: " . $row['denda'] . ",
-            rincian: '" . addslashes($row['catatan']) . "'
-        },";
-        }
-      }
-      ?>
-    ];
-
-    const fineListEl = document.getElementById('fine-list');
-    const fineDetailTitle = document.getElementById('fine-detail-title');
-    const fineDetailContent = document.getElementById('fine-detail-content');
-    const closeDetailBtn = document.querySelector('.close-detail-btn');
-    const fineDetailSection = document.querySelector('.fine-detail');
-
-    let selectedFineId = null;
-
-    // Format number to currency IDR
-    function formatCurrency(num) {
-      return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0
-      }).format(num);
-    }
-
-    // Render fine list items
-    function renderFineList() {
-      fineListEl.innerHTML = '';
-      finesData.forEach((fine, index) => {
-        const li = document.createElement('li');
-        li.setAttribute('role', 'option');
-        li.setAttribute('tabindex', '-1');
-        li.id = `fine-item-${fine.id}`;
-
-        fine.id;
-        li.classList.toggle('selected', fine.id === selectedFineId);
-        li.innerHTML = `
-          <span>${fine.date} - ${fine.dataDenda}</span>
-        `;
-        li.addEventListener('click', () => {
-          selectFine(fine.id);
-        });
-        li.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            selectFine(fine.id);
-          }
-        });
-        fineListEl.appendChild(li);
-      });
-    }
-
-    // Render fine detail panel
-    function renderFineDetail(fine) {
-      fineDetailTitle.textContent = `Detail Denda: ${fine.id}`;
-      fineDetailContent.innerHTML = `
-    <div class="detail-section"><strong>Tanggal Denda:</strong> ${fine.date}</div>
-    <div class="detail-section"><strong>Data Denda:</strong> ${fine.dataDenda}</div>
-    <div class="detail-section"><strong>Biaya Denda:</strong> ${formatCurrency(fine.biaya)}</div>
-    <div class="detail-section"><strong>Rincian:</strong><p>${fine.rincian}</p></div>
-  `;
-    }
-
-
-    // Select fine and update UI
-    function selectFine(id) {
-      if (selectedFineId === id) return; // already selected
-      selectedFineId = id;
-      const fine = finesData.find((f) => f.id === id);
-      console.log(finesData);
-      if (!fine) return;
-
-      renderFineList();
-      renderFineDetail(fine);
-
-      // Focus detail for screen readers
-      fineDetailSection.focus();
-
-      // On small screens show detail panel prominently
-      if (window.innerWidth <= 640) {
-        fineDetailSection.style.display = 'block';
-      }
-    }
-
-    // Close detail panel on small screens
-    closeDetailBtn.addEventListener('click', () => {
-      fineDetailSection.style.display = 'none';
-      // Set focus back to list
-      fineListEl.focus();
-    });
-
-    // Keyboard navigation support
-    fineListEl.addEventListener('keydown', (e) => {
-      const items = Array.from(fineListEl.querySelectorAll('li'));
-      const currentIndex = items.findIndex((item) => item.id === `fine-item-${selectedFineId}`)
-      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
-        e.preventDefault();
-        const nextIndex = (currentIndex + 1) % items.length;
-        items[nextIndex].focus();
-      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
-        e.preventDefault();
-        const prevIndex = (currentIndex - 1 + items.length) % items.length;
-        items[prevIndex].focus();
-      }
-    });
-
-    // Initial render and selection
-    renderFineList();
-
-    // Accessibility: if no item selected, do not focus detail
-    // We can auto-select first item optionally:
-    //selectFine(finesData[0].id);
-
-    // Responsive fine detail toggle on window resize
-    window.addEventListener('resize', () => {
-      if (window.innerWidth > 640) {
-        fineDetailSection.style.display = 'block';
-      } else if (!selectedFineId) {
-        fineDetailSection.style.display = 'none';
-      }
-    });
-  </script>
+  <table>
+    <thead>
+      <tr>
+        <th>ID Booking</th>
+        <th>Plat Nomor</th>
+        <th>Tanggal Kembali</th>
+        <th>Kondisi Akhir</th>
+        <th>Catatan</th>
+        <th>Foto Bukti</th>
+        <th>Denda</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php if (mysqli_num_rows($result) > 0): ?>
+        <?php while ($row = mysqli_fetch_assoc($result)): ?>
+          <tr>
+            <td>#BK<?= str_pad($row['booking_id'], 8, '0', STR_PAD_LEFT) ?></td>
+            <td><?= htmlspecialchars($row['plat_nomor']) ?></td>
+            <td><?= date('d-m-Y', strtotime($row['tgl_kembali'])) ?></td>
+            <td><?= ucfirst($row['kondisi_post']) ?></td>
+            <td><?= nl2br(htmlspecialchars($row['catatan'])) ?></td>
+            <td>
+              <?php if (!empty($row['foto_post'])): ?>
+                <img src="<?= $base_url ?>uploads/foto_pre_post/<?= $row['foto_post'] ?>" alt="Bukti Foto">
+              <?php else: ?>
+                <em>Tidak ada foto</em>
+              <?php endif; ?>
+            </td>
+            <td>Rp <?= number_format($row['denda'], 0, ',', '.') ?></td>
+          </tr>
+        <?php endwhile; ?>
+      <?php else: ?>
+        <tr>
+          <td colspan="7" style="text-align:center;">Tidak ada riwayat denda ditemukan.</td>
+        </tr>
+      <?php endif; ?>
+    </tbody>
+  </table>
+  <div class="text-center mt-4">
+    <a href="index.php" class="btn btn-secondary">
+      <i class="bi bi-arrow-left"></i> Kembali
+    </a>
+  </div>
 </body>
 
 </html>

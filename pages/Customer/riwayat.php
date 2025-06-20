@@ -21,7 +21,7 @@ $sql = "
         booking.jam_kembali,
         booking.total_biaya,
         booking.status AS status_booking,
-        pembayaran.status AS status_pembayaran
+        booking.metode_pembayaran AS metode_pembayaran
     FROM booking
     JOIN unit_mobil ON booking.unit_mobil_id = unit_mobil.id
     JOIN jenis_mobil ON unit_mobil.jenis_mobil_id = jenis_mobil.id
@@ -122,12 +122,12 @@ $result = $koneksi->query($sql);
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: #000000;
+      color: white;
       user-select: none;
     }
 
     table.booking-table tbody tr {
-      background-color: #374151;
+      background-color: #ffffff;
       border-bottom: 1px solid #e5e7eb;
       transition: background-color 0.3s ease;
     }
@@ -252,7 +252,7 @@ $result = $koneksi->query($sql);
                 <th scope="col">Tgl Pengembalian</th>
                 <th scope="col">Jam Pengembalian</th>
                 <th scope="col">Total Biaya</th>
-                <th scope="col">Status Pembayaran</th>
+                <th scope="col">Metode Pembayaran</th>
                 <th scope="col">Status Booking</th>
                 <th scope="col">Aksi</th>
               </tr>
@@ -273,9 +273,7 @@ $result = $koneksi->query($sql);
                   echo "<td>Rp " . number_format($row['total_biaya'], 0, ',', '.') . "</td>";
 
                   // Status Pembayaran
-                  $status_pembayaran = $row['status_pembayaran'] == 'berhasil' ? 'Confirmed' : 'Pending';
-                  $statusClassPembayaran = $row['status_pembayaran'] == 'berhasil' ? 'status-confirmed' : 'status-pending';
-                  echo "<td><span class='booking-status $statusClassPembayaran'>$status_pembayaran</span></td>";
+                  echo "<td>" . ucfirst($row['metode_pembayaran']) . "</td>";
 
                   // Status Booking
                   $status_booking = $row['status_booking'];

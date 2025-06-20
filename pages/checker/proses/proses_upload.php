@@ -17,7 +17,7 @@ if (isset($_FILES['foto']) && $_FILES['foto']['error'] === 0) {
     $ext = pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION);
     $foto_name = 'foto_' . $tipe . '_' . time() . '.' . $ext;
 
-    $upload_dir = __DIR__ . '/../../../uploads/';
+    $upload_dir = __DIR__ . '/../../../uploads/foto_pre_post/';
     if (!is_dir($upload_dir)) {
         mkdir($upload_dir, 0755, true);
     }

@@ -33,7 +33,7 @@ if (isset($_GET['id']) && isset($_GET['status'])) {
     $query->bind_param("si", $status, $id);
     $query->execute();
 
-    header("Location: booking_masuk.php");
+    header("Location: index.php");
     exit;
 }
 ?>
@@ -93,10 +93,10 @@ if (isset($_GET['id']) && isset($_GET['status'])) {
                                                             Ubah Status
                                                         </button>
                                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton<?= $row['id'] ?>">
-                                                            <a class="dropdown-item" href="booking_masuk.php?id=<?= $row['id'] ?>&status=confirmed">Konfirmasi</a>
-                                                            <a class="dropdown-item" href="booking_masuk.php?id=<?= $row['id'] ?>&status=rejected">Tolak</a>
-                                                            <a class="dropdown-item" href="booking_masuk.php?id=<?= $row['id'] ?>&status=on_rent">On Rent</a>
-                                                            <a class="dropdown-item" href="booking_masuk.php?id=<?= $row['id'] ?>&status=completed">Selesai</a>
+                                                            <a class="dropdown-item" href="<?= $_SERVER['PHP_SELF'] ?>?id=<?= $row['id'] ?>&status=confirmed">Konfirmasi</a>
+                                                            <a class="dropdown-item" href="<?= $_SERVER['PHP_SELF'] ?>?id=<?= $row['id'] ?>&status=rejected">Tolak</a>
+                                                            <a class="dropdown-item" href="<?= $_SERVER['PHP_SELF'] ?>?id=<?= $row['id'] ?>&status=on_rent">On Rent</a>
+                                                            <a class="dropdown-item" href="<?= $_SERVER['PHP_SELF'] ?>?id=<?= $row['id'] ?>&status=completed">Selesai</a>
                                                         </div>
                                                     </div>
                                                 <?php endif; ?>
