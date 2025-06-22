@@ -53,6 +53,7 @@ $query_mobil = "
     WHERE um.id = $unit_id
 ";
 $mobil = mysqli_fetch_assoc(mysqli_query($db, $query_mobil));
+
 ?>
 
 <!DOCTYPE html>
@@ -423,6 +424,7 @@ $mobil = mysqli_fetch_assoc(mysqli_query($db, $query_mobil));
             <!-- <label><input type="checkbox"  name="facilities" value="Supir" /> Supir</label>
             <label><input type="checkbox" name="facilities" value="Lepas Kunci" /> Lepas Kunci</label> -->
             <select name="facilities" id="fasilitas">
+              <option value="" disabled selected>Pilih Fasilitas</option>
               <option value="dengan supir">Supir</option>
               <option value="lepas kunci">Lepas Kunci</option>
             </select>
@@ -432,7 +434,7 @@ $mobil = mysqli_fetch_assoc(mysqli_query($db, $query_mobil));
         <div class="form-group full-width">
           <label>Jaminan</label>
           <select id="jaminan" name="jaminan" required>
-            <option disabled selected>Pilih Jaminan</option>
+            <option value="" disabled selected>Pilih Jaminan</option>
             <option value="uang">Uang</option>
             <option value="motor">Motor</option>
           </select>
@@ -441,7 +443,7 @@ $mobil = mysqli_fetch_assoc(mysqli_query($db, $query_mobil));
         <div class="form-group full-width">
           <label for="payment-method">Cara Pembayaran</label>
           <select id="payment-method" name="payment-method" required>
-            <option disabled selected>Pilih cara pembayaran</option>
+            <option value="" disabled selected>Pilih cara pembayaran</option>
             <option value="Transfer">Transfer</option>
             <option value="Cash">Cash</option>
           </select>
@@ -642,6 +644,23 @@ $mobil = mysqli_fetch_assoc(mysqli_query($db, $query_mobil));
         }
       });
     });
+
+    fetch("booking.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then(result => {
+        if (result.message) {
+          alert(result.message); // ← ini yang tampilkan pesan error
+        } else {
+          // Booking sukses
+          console.log(result.snapToken);
+        }
+      });
   </script>
 </body>
 

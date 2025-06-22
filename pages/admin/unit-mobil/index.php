@@ -19,8 +19,6 @@ $query = "
     JOIN jenis_mobil j ON u.jenis_mobil_id = j.id
     ORDER BY u.id DESC
 ";
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">

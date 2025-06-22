@@ -5,14 +5,23 @@ require_once '../../koneksi.php'; // pastikan koneksi DB udah siap
 
 $nama = 'User';
 if (isset($_SESSION['user_id'])) {
-    $id = $_SESSION['user_id'];
-    $stmt = $db->prepare("SELECT nama FROM users WHERE id = ?");
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    if ($row = $result->fetch_assoc()) {
-        $nama = $row['nama'];
-    }
+  $id = $_SESSION['user_id'];
+  $stmt = $db->prepare("SELECT nama FROM users WHERE id = ?");
+  $stmt->bind_param("i", $id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  if ($row = $result->fetch_assoc()) {
+    $nama = $row['nama'];
+  }
+}
+
+$user_id = $_SESSION['user_id'];
+$notif = mysqli_query($db, "SELECT * FROM notifikasi WHERE user_id = '$user_id' AND role_tujuan = 'customer' AND dibaca = 0");
+
+while ($row = mysqli_fetch_assoc($notif)) {
+  echo "<div class='alert alert-info'>{$row['pesan']}</div>";
+  // tandai sebagai dibaca
+  mysqli_query($db, "UPDATE notifikasi SET dibaca = 1 WHERE id = {$row['id']}");
 }
 ?>
 
@@ -48,6 +57,34 @@ if (isset($_SESSION['user_id'])) {
 
   <!-- Main CSS File -->
   <link href="<?= $base_url ?>assets/template/home/Strategy/assets/css/main.css" rel="stylesheet">
+
+  <!-- Icon Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+
+  <style>
+    .notifikasi-teks {
+      font-size: 0.95rem;
+      color: #856404;
+      /* warna cokelat seperti warning */
+      margin-top: 10px;
+      display: inline-block;
+    }
+
+    .notifikasi-teks.danger {
+      color: #721c24;
+      /* merah untuk ditolak */
+    }
+
+    .notifikasi-teks i {
+      margin-right: 6px;
+      font-size: 1rem;
+      vertical-align: middle;
+    }
+  </style>
+
+
+
 </head>
 
 <body class="index-page">
@@ -59,7 +96,7 @@ if (isset($_SESSION['user_id'])) {
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <!-- <img src="assets/img/logo.webp" alt=""> -->
         <h1 class="sitename">Sigma RentCar</h1>
-        
+
       </a>
       <nav id="navmenu" class="navmenu">
         <ul>
@@ -96,6 +133,18 @@ if (isset($_SESSION['user_id'])) {
               <div class="main-heading">
                 <h2><b>Selamat Datang Kembali, <?= htmlspecialchars($nama, ENT_QUOTES, 'UTF-8') ?>!</b></h2>
               </div>
+              <?php
+              $user_id = $_SESSION['user_id'];
+              $q = mysqli_query($db, "SELECT status_verifikasi FROM users WHERE id = '$user_id'");
+              $row = mysqli_fetch_assoc($q);
+
+              if ($row['status_verifikasi'] === 'belum diverifikasi') {
+                echo "<div class='notifikasi-teks'><i class='bi bi-exclamation-circle'></i>Akun Anda sedang menunggu verifikasi oleh admin <br> untuk dapat melakukan pemesanan.</div>";
+              } elseif ($row['status_verifikasi'] === 'ditolak') {
+                echo "<div class='notifikasi-teks danger'><i class='bi bi-x-circle'></i>Verifikasi akun Anda ditolak. Silakan hubungi admin.</div>";
+              }
+              ?>
+
 
               <div class="divider"></div>
 
@@ -260,15 +309,15 @@ if (isset($_SESSION['user_id'])) {
               <h2 class="text-center mb-4">Sapa Kami</h2>
 
               <form action="https://formsubmit.co/jhynjngf@gmail.com" method="POST">
-              <!-- Ganti youremail@example.com dengan email tujuan -->
-  
-              <!-- Anti-spam honeypot (opsional tapi disarankan) -->
-              <input type="text" name="_honey" style="display:none"></input>
+                <!-- Ganti youremail@example.com dengan email tujuan -->
 
-              <!-- Nonaktifkan captcha bawaan jika kamu ingin -->
-              <input type="hidden" name="_captcha" value="true"></input>
+                <!-- Anti-spam honeypot (opsional tapi disarankan) -->
+                <input type="text" name="_honey" style="display:none"></input>
 
-              <!-- Redirect ke halaman setelah sukses kirim -->
+                <!-- Nonaktifkan captcha bawaan jika kamu ingin -->
+                <input type="hidden" name="_captcha" value="true"></input>
+
+                <!-- Redirect ke halaman setelah sukses kirim -->
 
                 <div class="row g-3">
                   <div class="col-md-6">

@@ -1,0 +1,5 @@
+[22-Jun-2025 14:30:41 Europe/Berlin] PHP Fatal error:  Uncaught Error: mysqli object is already closed in C:\xampp\htdocs\proyek-1\pages\Customer\actions\proses-booking.php:103
+Stack trace:
+#0 C:\xampp\htdocs\proyek-1\pages\Customer\actions\proses-booking.php(103): mysqli_prepare(Object(mysqli), 'INSERT INTO not...')
+#1 {main}
+  thrown in C:\xampp\htdocs\proyek-1\pages\Customer\actions\proses-booking.php on line 103

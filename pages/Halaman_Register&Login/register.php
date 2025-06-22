@@ -148,8 +148,8 @@
 
                 <div class="form-group">
                     <div class="input-box" style="width:100%">
-                        <input type="text" alamat="alamat" id="alamat" placeholder="Alamat Lengkap" />
-                        <small class="error" id="err-nama_lengkap"></small>
+                        <input type="text" name="alamat" id="alamat" placeholder="Alamat Lengkap" />
+                        <small class="error" id="err-alamat"></small>
                     </div>
                 </div>
 
@@ -220,6 +220,7 @@
 
             const nama_lengkap = document.getElementById("nama_lengkap");
             const nama = document.getElementById("nama");
+            const alamat = document.getElementById("alamat");
             const email = document.getElementById("email");
             const telepon = document.getElementById("telepon");
             const password = document.getElementById("password");
@@ -239,6 +240,10 @@
 
             if (nama.value.trim() === "") {
                 showError(nama, "Username harus diisi");
+                valid = false;
+            }
+            if (nama.value.trim() === "") {
+                showError(alamat, "alamat harus diisi");
                 valid = false;
             }
 

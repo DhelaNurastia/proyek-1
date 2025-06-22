@@ -16,7 +16,7 @@ $password     = $_POST['password'] ?? '';
 $konfirmasi   = $_POST['konfirmasi'] ?? '';
 
 // Validasi dasar
-if (empty($nama_lengkap) || empty($telepon) || empty($nama) || empty($email) || empty($password) || empty($konfirmasi)) {
+if (empty($nama_lengkap) || empty($alamat) || empty($telepon) || empty($nama) || empty($email) || empty($password) || empty($konfirmasi)) {
     echo "<script>alert('Semua field harus diisi!'); window.location.href='register.php';</script>";
     exit;
 }
@@ -46,6 +46,11 @@ $allowed = ['jpg', 'jpeg', 'png'];
 $max_size = 2 * 1024 * 1024; // 2MB
 
 foreach (['ktp', 'sim', 'kk'] as $doc) {
+    if (!isset($_FILES[$doc]) || $_FILES[$doc]['error'] !== UPLOAD_ERR_OK) {
+        echo "<script>alert('Dokumen " . strtoupper($doc) . " wajib diunggah!'); window.location.href='register.php';</script>";
+        exit;
+    }
+
     $ext = pathinfo($_FILES[$doc]['name'], PATHINFO_EXTENSION);
     $size = $_FILES[$doc]['size'];
 
@@ -103,5 +108,16 @@ mysqli_query($db, "INSERT INTO dokumen_user (id_user, file_ktp, file_sim, file_k
     VALUES ('$id_user', '$file_ktp', '$file_sim', '$file_kk')");
 
 echo "<script>alert('Pendaftaran berhasil! Silakan login.'); window.location.href='login.php';</script>";
-exit;
 
+// Buat notifikasi ke admin
+$pesan = "Customer $nama_lengkap meminta verifikasi akun.";
+mysqli_query($db, "INSERT INTO notifikasi (user_id, role_tujuan, pesan, dibaca, created_at)
+    VALUES ('$id_user', 'admin', '$pesan', 0, NOW())");
+$tipe = 'verifikasi';
+$tujuan = 'admin';
+
+$stmt = mysqli_prepare($db, "INSERT INTO notifikasi (pesan, tipe, role_tujuan, dibaca, created_at) VALUES (?, ?, ?, 0, NOW())");
+mysqli_stmt_bind_param($stmt, "sss", $pesan, $tipe, $tujuan);
+mysqli_stmt_execute($stmt);
+
+exit;

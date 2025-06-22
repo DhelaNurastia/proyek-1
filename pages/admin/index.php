@@ -7,7 +7,14 @@ $total_unit = mysqli_fetch_assoc(mysqli_query($db, "SELECT COUNT(*) AS total FRO
 $total_booking = mysqli_fetch_assoc(mysqli_query($db, "SELECT COUNT(*) AS total FROM booking"))['total'];
 $total_customer = mysqli_fetch_assoc(mysqli_query($db, "SELECT COUNT(*) AS total FROM users WHERE role = 'customer'"))['total'];
 $tanggal_hari_ini = date('Y-m-d');
-$permintaan_sewa = mysqli_fetch_assoc(mysqli_query($db, "SELECT COUNT(*) AS total FROM booking WHERE status = 'menunggu' AND DATE(tgl_booking) = '$tanggal_hari_ini'"))['total'];
+$permintaan_sewa = mysqli_fetch_assoc(mysqli_query($db, "
+    SELECT COUNT(*) AS total
+    FROM users
+    JOIN dokumen_user ON users.id = dokumen_user.id_user
+    WHERE users.role = 'customer'
+        AND users.status_verifikasi = 'belum diverifikasi'
+        AND DATE(dokumen_user.tanggal_upload) = '$tanggal_hari_ini'
+"))['total'];
 ?>
 
 
@@ -201,7 +208,8 @@ $permintaan_sewa = mysqli_fetch_assoc(mysqli_query($db, "SELECT COUNT(*) AS tota
 
                         $sewa_hari_ini = mysqli_fetch_assoc(mysqli_query($db, "SELECT COUNT(*) AS total FROM booking WHERE DATE(tgl_booking) = '$today'"))['total'];
                         $kembali_hari_ini = mysqli_fetch_assoc(mysqli_query($db, "SELECT COUNT(*) AS total FROM booking WHERE DATE(tgl_kembali) = '$today'"))['total'];
-                        $booking_masuk = mysqli_fetch_assoc(mysqli_query($db, "SELECT COUNT(*) AS total FROM booking WHERE status = 'masuk' AND DATE(created_at) = '$today'"))['total'];
+                        $booking_masuk = mysqli_fetch_assoc(mysqli_query($db, "SELECT COUNT(*) AS total FROM booking WHERE DATE(created_at) = '$today'"))['total'];
+
                         ?>
 
                         <!DOCTYPE html>
@@ -254,17 +262,15 @@ $permintaan_sewa = mysqli_fetch_assoc(mysqli_query($db, "SELECT COUNT(*) AS tota
                             <script>
                                 const ctxArea = document.getElementById("areaChart").getContext('2d');
                                 new Chart(ctxArea, {
-                                    type: 'line',
+                                    type: 'bar', // <--- Ganti dari 'line' ke 'bar'
                                     data: {
                                         labels: <?= json_encode($weekly['labels']) ?>,
                                         datasets: [{
                                             label: "Sewa",
                                             data: <?= json_encode($weekly['data']) ?>,
-                                            backgroundColor: 'rgba(78, 115, 223, 0.1)',
-                                            borderColor: ' #111827',
-                                            pointRadius: 3,
-                                            pointBackgroundColor: ' #111827',
-                                            tension: 0.3,
+                                            backgroundColor: 'rgba(78, 115, 223, 0.6)',
+                                            borderColor: '#111827',
+                                            borderWidth: 1
                                         }]
                                     },
                                     options: {
@@ -276,6 +282,7 @@ $permintaan_sewa = mysqli_fetch_assoc(mysqli_query($db, "SELECT COUNT(*) AS tota
                                         }
                                     }
                                 });
+
 
                                 const ctxPie = document.getElementById("pieChart").getContext('2d');
                                 new Chart(ctxPie, {

@@ -611,21 +611,12 @@
       </div><!-- End Section Title -->
 
       <?php
-      $host = "localhost";
-      $user = "root";
-      $pass = "";
-      $dbname   = "proyek-1";
-
-      $conn = new mysqli($host, $user, $pass, $dbname);
-      if ($conn->connect_error) {
-        die("Koneksi gagal: " . $conn->connect_error);
-      }
+      require_once "koneksi.php" ;
 
       $sql = "SELECT unit_mobil.*, jenis_mobil.nama AS nama_mobil, jenis_mobil.harga_sewa, jenis_mobil.jumlah_kursi
                 FROM unit_mobil
-                JOIN jenis_mobil ON unit_mobil.jenis_mobil_id = jenis_mobil.id
-                WHERE unit_mobil.status = 'tersedia'";
-      $result = $conn->query($sql);
+                JOIN jenis_mobil ON unit_mobil.jenis_mobil_id = jenis_mobil.id";
+      $result = $db->query($sql);
 
       if ($result->num_rows > 0): ?>
         <div class="car-list" role="list">

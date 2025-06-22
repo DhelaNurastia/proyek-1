@@ -1,5 +1,14 @@
 <?php
 require_once '../../../koneksi.php';
+
+$query = mysqli_query($db, "
+    SELECT users.id, users.nama, users.email, dokumen_user.file_ktp, dokumen_user.file_sim, dokumen_user.file_kk
+    FROM users
+    LEFT JOIN dokumen_user ON users.id = dokumen_user.id_user
+    WHERE users.role = 'customer'
+    ORDER BY users.id
+");
+
 ?>
 
 
@@ -69,6 +78,9 @@ require_once '../../../koneksi.php';
                                         <th>Nama</th>
                                         <th>Telepon</th>
                                         <th>Email</th>
+                                        <th>KTP</th>
+                                        <th>SIM</th>
+                                        <th>KK</th>
                                         <th>Blacklist</th>
 
                                     </tr>
@@ -79,27 +91,76 @@ require_once '../../../koneksi.php';
                                         <th>Nama</th>
                                         <th>Telepon</th>
                                         <th>Email</th>
+                                        <th>KTP</th>
+                                        <th>SIM</th>
+                                        <th>KK</th>
                                         <th>Blacklist</th>
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    <?php foreach (mysqli_query($db, "SELECT * FROM users WHERE role='customer' ORDER BY id")->fetch_all() as $index => $user): ?>
+                                    <?php $result = mysqli_query($db, "SELECT users.*, dokumen_user.file_ktp, dokumen_user.file_sim, dokumen_user.file_kk 
+                                    FROM users 
+                                    LEFT JOIN dokumen_user ON users.id = dokumen_user.id_user 
+                                    WHERE role = 'customer' 
+                                    ORDER BY users.id");
+                                    $no = 1;
+                                    while ($user = mysqli_fetch_assoc($result)): ?>
                                         <tr>
-                                            <td><?= $index + 1; ?></td>
-                                            <td><?= $user[1]; ?></td>
-                                            <td><?= $user[2]; ?></td>
-                                            <td><?= $user[3]; ?></td>
+                                            <td><?= $no++; ?></td>
+                                            <td><?= $user['nama']; ?></td>
+                                            <td><?= $user['telepon']; ?></td>
+                                            <td><?= $user['email']; ?></td>
+
+                                            <td>
+                                                <?php if ($user['file_ktp']): ?>
+                                                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalGambar" data-gambar="/proyek-1/uploads/dokumen-user/<?= $user['file_ktp'] ?>">Lihat</button>
+                                                <?php else: ?>
+                                                    <em class="text-muted">Belum ada</em>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td>
+                                                <?php if ($user['file_sim']): ?>
+                                                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalGambar" data-gambar="/proyek-1/uploads/dokumen-user/<?= $user['file_sim'] ?>">Lihat</button>
+                                                <?php else: ?>
+                                                    <em class="text-muted">Belum ada</em>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td>
+                                                <?php if ($user['file_kk']): ?>
+                                                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalGambar" data-gambar="/proyek-1/uploads/dokumen-user/<?= $user['file_kk'] ?>">Lihat</button>
+                                                <?php else: ?>
+                                                    <em class="text-muted">Belum ada</em>
+                                                <?php endif; ?>
+                                            </td>
+
+
                                             <td>
                                                 <form action="./actions.php" method="post">
-                                                    <input type="hidden" name="id" value="<?= $user[0]; ?>">
-                                                    <input type="hidden" name="blacklist" value="<?= $user[6]; ?>">
-                                                    <button type="submit" name="toggle_blacklist" class="btn btn-sm <?= $user[6] ? "btn-primary" : "btn-danger"; ?>" onclick="return <?= $user[6] ? 'confirm(`Batalkan blacklist?`)' : 'confirm(`Blacklist?`)' ?>"><?= $user[6] ? "Batalkan blacklist" : "Blacklist"; ?></button>
+                                                    <input type="hidden" name="id" value="<?= $user['id']; ?>">
+                                                    <input type="hidden" name="blacklist" value="<?= $user['blacklist']; ?>">
+                                                    <button type="submit" name="toggle_blacklist" class="btn btn-sm <?= $user['blacklist'] ? "btn-primary" : "btn-danger"; ?>" onclick="return <?= $user['blacklist'] ? 'confirm(`Batalkan blacklist?`)' : 'confirm(`Blacklist?`)' ?>"><?= $user['blacklist'] ? "Batalkan blacklist" : "Blacklist"; ?></button>
                                                 </form>
                                             </td>
                                         </tr>
-                                    <?php endforeach; ?>
+                                    <?php endwhile; ?>
                                 </tbody>
                             </table>
+                            <!-- Modal untuk menampilkan gambar -->
+                            <div class="modal fade" id="modalGambar" tabindex="-1" role="dialog" aria-labelledby="modalGambarLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalGambarLabel">Gambar Dokumen</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <img id="gambarDokumen" src="" alt="Dokumen" class="img-fluid">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -160,6 +221,21 @@ require_once '../../../koneksi.php';
             <!-- Page level custom scripts -->
             <script src="../../assets/js/demo/chart-area-demo.js"></script>
             <script src="../../assets/js/demo/chart-pie-demo.js"></script>
+
+            <script src="../../../assets/template/vendor/jquery/jquery.min.js"></script>
+            <script src="../../../assets/template/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+            <script>
+                $(document).ready(function() {
+                    $('#modalGambar').on('show.bs.modal', function(event) {
+                        var button = $(event.relatedTarget);
+                        var gambar = button.data('gambar');
+                        var modal = $(this);
+                        modal.find('#gambarDokumen').attr('src', gambar);
+                    });
+                });
+            </script>
 </body>
 
 </html>

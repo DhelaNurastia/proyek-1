@@ -10,60 +10,47 @@ if (!isset($_SESSION['user_id'])) {
 
 include '../../koneksi.php'; // pastikan koneksi database ada di file ini
 
-// Fetch user data
-if (isset($_GET['id_user'])) {
-  $id = $_GET['id_user'];
-  $stmt = $conn->prepare("SELECT * FROM user WHERE id = ?");
-  $stmt->bind_param("i", $id);
-  $stmt->execute();
-  $result = $stmt->get_result()->fetch_assoc();
-  echo json_encode($result);
-  exit();
-}
+function submitBooking($nama, $email, $telepon, $tanggal, $waktu, $pesan)
+{
+  $host = 'localhost';
+  $dbname = 'your_database';
+  $username = 'your_username';
+  $password = 'your_password';
 
-// Fetch mobil data
-if (isset($_GET['unit_mobil_id'])) {
-  $id = $_GET['unit_mobil_id'];
-  $stmt = $db->prepare("SELECT * FROM unit_mobil WHERE id = ?");
-  $stmt->bind_param("i", $id);
-  $stmt->execute();
-  $result = $stmt->get_result()->fetch_assoc();
-  echo json_encode($result);
-  exit();
-}
+  try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-// Proses Booking
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $user_id = $_SESSION['user_id'];
-  $unit_mobil_id = $_POST['unit_mobil_id'];
-  $tanggal_pengambilan = $_POST['tanggal_pengambilan'];
-  $jam_pengambilan = $_POST['jam_pengambilan'];
-  $tanggal_pengembalian = $_POST['tanggal_pengembalian'];
-  $jam_pengembalian = $_POST['jam_pengembalian'];
-  $fasilitas = $_POST['fasilitas'];
-  $jaminan = $_POST['jaminan'];
-  $metode_pembayaran = $_POST['metode_pembayaran'];
+    // 🔍 CEK APAKAH SUDAH ADA BOOKING DENGAN EMAIL & TANGGAL + WAKTU YANG SAMA
+    $checkSql = "SELECT COUNT(*) FROM bookings WHERE email = :email AND tanggal = :tanggal AND waktu = :waktu";
+    $stmtCheck = $pdo->prepare($checkSql);
+    $stmtCheck->execute([
+      ':email' => $email,
+      ':tanggal' => $tanggal,
+      ':waktu' => $waktu
+    ]);
+    $count = $stmtCheck->fetchColumn();
 
-  // Simpan ke database booking
-  $stmt = $conn->prepare("INSERT INTO booking (user_id, unit_mobil_id, tanggal_pengambilan, jam_pengambilan, tanggal_pengembalian, jam_pengembalian, fasilitas, jaminan, metode_pembayaran) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-  $stmt->bind_param("iisssssss", $user_id, $unit_mobil_id, $tanggal_pengambilan, $jam_pengambilan, $tanggal_pengembalian, $jam_pengembalian, $fasilitas, $jaminan, $metode_pembayaran);
+    if ($count > 0) {
+      // 🚫 Booking duplikat ditemukan
+      return "Booking gagal: Anda sudah melakukan booking pada tanggal dan waktu tersebut.";
+    }
 
-  if ($stmt->execute()) {
-    echo json_encode(['status' => 'success', 'message' => 'Booking berhasil']);
-  } else {
-    echo json_encode(['status' => 'error', 'message' => 'Gagal melakukan booking']);
+    // ✅ Tidak duplikat, lanjut simpan
+    $sql = "INSERT INTO bookings (nama, email, telepon, tanggal, waktu, pesan) 
+              VALUES (:nama, :email, :telepon, :tanggal, :waktu, :pesan)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+      ':nama' => $nama,
+      ':email' => $email,
+      ':telepon' => $telepon,
+      ':tanggal' => $tanggal,
+      ':waktu' => $waktu,
+      ':pesan' => $pesan
+    ]);
+
+    return "Booking berhasil disimpan!";
+  } catch (PDOException $e) {
+    return "Error: " . $e->getMessage();
   }
-
-  exit();
-}
-
-session_start();
-$id_user = $_SESSION['user_id'];
-
-$cek = mysqli_query($db, "SELECT status_verifikasi FROM users WHERE id = '$id_user'");
-$data = mysqli_fetch_assoc($cek);
-
-if ($data['status_verifikasi'] === 'ditolak') {
-  echo "<script>alert('Akun Anda telah ditolak dan tidak dapat melakukan booking.'); window.location.href='listing.php';</script>";
-  exit;
 }
