@@ -51,7 +51,7 @@ require_once "../../../koneksi.php"; ?>
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Jenis Mobil</h1>
-                    <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel ipsam aspernatur voluptates consectetur labore doloribus placeat!</p>
+                    <p class="mb-4">Berikut adalah data jenis mobil yang tersedia si rental mobil Sigma Rentcar</p>
                     <!-- Konten Utama -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">

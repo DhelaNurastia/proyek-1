@@ -79,7 +79,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
       font-weight: 700;
       font-size: clamp(1.8rem, 2vw, 2.5rem);
       margin-bottom: 1.2rem;
-      color: #000000;
+      color: #ffffff;
     }
 
     #profile-section .status-badge {
@@ -116,7 +116,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1.6rem 3rem;
-      color: #000000;
+      color: #ffffff;
       font-family: 'Nunito Sans', sans-serif;
     }
 
@@ -140,7 +140,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
     #profile-section .documents h3 {
       font-weight: 600;
       margin-bottom: 1rem;
-      color: #000000;
+      color: #ffffff;
       font-size: clamp(1.4rem, 1.8vw, 1.6rem);
     }
 
@@ -187,7 +187,7 @@ $fotoPath = isset($user['foto_profile']) && $user['foto_profile']
     #profile-section .doc-card .doc-label {
       font-weight: 600;
       font-size: 1rem;
-      color: #000000;
+      color: #ffffff;
     }
 
     /* Responsive adjustments */
