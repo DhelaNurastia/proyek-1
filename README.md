@@ -1,25 +1,52 @@
-## 🌸 𝓢𝓲𝓰𝓶𝓪 𝓡𝓮𝓷𝓽𝓬𝓪𝓻 🌸 
-Sigma Rentcar adalah aplikasi web berbasis PHP yang dirancang untuk mempermudah proses penyewaan mobil secara online. Sistem ini memungkinkan pelanggan untuk melihat dan memesan mobil yang tersedia, serta memberikan kemudahan bagi pemilik rental dalam mengelola data kendaraan dan transaksi penyewaan. 💖
+# 🚗 Sistem Rental Mobil Berbasis Web
 
-## 🔧 𝓕𝓲𝓽𝓾𝓻 𝓤𝓽𝓪𝓶𝓪
-- **Pemesanan Mobil**  
-  Pengguna dapat memilih mobil dan melakukan booking secara online. 🚙✨
+📚 Repository ini dibuat sebagai bagian dari penyelesaian Tugas Project 1 pada semester kedua studi saya. Sebagai Project Manager, saya sempat membayangkan sistem yang kompleks. Namun, perjalanan ini menyadarkan kami bahwa kesederhanaan dalam fungsionalitas adalah inti dari aplikasi yang efektif. Dari sinilah kami membangun aplikasi ini — baris demi baris — dengan niat untuk memecahkan masalah nyata.
 
-- **Manajemen Data**  
-  Admin dapat mengelola data mobil, pengguna, dan transaksi rental. 📊
+---
 
-- **Login & Autentikasi**  
-  Sistem login aman untuk membedakan akses antara pelanggan dan admin. 🔐
+## 🎯 Deskripsi Proyek
 
-- **Pencarian Mobil**  
-  Fitur pencarian untuk memudahkan pengguna menemukan mobil yang tersedia pada waktu tertentu. 🔍
+**Sistem Rental Mobil** ini adalah aplikasi berbasis **web** yang dikembangkan menggunakan **HTML, CSS, JavaScript, dan PHP**, dengan **MySQL** sebagai basis data. Aplikasi ini bertujuan untuk membantu pengelolaan penyewaan mobil, mencatat data pelanggan, mengelola mobil yang tersedia, memproses transaksi sewa dan pengembalian, serta menyediakan laporan transaksi secara efisien dan terstruktur.
 
-## 🛠️ 𝓣𝓮𝓴𝓷𝓸𝓵𝓸𝓰𝓲 𝔀𝓱𝓸𝓼𝓮 𝓬𝓸𝓶𝓹𝓸𝓷𝓮𝓷𝓽𝓼
-- **PHP** – Backend logic 💻
-- **HTML, CSS, JavaScript** – Antarmuka pengguna 🎨
-- **MySQL** – Database penyimpanan data 🗃️
+---
 
-## 🚀 𝓒𝓪𝓻𝓪 𝓜𝓮𝓷𝓳𝓪𝓵𝓪𝓷𝓴𝓪𝓷 𝓟𝓻𝓸𝔧𝓮𝓴
+## ✨ Fitur Utama
+
+### 1. 🚘 Manajemen Mobil
+
+* **Tambah Mobil:** Menambahkan mobil baru ke sistem, termasuk informasi seperti merek, tipe, tahun, plat nomor, harga sewa per hari, dan status.
+* **Lihat Data Mobil:** Menampilkan semua data mobil beserta status ketersediaannya.
+* **Edit Mobil:** Memperbarui informasi mobil.
+* **Nonaktifkan Mobil:** Menonaktifkan data mobil dari sistem.
+
+### 2. 👤 Manajemen Pelanggan
+
+* **Tambah Pelanggan:** Mendaftarkan pelanggan baru dengan data diri lengkap.
+* **Lihat Pelanggan:** Menampilkan daftar pelanggan.
+* **Edit Pelanggan:** Memperbarui informasi pelanggan.
+* **Hapus Pelanggan:** Menghapus data pelanggan.
+
+### 3. 📆 Transaksi Penyewaan
+
+* **Sewa Mobil:** Mencatat proses penyewaan mobil oleh pelanggan.
+* **Lihat Transaksi Aktif:** Menampilkan transaksi penyewaan yang masih berlangsung.
+* **Pengembalian Mobil:** Memproses pengembalian dan menghitung total biaya berdasarkan durasi sewa.
+
+### 4. 📊 Laporan & Riwayat
+
+* **Laporan Semua Transaksi:** Menampilkan seluruh riwayat penyewaan.
+
+---
+
+## 🛠️ Teknologi yang Digunakan
+
+* **HTML & CSS:** Tampilan antarmuka pengguna.
+* **JavaScript:** Interaktivitas di sisi klien.
+* **PHP:** Logika server-side dan koneksi database.
+* **MySQL:** Penyimpanan data mobil, pelanggan, dan transaksi.
+
+---
+## 🚀 Cara Menjalankan Project
 1. Clone repositori:
    ```bash
    git clone https://github.com/username/sigma-rentcar.git
@@ -39,13 +66,20 @@ Sigma Rentcar adalah aplikasi web berbasis PHP yang dirancang untuk mempermudah 
 
 ---
 
-## 🌷 Tujuan Proyek
+## 👥 Kontributor
 
-Sigma Rentcar dibuat untuk bantu para pemilik bisnis rental mobil menjalankan usahanya secara digital, dengan cara yang sederhana, cantik, dan efisien. Cocok untuk kamu yang suka hal praktis tapi tetap stylish!
+**Project Manager:**  
+Dhela Nurastia
+
+**Anggota Kelompok:**  
+- Dhela Nurastia (10602010)  
+- Radite Zahra Ramadhani (1602044)  
+- Sulton Sugiarta (10602052)
 
 ---
 
+Proyek ini adalah bentuk nyata dari kerja sama tim, ketekunan, dan semangat belajar.  
+Kami percaya bahwa setiap peran kecil menciptakan dampak besar dalam proyek ini.
 
----
 
-🍓 daffodilla 🍓
+✨"Bukan tentang seberapa rumit sistemnya, tapi seberapa baik ia bekerja."✨
