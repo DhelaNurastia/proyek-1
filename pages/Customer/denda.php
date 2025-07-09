@@ -5,14 +5,18 @@ include '../../koneksi.php';
 $base_url = '/proyek-1/';
 $id_customer = $_SESSION['user_id'];
 
-// Ambil data denda berdasarkan booking customer
+                // Ambil data denda berdasarkan booking customer
 $query = "
     SELECT 
         i.id AS inspeksi_id,
         b.id AS booking_id,
+        b.tgl_booking,
+        b.jam_booking,
+        b.tgl_kembali,
+        b.jam_kembali,
+        b.metode_pembayaran,
         jm.nama AS nama_mobil,
         u.plat_nomor,
-        b.tgl_kembali,
         i.kondisi_post,
         i.catatan,
         i.denda,
@@ -25,7 +29,8 @@ $query = "
       AND i.denda > 0
     ORDER BY b.tgl_kembali DESC
 ";
-$result = mysqli_query($db, $query);
+
+                $result = mysqli_query($db, $query);
 ?>
 
 
@@ -215,12 +220,12 @@ $result = mysqli_query($db, $query);
     <!-- Page Title -->
     <div class="page-title dark-background" data-aos="fade">
       <div class="container position-relative">
-        <h1>Riwayat Booking</h1>
-        <p>Lihat riwayat pemesanan mobil Anda secara lengkap dan terperinci di halaman ini.</p>
+        <h1>Riwayat Denda</h1>
+        <p>Lihat riwayat denda Anda secara lengkap dan terperinci di halaman ini.</p>
         <nav class="breadcrumbs">
           <ol>
             <li><a href="index.html">Home</a></li>
-            <li class="current">Riwayat Booking</li>
+            <li class="current">Riwayat Denda</li>
           </ol>
         </nav>
       </div>
@@ -303,7 +308,7 @@ $result = mysqli_query($db, $query);
                   echo "</tr>"; // penutup <tr> tetap
                 }
               } else {
-                echo "<tr><td colspan='8'>Tidak ada data booking</td></tr>";
+                echo "<tr><td colspan='8'>Tidak ada data denda</td></tr>";
               }
               ?>
             </tbody>

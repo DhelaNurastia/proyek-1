@@ -110,7 +110,7 @@ while ($row = mysqli_fetch_assoc($notif)) {
           <li class="dropdown"><a href="#"><span>Akun</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="profile.php">Profile</a></li>
-              <li><a href="../Halaman_Register&Login/logout.php">LogOut</a></li>
+              <li><a href="/proyek-1/pages/Halaman_Register&Login/logout.php">LogOut</a></li>
             </ul>
           </li>
           <li><a href="#contact">Kontak</a></li>

@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -165,14 +168,23 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="input-box">
+                    <div class="input-box" style="position: relative;">
                         <input type="password" name="password" id="password" placeholder="Password" />
                         <small class="error" id="err-password"></small>
+                        <span onclick="togglePassword('password')"
+                            style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #000957; font-size: 12px;">
+                            Lihat
+                        </span>
                     </div>
-                    <div class="input-box">
+                    <div class="input-box" style="position: relative;">
                         <input type="password" name="konfirmasi" id="konfirmasi" placeholder="Konfirmasi Password" />
                         <small class="error" id="err-konfirmasi"></small>
+                        <span onclick="togglePassword('konfirmasi')"
+                            style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #000957; font-size: 12px;">
+                            Lihat
+                        </span>
                     </div>
+
                 </div>
 
                 <div class="form-group">

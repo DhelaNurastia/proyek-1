@@ -566,13 +566,7 @@ while ($row = mysqli_fetch_assoc($result)) {
               <label for="date-to">To:</label>
               <input type="date" id="date-to" name="date-to" value="<?= htmlspecialchars($dateTo) ?>" />
 
-              <label for="status-filter">Status:</label>
-              <select id="status-filter" name="status-filter">
-                <option value="" <?= $status === null ? 'selected' : '' ?>>All</option>
-                <option value="berhasil" <?= $status === 'berhasil' ? 'selected' : '' ?>>Berhasil</option>
-                <option value="pending" <?= $status === 'pending' ? 'selected' : '' ?>>Pending</option>
-                <option value="gagal" <?= $status === 'gagal' ? 'selected' : '' ?>>Gagal</option>
-              </select>
+              
 
               <button type="submit" class="primary">Filter</button>
               <a href="laporan.php" class="btn btn-secondary">Reset</a>
