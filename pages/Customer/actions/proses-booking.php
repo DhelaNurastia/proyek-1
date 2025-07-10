@@ -20,7 +20,8 @@ foreach ($data as $d):
 endforeach;
 
 // Konfigurasi Midtrans
-\Midtrans\Config::$serverKey = require 'midtrans-key.php';
+$midtransConfig = require 'midtrans-key.php';
+\Midtrans\Config::$serverKey = $midtransConfig['MIDTRANS_SERVER_KEY'];
 \Midtrans\Config::$isProduction = false; // Sandbox dulu
 \Midtrans\Config::$isSanitized = true;
 \Midtrans\Config::$is3ds = true;
