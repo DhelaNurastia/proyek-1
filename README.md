@@ -46,25 +46,6 @@
 * **MySQL:** Penyimpanan data mobil, pelanggan, dan transaksi.
 
 ---
-## 🚀 Cara Menjalankan Project
-1. Clone repositori:
-   ```bash
-   git clone https://github.com/username/sigma-rentcar.git
-
-2. **Pindahkan ke folder server lokal kamu**  
-   Contohnya ke `htdocs` (kalau pakai XAMPP)
-
-3. **Jalankan lewat browser**  
-   ```
-   http://localhost/sigma-rentcar
-   ```
-
-4. **(Opsional) Import database**
-   - Buka `phpMyAdmin`
-   - Buat database dengan nama: `sigma_rentcar`
-   - Import file `.sql` dari folder `database/` (kalau ada)
-
----
 
 ## 👥 Kontributor
 
